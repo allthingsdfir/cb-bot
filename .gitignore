@@ -1,0 +1,8 @@
+# Ignoring folders
+data/
+temp/
+CB_GATHER_OUTPUT/
+
+
+# Ignoring files
+.DS_Store

@@ -1,0 +1,91 @@
+{% extends "home_base.html" %}
+
+{% block header %}
+
+<link href="../static/vendor/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">CB Hosts</h1>
+    <a href="/cb/refresh_host_list" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-sync-alt fa-sm text-white-50"></i> Refresh Host List
+    </a>
+</div>
+<!-- 
+<a href="/activity_logs/download" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <i class="fas fa-download fa-sm text-white-50"></i> Download Host List
+</a> -->
+
+<p class="mb-4">
+    The following table presents all of the hosts gathered from Carbon Black. Feel free to download the host List using the 'Download Host List' buttom above.
+    Click on the "Refresh Host List" to query Carbon Black for an update on the list of hosts.
+</p>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Hosts</h6>
+    </div>
+    <div class="card-body">
+        {% if type %}
+        <div class="alert alert-{{type}}">
+            {{value}}
+        </div>
+        {%else%}
+        <br>
+        {%endif%}
+        <div class="table-responsive">
+            <table id="cb_host_table" class="table table-striped table-bordered table-s" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Hostname</th>
+                        <th>Device ID</th>
+                        <th>Device Type</th>
+                        <th>OS Version</th>
+                        <th>Last Reported Time</th>
+                    </tr>
+                </thead>
+                <!-- <tfoot>
+                    <tr>
+                        <th>Hostname</th>
+                        <th>Device ID</th>
+                        <th>Device Type</th>
+                        <th>OS Version</th>
+                        <th>Last Reported Time</th>
+                    </tr>
+                </tfoot> -->
+                {% if hosts %}
+                    <tbody>
+                        {% for item in hosts %}
+                        <tr>
+                            <td>{{ item.hostname }}</td>
+                            <td>{{ item.device_id }}</td>
+                            <td>{{ item.device_type }}</td>
+                            <td>{{ item.os_version }}</td>
+                            <td>{{ item.last_reported_time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                {% else %}{% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- /.container-fluid -->
+{% endblock %}
+
+{% block apiscripts %}
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function() {
+            $('#cb_host_table').DataTable();
+        });
+    </script>
+    
+    <script src="../static/vendor/datatables/js/jquery.dataTables.js"></script>
+    <script src="../static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}

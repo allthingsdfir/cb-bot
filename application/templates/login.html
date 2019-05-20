@@ -1,0 +1,76 @@
+{% extends "main_base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+
+    <link href="../static/vendor/sb-admin/css/sb-admin-2.min.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+
+<body>
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+    
+          <div class="col-xl-10 col-lg-12 col-md-9">
+    
+            <div class="card o-hidden border-0 shadow-lg my-5">
+              <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                  <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                  <div class="col-lg-6">
+                    <div class="p-5">
+                      <div class="text-center">
+                        <img src="../static/images/doby_logo.png" alt="" width="130" height="130">
+                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                      </div>
+                      <form method="POST"> 
+                        <br><br>
+                    
+                        <!-- Email Field -->
+                        <input name="input_email" type="email" id="input_email" class="form-control form-control-user" placeholder="Email" required autofocus>
+                        <br>
+
+                        <!-- Password Field -->
+                        <input name="input_password" type="password" id="input_password" class="form-control form-control-user" placeholder="Password" required>
+                        <br>
+
+                        <!-- Button -->
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+          </div>
+    
+        </div>
+    
+    </div>
+</body>
+
+{% endblock %}
+
+{% block script %}
+  
+    <!-- Bootstrap core JavaScript-->
+    <script src="../static/vendor/jquery/js/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/sb-admin/js/sb-admin-2.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../static/vendor/jquery-easing/js/jquery.easing.min.js"></script>
+  
+    <script>
+        $().alert();
+        setTimeout(function(){$('.alert').alert('close')}, 5000);
+    </script>
+  
+{% endblock %}

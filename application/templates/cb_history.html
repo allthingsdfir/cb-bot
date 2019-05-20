@@ -1,0 +1,85 @@
+{% extends "home_base.html" %}
+
+{% block header %}
+
+<link href="../static/vendor/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">CB Sweep History</h1>
+</div>
+
+<p class="mb-4">
+    The following section shows all the sweeps that were run with this Doby instance.
+</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">CB Sweep History</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="cb_history_table" class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Created (UTC)</th>
+                        <th>Name</th>
+                        <th>Sweep Type</th>
+                        <th>Owner</th>
+                        <th>Active</th>
+                        <th>Completed Hosts</th>
+                        <th>Total Hosts</th>
+                        <th>Percentage Complete</th>
+                    </tr>
+                </thead>
+                <!-- <tfoot>
+                    <tr>
+                        <th>Created (UTC)</th>
+                        <th>Name</th>
+                        <th>Sweep Type</th>
+                        <th>Owner</th>
+                        <th>Active</th>
+                        <th>Completed Hosts</th>
+                        <th>Total Hosts</th>
+                        <th>Percentage Complete</th>
+                    </tr>
+                </tfoot> -->
+                {% if history %}
+                <tbody>
+                    {% for item in history %}
+                    <tr>
+                        <td>{{ item.created }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.owner }}</td>
+                        <td>{% if item.active == True %}In Progress{% else %}Complete{% endif %}</td>
+                        <td>{{ item.completed_hosts }}</td>
+                        <td>{{ item.total_hosts }}</td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ item.percentage_complete }}%" aria-valuenow="{{ item.percentage_complete }}"
+                                    aria-valuemin="0" aria-valuemax="100"><font color="dimgray">{{ item.percentage_complete }}%</font></div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                {% else %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+    
+{% endblock %}
+
+{% block apiscripts %}
+    <script src="../static/vendor/datatables/js/jquery.dataTables.js"></script>
+    <script src="../static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../static/vendor/json2html/js/json2html.js"></script>
+{% endblock %}

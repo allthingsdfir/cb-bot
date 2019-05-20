@@ -1,0 +1,198 @@
+{% extends "home_base.html" %}
+
+{% block header %}
+
+<link href="../static/vendor/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Register</h1>
+</div>
+
+<p class="mb-4">
+    Create a user by filling out all of the details below. Refer to the images on the right for the available avatars.
+</p>
+
+<br><br>
+<!-- Profile Example -->
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-6 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Profile</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" style="text-align: center;">
+                {% if type %}
+                <div class="alert alert-{{type}}">
+                    {{value}}
+                </div>
+                {%else%}
+                <br>
+                {%endif%}
+                <form class="user" method="POST">
+                    <h5>User details</h5>
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">First Name</div>
+                            </div>
+                            <input type="text" class="form-control" name="input_first_name"
+                                id="input_first_name" placeholder="John" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Last Name</div>
+                            </div>
+                            <input type="text" class="form-control name="input_last_name"
+                                id="input_last_name" placeholder="Doe" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Email Address</div>
+                            </div>
+                            <input type="email" class="form-control" name="input_email"
+                                id="input_email" placeholder="john.doe@doby.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Password</div>
+                            </div>
+                            <input type="password" class="form-control" name="input_password"
+                                id="input_password" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Repeat Password</div>
+                            </div>
+                            <input type="password" class="form-control" name="input_password_repeat"
+                                id="input_password_repeat" placeholder="Repeat Password" required>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>Account details</h5>
+                    <div class="form-group">
+                            <div class="input-group mb-2">
+                            <select required class="form-control" id="input_account_type" name="input_account_type">
+                                <option disabled selected value="">Select Account Type</option>
+                                <option value="admin">admin</option>
+                                <option value="analyst">analyst</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2">
+                            <select required class="form-control" id="input_account_type" name="input_avatar">
+                                <option disabled selected value="">Select Avatar</option>
+                                <option value="avatar_1">Avatar 1</option>
+                                <option value="avatar_2">Avatar 2</option>
+                                <option value="avatar_3">Avatar 3</option>
+                                <option value="avatar_4">Avatar 4</option>
+                                <option value="avatar_5">Avatar 5</option>
+                                <option value="avatar_6">Avatar 6</option>
+                                <option value="avatar_7">Avatar 7</option>
+                                <option value="avatar_8">Avatar 8</option>`
+                                <option value="avatar_9">Avatar 9</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+
+                    <button class="btn btn-primary btn-user btn-block" type="submit">Register User</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Available Avatars</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" style="text-align: center;">
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_1.png">
+                        <p style="text-align: center">Avatar 1</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_2.png">
+                        <p style="text-align: center">Avatar 2</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_3.png">
+                        <p style="text-align: center">Avatar 3</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_4.png">
+                        <p style="text-align: center">Avatar 4</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_5.png">
+                        <p style="text-align: center">Avatar 5</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_6.png">
+                        <p style="text-align: center">Avatar 6</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_7.png">
+                        <p style="text-align: center">Avatar 7</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_8.png">
+                        <p style="text-align: center">Avatar 8</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_9.png">
+                        <p style="text-align: center">Avatar 9</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+
+{% block scripts %}
+<script src="../static/vendor/datatables/js/jquery.dataTables.js"></script>
+<script src="../static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}

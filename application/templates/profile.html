@@ -1,0 +1,300 @@
+{% extends "home_base.html" %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Profile</h1>
+</div>
+
+<p class="mb-4">
+    The following section provides the user's information. Please feel free to update any of the fields and click on the
+    "Update User" button in order to make changes.
+    Please note that for ANY changes, you must input your current password. If not, it will not let you. Do not fill in
+    the "New Password" field if you do not want
+    to change your password.
+</p>
+
+<!-- Profile Example -->
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-6 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Profile</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" style="text-align: center;">
+                <form class="user" method="POST">
+                    {% if type %}
+                    <div class="alert alert-{{type}}">
+                        {{value}}
+                    </div>
+                    {%else%}
+                    <br>
+                    {%endif%}
+                    <div class="form-group row">
+                        <div class="col-sm-12 mb-3 mb-sm-0">
+                            <img class="img-profile rounded-circle"
+                                style="height: 150px; width: 150px; display: block; margin-left: auto; margin-right: auto;"
+                                src="../static/images/avatars/{{user.avatar}}.png">
+                            <br>
+                            <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                            <br><br>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">First Name</div>
+                            </div>
+                            <input type="text" class="form-control" name="input_first_name"
+                                id="input_first_name" value="{{ user.first_name }}" placeholder="First Name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Last Name</div>
+                            </div>
+                            <input type="text" class="form-control" name="input_last_name"
+                                id="input_last_name" value="{{ user.last_name }}" placeholder="Last Name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Email Address</div>
+                            </div>
+                            <input type="email" class="form-control" name="input_email" id="input_email"
+                            value="{{ user.email }}" placeholder="Email Address" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">New Password</div>
+                            </div>
+                            <input type="password" class="form-control" name="input_new_password"
+                                id="input_new_password" value="" placeholder="New Password">
+                        </div>
+                    </div>
+                
+                    <hr>
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <select required class="form-control" id="input_account_type" name="input_theme_color">
+                                <option disabled value="">Select Color Scheme</option>
+                                <option {%if user.theme_color == 'primary'%}selected{%else%}{%endif%} value="primary">
+                                    Blue</option>
+                                <option {%if user.theme_color == 'success'%}selected{%else%}{%endif%} value="success">
+                                    Green</option>
+                                <option {%if user.theme_color == 'info'%}selected{%else%}{%endif%} value="info">
+                                    Aqua</option>
+                                <option {%if user.theme_color == 'warning'%}selected{%else%}{%endif%} value="warning">
+                                    Yellow</option>
+                                <option {%if user.theme_color == 'danger'%}selected{%else%}{%endif%} value="danger">
+                                    Red</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <select required class="form-control" id="input_account_type" name="input_avatar">
+                                <option disabled value="">Select Avatar</option>
+                                <option {%if user.avatar == 'avatar_1'%}selected{%else%}{%endif%} value="avatar_1">
+                                    Avatar 1</option>
+                                <option {%if user.avatar == 'avatar_2'%}selected{%else%}{%endif%} value="avatar_2">
+                                    Avatar 2</option>
+                                <option {%if user.avatar == 'avatar_3'%}selected{%else%}{%endif%} value="avatar_3">
+                                    Avatar 3</option>
+                                <option {%if user.avatar == 'avatar_4'%}selected{%else%}{%endif%} value="avatar_4">
+                                    Avatar 4</option>
+                                <option {%if user.avatar == 'avatar_5'%}selected{%else%}{%endif%} value="avatar_5">
+                                    Avatar 5</option>
+                                <option {%if user.avatar == 'avatar_6'%}selected{%else%}{%endif%} value="avatar_6">
+                                    Avatar 6</option>
+                                <option {%if user.avatar == 'avatar_7'%}selected{%else%}{%endif%} value="avatar_7">
+                                    Avatar 7</option>
+                                <option {%if user.avatar == 'avatar_8'%}selected{%else%}{%endif%} value="avatar_8">
+                                    Avatar 8</option>`
+                                <option {%if user.avatar == 'avatar_9'%}selected{%else%}{%endif%} value="avatar_9">
+                                    Avatar 9</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <hr>
+                        </div>
+                    </div>
+                    <br>
+                    <h5 style="text-align: center;">Type in your current password to confirm any changes</h5><br>
+                    <div class="form-group row">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Current Password</div>
+                            </div>
+                            <input type="password" class="form-control" name="input_old_password"
+                                id="input_old_password" value="" placeholder="Current Password" required>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-user btn-block" type="submit">Update User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Account Details</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" style="text-align: center;">
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="input_api_key">Account Type</label>
+                        <input style="text-align: center;" type="text" class="form-control form-control-user"
+                            value="{{user.account_type}}" placeholder="Account Type" disabled>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="input_api_key">Registration Date</label>
+                        <input style="text-align: center;" type="text" class="form-control form-control-user"
+                            name="input_last_name" id="input_last_name" value="{{ user.registration_date }}"
+                            placeholder="N/A" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="input_api_key">Last Password Change</label>
+                        <input style="text-align: center;" type="text" class="form-control form-control-user"
+                            name="input_last_name" id="input_last_name" value="{{ user.last_password_change }}"
+                            placeholder="N/A" disabled>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="input_api_key">Last Logon</label>
+                        <input style="text-align: center;" type="text" class="form-control form-control-user"
+                            name="input_last_name" id="input_last_name" value="{{ user.last_logon }}" placeholder="N/A"
+                            disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Available Color Schemes</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" style="text-align: center;">
+                <div class="form-group row">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="img-profile rounded bg-gradient-primary text-white" 
+                        style="height: 40px; width: 80px; margin-left: auto; margin-right: auto; ">Blue</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="img-profile rounded bg-gradient-success text-white" 
+                        style="height: 40px; width: 80px; margin-left: auto; margin-right: auto;">Green</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="img-profile rounded bg-gradient-info text-white" 
+                        style="height: 40px; width: 80px; margin-left: auto; margin-right: auto;">Aqua</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="img-profile rounded bg-gradient-warning text-white" 
+                        style="height: 40px; width: 80px; margin-left: auto; margin-right: auto;">Yellow</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="img-profile rounded bg-gradient-danger text-white" 
+                        style="height: 40px; width: 80px; margin-top: auto; margin-bottom: auto;">Red</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Available Avatars</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" style="text-align: center;">
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_1.png">
+                        <p style="text-align: center">Avatar 1</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_2.png">
+                        <p style="text-align: center">Avatar 2</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_3.png">
+                        <p style="text-align: center">Avatar 3</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_4.png">
+                        <p style="text-align: center">Avatar 4</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_5.png">
+                        <p style="text-align: center">Avatar 5</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_6.png">
+                        <p style="text-align: center">Avatar 6</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_7.png">
+                        <p style="text-align: center">Avatar 7</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_8.png">
+                        <p style="text-align: center">Avatar 8</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="img-profile rounded-circle"
+                            style="height: 80px; width: 80px; display: block; margin-left: auto; margin-right: auto;"
+                            src="../static/images/avatars/avatar_9.png">
+                        <p style="text-align: center">Avatar 9</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock %}

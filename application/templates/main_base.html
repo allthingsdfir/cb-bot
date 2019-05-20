@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+    <!-- Header -->
+    <head>
+        <!-- Bootstrap core CSS -->
+        <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Axios and Vue for front end & API calls
+        <script src="../static/vendor/vue/js/vue.min.js"></script>
+        <script src="../static/vendor/axios/js/axios.min.js"></script> -->
+
+        <title>Doby Bot | {% block title %}{% endblock %}</title>
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <!-- Body -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <!-- <script src="../static/vendor/jquery/js/jquery-3.3.1.min.js"></script> -->
+    <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    {% block script %}
+    {% endblock %}
+</html>
