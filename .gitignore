@@ -2,7 +2,7 @@
 data/
 temp/
 CB_GATHER_OUTPUT/
-
+__pycache__/
 
 # Ignoring files
 .DS_Store
