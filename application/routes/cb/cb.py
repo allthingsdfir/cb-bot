@@ -341,8 +341,6 @@ def sweep_history():
                             title="CB Sweep History",
                             user=session,
                             history=results)
-                
-
 
 #########################################
 #            OTHER FUNCTIONS            #
