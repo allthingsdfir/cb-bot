@@ -25,6 +25,7 @@
             <table id="cb_history_table" class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
+                        <th>Task ID</th>
                         <th>Created (UTC)</th>
                         <th>Name</th>
                         <th>Sweep Type</th>
@@ -33,6 +34,7 @@
                         <th>Completed Hosts</th>
                         <th>Total Hosts</th>
                         <th>Percentage Complete</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <!-- <tfoot>
@@ -51,11 +53,12 @@
                 <tbody>
                     {% for item in history %}
                     <tr>
+                        <td>{{ item.tuid }}</td>
                         <td>{{ item.created }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.type }}</td>
                         <td>{{ item.owner }}</td>
-                        <td>{% if item.active == True %}In Progress{% else %}Complete{% endif %}</td>
+                        <td>{{ item.active }}</td>
                         <td>{{ item.completed_hosts }}</td>
                         <td>{{ item.total_hosts }}</td>
                         <td>
@@ -63,6 +66,18 @@
                                 <div class="progress-bar bg-success" role="progressbar" style="width: {{ item.percentage_complete }}%" aria-valuenow="{{ item.percentage_complete }}"
                                     aria-valuemin="0" aria-valuemax="100"><font color="dimgray">{{ item.percentage_complete }}%</font></div>
                             </div>
+                        </td>
+                        <td align="center">
+                            <a href="/api/v1/stop/task/{{ item.tuid }}" style="color: #d82b00; padding-right: 8px;" {% if item.active %}{% else %}class="disabled"{% endif %}><i class="fas fa-pause"></i></a>
+                            <a href="/api/v1/restart/task/{{ item.tuid }}"><i class="fas fa-redo"></i></a>
+
+                            <style>
+                                a.disabled {
+                                    pointer-events: none;
+                                    opacity: 0.5;
+                                    cursor: default;
+                                }
+                            </style>
                         </td>
                     </tr>
                     {% endfor %}
@@ -81,5 +96,4 @@
 {% block apiscripts %}
     <script src="../static/vendor/datatables/js/jquery.dataTables.js"></script>
     <script src="../static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../static/vendor/json2html/js/json2html.js"></script>
 {% endblock %}
