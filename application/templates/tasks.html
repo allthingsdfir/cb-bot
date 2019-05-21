@@ -18,7 +18,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Task History - API</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Task History</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -32,7 +32,7 @@
                         <th>Task</th>
                         <th>Type</th>
                         <th>Owner</th>
-                        <th>Status</th>
+                        <th>Active</th>
                         <th>Percentage Complete</th>
                     </tr>
                 </thead>
@@ -89,7 +89,7 @@
                 html_data += '<td>' + value.task + '</td>'
                 html_data += '<td>' + value.type + '</td>'
                 html_data += '<td>' + value.owner + '</td>'
-                html_data += '<td>' + value.status + '</td>'
+                html_data += '<td>' + value.active + '</td>'
                 html_data += '<td><div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: ' + value.percentage_complete + '%" aria-valuenow="' + value.percentage_complete + '" aria-valuemin="0" aria-valuemax="100"><font color="dimgray">' + value.percentage_complete + '%</font></div></div></td>';
                 html_data += '</tr>'
 
