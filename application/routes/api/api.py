@@ -254,6 +254,11 @@ def stop_task(tuid):
     # Update the data in the task.
     mongo.update_task('active', False, task_object['_id'])
 
+    # Records log entry.
+    main.record_log(request.path,
+                    request.remote_addr,
+                    'Stopped Task ID: {}.'.format(tuid))
+
     # Returns to where the user was before. Referrer page.
     return redirect(request.referrer)
 
@@ -304,6 +309,11 @@ def restart_task(tuid):
     # Update the data in the task.
     mongo.update_task('pid', int(new_pid), task_object['_id'])
     mongo.update_task('active', True, task_object['_id'])
+
+    # Records log entry.
+    main.record_log(request.path,
+                    request.remote_addr,
+                    'Restarted Task ID: {}.'.format(tuid))
 
     # Returns to where the user was before. Referrer page.
     return redirect(request.referrer)
