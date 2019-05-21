@@ -63,18 +63,19 @@
                         <td>{{ item.total_hosts }}</td>
                         <td>
                             <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ item.percentage_complete }}%" aria-valuenow="{{ item.percentage_complete }}"
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ item.percentage_complete }}%" aria-valuenow="{{ item.percentage_complete }}"
                                     aria-valuemin="0" aria-valuemax="100"><font color="dimgray">{{ item.percentage_complete }}%</font></div>
                             </div>
                         </td>
                         <td align="center">
-                            <a href="/api/v1/stop/task/{{ item.tuid }}" style="color: #d82b00; padding-right: 8px;" {% if item.active %}{% else %}class="disabled"{% endif %}><i class="fas fa-pause"></i></a>
+                            <a href="/api/v1/restart/task/{{ item.tuid }}" style="color: #28a745; padding-right: 8px;" {% if item.active %}class="disabled"{% else %}{% endif %}><i class="fas fa-play"></i></a>
+                            <a href="/api/v1/stop/task/{{ item.tuid }}" style="color: #dc3545; padding-right: 8px;" {% if item.active %}{% else %}class="disabled"{% endif %}><i class="fas fa-pause"></i></a>
                             <a href="/api/v1/restart/task/{{ item.tuid }}"><i class="fas fa-redo"></i></a>
 
                             <style>
                                 a.disabled {
                                     pointer-events: none;
-                                    opacity: 0.5;
+                                    opacity: 0.3;
                                     cursor: default;
                                 }
                             </style>
