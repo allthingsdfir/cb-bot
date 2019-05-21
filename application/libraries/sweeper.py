@@ -176,8 +176,8 @@ class CB_DOBY():
                         # print("Working on host: {} | {}".format(sensor_name, sensor_id))
                         # # ========= DEV =========
 
-                        print("[TASK ID: {}]Active threads: {}".format(self.TUID, threading.active_count()))
-                        print("[TASK ID: {}]Queue Size: {}".format(self.TUID, queue.Queue.qsize(self.queue_list)))
+                        print("[TASK ID: {}] Active threads: {}".format(self.TUID, threading.active_count()))
+                        print("[TASK ID: {}] Queue Size: {}".format(self.TUID, queue.Queue.qsize(self.queue_list)))
 
                         ###########################
                         # Step 1: Open CB Session #
