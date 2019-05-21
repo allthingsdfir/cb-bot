@@ -1,5 +1,7 @@
 import requests
 import json
+import os
+import subprocess
 
 from application import app
 from application.routes import main
@@ -129,12 +131,6 @@ def api_tasks_all():
         # Clean up some of the data.
         item['created'] = item['created'].strftime("%B %d, %Y  %-I:%M:%S%p UTC")
 
-        # Add a different wording to the page.
-        if item['active'] == False:
-            item['status'] = "Complete"
-        else:
-            item['status'] = "In Progress"
-
         # Add percentage to each.
         try:
             item['percentage_complete'] = int((item['completed_hosts'] / item['total_hosts']) * 100)
@@ -233,3 +229,82 @@ def api_update_alert(auid):
 
     # Returns home. Need to return to page before.
     return redirect(request.referrer)
+
+@api_bp.route('/api/v1/stop/task/<tuid>', methods=['GET'])
+@fresh_login_required
+def stop_task(tuid):
+    '''
+    This function will stop a task given the TUID.
+    '''
+    # Query MongoDB for the one alert given the TUID.
+    task_object = mongo.get_one_task('tuid', int(tuid))
+
+    # Checks to see if the task is active before trying
+    # to kill/terminate it.
+    if task_object['active']:
+
+        # Despite us knowing that the process exists and it
+        # will attempt to kill the process, let's add this
+        # try-except catch, just in case.
+        try:
+            os.kill(task_object['pid'], 9)
+        except:
+            pass
+
+    # Update the data in the task.
+    mongo.update_task('active', False, task_object['_id'])
+
+    # Returns to where the user was before. Referrer page.
+    return redirect(request.referrer)
+
+@api_bp.route('/api/v1/restart/task/<tuid>', methods=['GET'])
+@fresh_login_required
+def restart_task(tuid):
+    '''
+    This function will restart a task given the TUID.
+    '''
+    # Query MongoDB for the one alert given the TUID.
+    task_object = mongo.get_one_task('tuid', int(tuid))
+
+    # Checks to see if the task is active before trying
+    # to kill/terminate it.
+    if task_object['active']:
+
+        # Despite us knowing that the process exists and it
+        # will attempt to kill the process, let's add this
+        # try-except catch, just in case.
+        try:
+            os.kill(task_object['pid'], 9)
+        except:
+            pass
+
+    # Get the path to the 'update_hosts.py' script
+    script_path = '{}/sweeper.py'.format(app.config['LIBRARIES_DIRECTORY'])
+    # script_path = script_path.replace(' ','\ ')
+
+    # This section is to take in the inputs that are not
+    # required.
+    if task_object.get('file_name'):
+        # Runs a subprocess
+        process = subprocess.Popen(['python',
+                                    script_path,
+                                    str(task_object['tuid']),
+                                    task_object['file_name']],
+                                    shell=False)
+    else:
+        # Runs a subprocess
+        process = subprocess.Popen(['python',
+                                    script_path,
+                                    str(task_object['tuid'])],
+                                    shell=False)
+
+    # Assign the process id to the task object.
+    new_pid = process.pid
+
+    # Update the data in the task.
+    mongo.update_task('pid', int(new_pid), task_object['_id'])
+    mongo.update_task('active', True, task_object['_id'])
+
+    # Returns to where the user was before. Referrer page.
+    return redirect(request.referrer)
+
