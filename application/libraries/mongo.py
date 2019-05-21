@@ -96,7 +96,7 @@ def get_all_sweeps():
     Gets all of the sweeps that were run on this CB instance.
     '''
     
-    return list(app.config['DOBY_DB'].task_history.find({"task": {"$eq": "sweep"}}).collation({ "locale": "en_US", "strength": 1 }).sort('name', pymongo.DESCENDING))
+    return list(app.config['DOBY_DB'].task_history.find({"task": {"$eq": "sweep"}}).collation({ "locale": "en_US", "strength": 1 }).sort('tuid', pymongo.DESCENDING))
 
 def get_all_sweep_commands():
     '''
@@ -326,3 +326,17 @@ def update_alert_id(_id, data_type, data_value):
     app.config['DOBY_DB'].alerts.update_one({'_id': _id},
                                             {'$set': {data_type: data_value}},
                                              upsert=False)
+
+def update_task(data_type, data_value, _id):
+    '''
+    Updated a field for a task in the task_history collection.
+
+    :param data_type:
+    :param data_value:
+    :param _id:
+    '''
+
+    # Updates the record for the task.
+    app.config['DOBY_DB'].task_history.update_one({'_id': _id},
+                                    {'$set': {data_type: data_value}},
+                                    upsert=False)
