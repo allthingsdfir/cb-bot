@@ -212,6 +212,11 @@ def get_largest_uuid():
 
     # Queries the MongoDB database for the largest UUID
     user_list = list(app.config['DOBY_DB'].users.find({}).sort('uuid', pymongo.DESCENDING))
+
+    # Checks if there are no TUIDs. If none, return 1.
+    if len(user_list) == 0:
+        return 0
+
     return user_list[0]['uuid']
 
 def get_largest_auid():
