@@ -219,7 +219,7 @@ def apply_generic_server_settings():
     #       Add server settings     #
     #################################
     print("[*] ------------------------")
-    print("[*] Creating collections in 'doby' database...")
+    print("[*] Adding generic Doby server configs...")
 
     giphy_settings = {
         "name" : "Giphy",
@@ -227,6 +227,8 @@ def apply_generic_server_settings():
         "api_key" : "VJdvL7tDGhzqg4GnNYLBOLtoyHnxBtSA",
         "rating" : "PG-13"
     }
+
+    print("[*]\n[*] Added Gihpy config!")
 
     cb_server_settings = {
         "name" : "Carbon Black",
@@ -237,16 +239,21 @@ def apply_generic_server_settings():
         "min_check_in_time" : "3"
     }
 
+    print("[*]\n[*] Added Carbon Black (CB) config! Please make")
+    print("[*]\n[*] sure to change it once authenticated and")
+    print("[*]\n[*] you have the CB data you need.")
+
+    # Adds the newly created server settings/config.
+    db.settings.insert_one(giphy_settings)
+    db.settings.insert_one(cb_server_settings)
+
 def main():
     '''
     Main function for the Doby initializator.
     '''
 
     # create_collections()
-    create_admin_account()
-
-    quit()
-
+    # create_admin_account()
     apply_generic_server_settings()
 
 if __name__ == "__main__":
