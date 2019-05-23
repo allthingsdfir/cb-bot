@@ -223,7 +223,8 @@ def register():
 
             # Additional parameters for authenticating and
             # recording the user.
-            user['timestamp'] = datetime.datetime.utcnow()
+            user['registration_date'] = datetime.datetime.utcnow()
+            user['last_password_change'] = datetime.datetime.utcnow()
             user['uuid'] = mongo.get_largest_uuid() + 1
 
             # Add user to the MongoDB database 'users' collection.
