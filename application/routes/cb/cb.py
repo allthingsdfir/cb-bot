@@ -154,7 +154,7 @@ def run_sweep():
         # This section is to take in the inputs that are not
         # required.
         if input_flag == "TRUE":
-            sweep['file_name'] = request.form['input_file_name']
+            sweep['file_name'] = (request.form['input_file_name']).strip()
             # Runs a subprocess
             process = subprocess.Popen(['python',
                                         script_path,
