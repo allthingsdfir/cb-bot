@@ -240,7 +240,27 @@ class CB_DOBY():
 
                             # ==== Type 3: Get file from system. ====
                             elif self.command_type == 3:
-                                pass
+                                # Goes to collect the file.
+                                file_results = self.get_file_request(session_id, sensor_name)
+
+                                # This is if the file collection was complete.
+                                if file_results == True:
+                                    # Update the host in the sweep log.
+                                    self.update_one_host_sweep('status', 'Results collected!', host_object_id)
+                                    self.update_one_host_sweep('complete', True, host_object_id)
+                                    self.update_one_host_sweep('completed_timestamp', datetime.datetime.utcnow(), host_object_id)
+
+                                else:
+                                    # We were not able to get a file, there was an error.
+                                    self.update_one_host_sweep('status', 'Unable to collect file!', host_object_id)
+                                    self.queue_list.task_done()
+                                    self.queue_list.put(sensor_id)
+
+                                # Delete file on disk.
+                                results = self.delete_file(session_id, sensor_name)
+
+                                # Store updated list in Mongo.
+                                self.update_completed_hosts_task()
 
                             else:
                                 print("COMMAND DOES NOT EXIST! NEED TO ADD ACTION.")
@@ -559,7 +579,7 @@ class CB_DOBY():
         # Checks if directory exists before dumping to folder.
         cwd = os.getcwd()
         output_folder = "{}/CB_GATHER_OUTPUT/{}_{}".format(cwd, self.TUID, (self.sweep_name).replace(' ', '_'))
-        hunt_file_stripped = (self.out_file).split('\\')[1]
+        hunt_file_stripped = ((self.out_file).split('\\')[-1]).replace(' ', '_')
         output_filename = "{}_{}".format(sensor_name, hunt_file_stripped)
         output_file_path = "{}/{}".format(output_folder, output_filename)
 
