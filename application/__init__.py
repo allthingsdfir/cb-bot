@@ -20,5 +20,6 @@ app.config['APPLICATION_DIRECTORY'] =  "{}/application".format(app.config['WEB_D
 app.config['LIBRARIES_DIRECTORY'] =  "{}/libraries".format(app.config['APPLICATION_DIRECTORY'])
 app.config['TEMP_DIRECTORY'] =  "{}/temp".format(app.config['WEB_DIRECTORY'])
 app.config['LOG_DIRECTORY'] =  "{}/logs".format(app.config['TEMP_DIRECTORY'])
+app.config['OUTPUT_DIRECTORY'] =  "{}/sweep_output".format(app.config['WEB_DIRECTORY'])
 
 from application.routes import main

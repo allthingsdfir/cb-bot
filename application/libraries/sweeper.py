@@ -28,6 +28,9 @@ if len(list_data) > 0:
 else:
     quit()
 
+# Output folder path.
+OUTPUT_DIRECTORY = sys.argv[1]
+
 # Define Carbon Black instance settings.
 CB_ROOT_URL = config['root_url']
 CB_API_KEY = config['api_key']
@@ -37,13 +40,13 @@ CB_CONCURRENT_SESSIONS = int(config['max_sessions'])
 CB_MIN_CHECK_IN_TIME = int(config['min_check_in_time'])
 
 # This gets the task id and the command id.
-TUID = int(sys.argv[1])
+TUID = int(sys.argv[2])
 CUID = int(DOBY_DB.task_history.find_one({'tuid': int(TUID)})['cuid'])
 
 # Input value is optional. If set to false, then
 # there is no input file.
 try:
-    INPUT_FILE = str(sys.argv[2])
+    INPUT_FILE = str(sys.argv[3])
 except:
     INPUT_FILE = False
 
@@ -577,8 +580,7 @@ class CB_DOBY():
         Downloads file to directory
         '''
         # Checks if directory exists before dumping to folder.
-        cwd = os.getcwd()
-        output_folder = "{}/CB_GATHER_OUTPUT/{}_{}".format(cwd, self.TUID, (self.sweep_name).replace(' ', '_'))
+        output_folder = "/{}_{}".format(OUTPUT_DIRECTORY, self.TUID, (self.sweep_name).replace(' ', '_'))
         hunt_file_stripped = ((self.out_file).split('\\')[-1]).replace(' ', '_')
         output_filename = "{}_{}".format(sensor_name, hunt_file_stripped)
         output_file_path = "{}/{}".format(output_folder, output_filename)

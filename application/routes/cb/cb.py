@@ -158,6 +158,7 @@ def run_sweep():
             # Runs a subprocess
             process = subprocess.Popen(['python',
                                         script_path,
+                                        app.config['OUTPUT_DIRECTORY'],
                                         str(sweep['tuid']),
                                         sweep['file_name']],
                                         shell=False)
@@ -165,6 +166,7 @@ def run_sweep():
             # Runs a subprocess
             process = subprocess.Popen(['python',
                                         script_path,
+                                        app.config['OUTPUT_DIRECTORY'],
                                         str(sweep['tuid'])],
                                         shell=False)
 
