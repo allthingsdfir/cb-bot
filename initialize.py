@@ -11,7 +11,6 @@ import os
 #     Create 'doby' database    #
 #################################
 print("[*]\n[*] Creating 'doby' database...")
-print("[*] Creating 'doby' database...")
 
 client = pymongo.MongoClient('127.0.0.1', 5051)
 db = client.doby
@@ -129,6 +128,7 @@ def create_base_folders():
     cwd = os.getcwd()
 
     # Create folders
+    os.makedirs('{}/data'.format(cwd), exist_ok=True)
     os.makedirs('{}/sweep_output'.format(cwd), exist_ok=True)
     os.makedirs('{}/temp'.format(cwd), exist_ok=True)
     os.makedirs('{}/temp/logs'.format(cwd), exist_ok=True)
