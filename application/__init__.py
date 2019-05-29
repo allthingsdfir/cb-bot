@@ -1,7 +1,10 @@
-import pymongo
 import datetime
 import os
+
+import pymongo
 from flask import Flask
+
+from application.routes import main
 
 app = Flask(__name__)
 
@@ -21,5 +24,3 @@ app.config['LIBRARIES_DIRECTORY'] =  "{}/libraries".format(app.config['APPLICATI
 app.config['TEMP_DIRECTORY'] =  "{}/temp".format(app.config['WEB_DIRECTORY'])
 app.config['LOG_DIRECTORY'] =  "{}/logs".format(app.config['TEMP_DIRECTORY'])
 app.config['OUTPUT_DIRECTORY'] =  "{}/sweep_output".format(app.config['WEB_DIRECTORY'])
-
-from application.routes import main

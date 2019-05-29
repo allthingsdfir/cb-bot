@@ -1,22 +1,14 @@
-import requests
 import json
 import os
 import subprocess
 
+import requests
+from flask import Blueprint, redirect, request, session
+from flask_login import LoginManager, current_user, fresh_login_required
+
 from application import app
-from application.routes import main
-from application.routes import auth
 from application.libraries import mongo
-
-from flask import Blueprint
-from flask import session
-from flask import redirect
-from flask import request
-
-from flask_login import LoginManager
-from flask_login import fresh_login_required
-from flask_login import current_user
-
+from application.routes import auth, main
 
 #########################################
 #        WEB ROUTE CONFIGURATION        #
@@ -317,4 +309,3 @@ def restart_task(tuid):
 
     # Returns to where the user was before. Referrer page.
     return redirect(request.referrer)
-

@@ -1,38 +1,23 @@
-import datetime
-import os
 import base64
 import csv
-import shutil
-import re
-import requests
+import datetime
 import json
+import os
+import re
+import shutil
+
+import requests
+from flask import (Flask, Response, abort, jsonify, redirect, render_template,
+                   request, send_file, send_from_directory, session, url_for)
+from flask_login import (LoginManager, UserMixin, current_user,
+                         fresh_login_required)
+from werkzeug.utils import secure_filename
 
 from application import app
 from application.libraries import mongo
+from application.routes.api.api import api_bp
 from application.routes.auth.auth import auth_bp
 from application.routes.cb.cb import cb_bp
-from application.routes.api.api import api_bp
-
-from flask import Flask
-from flask import render_template
-from flask import Response
-from flask import redirect
-from flask import url_for
-from flask import abort
-from flask import request
-from flask import jsonify
-from flask import send_from_directory
-from flask import send_file
-from flask import session
-
-from flask_login import LoginManager
-from flask_login import UserMixin
-from flask_login import fresh_login_required
-from flask_login import current_user
-
-from werkzeug.utils import secure_filename
-
-
 
 #########################################
 #     WEB APPLICATION CONFIGURATION     #

@@ -1,14 +1,14 @@
-import ast
-import hashlib
+import datetime
 import json
 import os
 import queue
-import requests
-import threading
-import pymongo
 import sys
+import threading
 import time
-import datetime
+
+import pymongo
+import requests
+
 requests.packages.urllib3.disable_warnings()
 
 # Database configuration

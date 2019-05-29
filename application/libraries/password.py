@@ -1,6 +1,8 @@
 import base64
-import bcrypt
 import hashlib
+
+import bcrypt
+
 
 '''
 This script will contain all the functions required to process

@@ -1,10 +1,12 @@
 import datetime
-import sys
 import json
-import pymongo
 import queue
-import requests
+import sys
 import threading
+
+import pymongo
+import requests
+
 requests.packages.urllib3.disable_warnings()
 
 # Database configuration
