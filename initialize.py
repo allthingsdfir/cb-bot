@@ -219,7 +219,7 @@ def pre_process_input(plaintext):
     # "processed_value" is the hashed base 64 encoded value of the
     # password supplied. Therefore, regardless of password length,
     # it will collect the hash and then hash that password.
-    processed_value = (plaintext).digest()
+    processed_value = hashlib.sha256(plaintext).digest()
     processed_value = base64.b64encode(processed_value)
 
     # Returns the base64 encoded results from the hashed plaintext
