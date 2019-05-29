@@ -5,6 +5,7 @@ import getpass
 import hashlib
 import pymongo
 import random
+import os
 
 #################################
 #     Create 'doby' database    #
@@ -118,6 +119,20 @@ def create_admin_account():
     # Adds the newly created user to the mongo database.
     db.users.insert_one(user)
 
+def create_base_folders():
+    '''
+    Creates all of the base folders needed for
+    Doby to run.
+    '''
+
+    # Get current working directory
+    cwd = os.getcwd()
+
+    # Create folders
+    os.makedirs('{}/sweep_output'.format(cwd), exist_ok=True)
+    os.makedirs('{}/temp'.format(cwd), exist_ok=True)
+    os.makedirs('{}/temp/logs'.format(cwd), exist_ok=True)
+    
 def create_collections():
     '''
     Creates MongoDB collections for Doby CB. Even if the collection
@@ -204,7 +219,7 @@ def pre_process_input(plaintext):
     # "processed_value" is the hashed base 64 encoded value of the
     # password supplied. Therefore, regardless of password length,
     # it will collect the hash and then hash that password.
-    processed_value = hashlib.sha256(plaintext).digest()
+    processed_value = eplaintext).digest()
     processed_value = base64.b64encode(processed_value)
 
     # Returns the base64 encoded results from the hashed plaintext
@@ -255,6 +270,7 @@ def main():
     Main function for the Doby initializator.
     '''
 
+    create_base_folders()
     create_collections()
     create_admin_account()
     apply_generic_server_settings()
