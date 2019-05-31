@@ -1,7 +1,34 @@
 #!app/bin/python
+import os
+import subprocess
+import logging
+
 from application import app
 
+def init_db():
+    # Create data folder before starting MongoDB
+    os.makedirs('{}/data'.format(os.getcwd()), exist_ok=True)
+
+    # Starts up a MongoDB child process.
+    # Runs a subprocess. If you can tee it, great. but
+    # having the open function will output the log nicely.
+    # mongod --dbpath data/ --port 5051 | tee mongo.log
+    with open('{}/mongo.log'.format(os.getcwd()),"wb") as out:
+        process = subprocess.Popen(['mongod',
+                                    '--dbpath',
+                                    'data/',
+                                    '--port',
+                                    '5051'],
+                                    shell=False,
+                                    stdout=out,
+                                    stderr=out)
+
 if __name__ == '__main__':
+    
+    # Starts the MongoDB process.
+    init_db()
+
+    # Runs Doby bot.
     app.run(debug=True,
             host='0.0.0.0',
             port=8080,
