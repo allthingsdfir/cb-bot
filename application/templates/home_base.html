@@ -152,6 +152,16 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
+                    <!-- Title -->
+
+                    <div id="case_name">
+                        <!-- HERE GOES ALL OF THE ALERTS. CHECK JAVASCRIPT FUNCTION-->
+
+                    </div>
+                    <div>
+                        <h4>CASE19-001</h4>
+                    </div>
+                    
                     <!-- Topbar Search -->
                     <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -319,8 +329,16 @@
         <script src="../static/vendor/sb-admin/js/demo/chart-area-demo.js"></script>
 
         <script>
+            function getCaseInformation() {
+                $.get("/api/v1/get/case/name", function (data) {
+                    // Define JSON data into a variable.
+                    html_data += '<h4>' + data + '</h4>';
+                    document.getElementById("case_details").innerHTML = html_data;
+                });
+            }
+
             function getAlert() {
-                $.get("/api/v1/get/alerts/user", function (data) {
+                $.get("/api/v1/get/case/name", function (data) {
                     // Define JSON data into a variable.
                     var json_data = JSON.parse(data)
 
@@ -354,6 +372,7 @@
                 document.getElementById("alert_indicator").innerHTML = "!!";
             }
 
+            getCaseInformation();
             getAlert();
             setInterval(getAlert, 6000);
         </script>

@@ -45,6 +45,16 @@ def apply_generic_server_settings():
     print("[*] ------------------------")
     print("[*] Adding generic Doby server configs...")
 
+    print("[*]\n[*] Let's start by naming/numbering your case.")
+    case_name = str(validate_user_input('Case Number/Name (e.g. CASE19-001, PWN_CLIENT')).lower()
+    
+    case_settings = {
+        "name" : "Doby",
+        "case" : case_name
+    }
+
+    print("[*]\n[*] Added Case Number/Name!")
+
     # Define Giphy settings
     giphy_settings = {
         "name" : "Giphy",
@@ -72,6 +82,7 @@ def apply_generic_server_settings():
     # Adds the newly created server settings/config.
     db.settings.insert_one(giphy_settings)
     db.settings.insert_one(cb_server_settings)
+    db.settings.insert_one(case_settings)
 
 def create_admin_account():
     '''

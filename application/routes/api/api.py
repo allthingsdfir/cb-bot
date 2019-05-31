@@ -29,6 +29,19 @@ login_manager.needs_refresh_message_category = 'info'
 #########################################
 #              API FUNCTIONS            #
 #########################################
+@api_bp.route('/api/v1/get/case/name', methods=['GET'])
+@fresh_login_required
+def api_get_case_name():
+    '''
+    API call to get a count of all the hosts.
+    '''
+
+    # Query mongo for all of the hosts.
+    results = mongo.get_one_case()
+
+    # Return the number of hosts.
+    return str(results['case'])
+
 @api_bp.route('/api/v1/get/hosts/all/count', methods=['GET'])
 @fresh_login_required
 def api_hosts_all():

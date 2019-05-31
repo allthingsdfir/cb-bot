@@ -245,6 +245,17 @@ def get_one_command(cuid):
 
     return app.config['DOBY_DB'].sweep_commands.find_one({"cuid": {"$eq": int(cuid)}})
 
+def get_one_case():
+    '''
+    Gets the case name or number for the investigation.
+    
+    :return case:
+    '''
+
+    # Queries the MongoDB database for any information regarding
+    # the TUID at question.
+    return app.config['DOBY_DB'].server_settings.find_one({'name': 'Doby'})
+
 def get_one_user_info(data_type, data_value):
     '''
     Gets the user information using a value and type
