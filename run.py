@@ -28,6 +28,11 @@ if __name__ == '__main__':
     # Starts the MongoDB process.
     init_db()
 
+    # Enables logging in DEBUG mode.
+    log_path = '{}/doby.log'.format(os.getcwd())
+    logging.basicConfig(filename=log_path,
+                        level=logging.DEBUG)
+
     # Runs Doby bot.
     app.run(debug=True,
             host='0.0.0.0',
