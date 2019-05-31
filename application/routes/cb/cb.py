@@ -344,6 +344,32 @@ def sweep_history():
                             user=session,
                             history=results)
 
+@cb_bp.route('/cb/sweep_<tuid>', methods=['GET'])
+@fresh_login_required
+def sweep_details(tuid):
+    '''
+    This is the sweep history page. This will get all of the previous
+    sweep runs and their current status.
+    '''
+    # Records log entry.
+    main.record_log(request.path,
+                    request.remote_addr,
+                    'Viewed CB Sweep #{} details.'.format(tuid))
+
+    # Query mongo for all of the hosts.
+    results = mongo.get_all_sweep_hosts(int(tuid))
+
+    # This will set results to False if there was no
+    # existing entry in the database.
+    if len(results) == 0:
+        results = False
+
+    # Returns the CB Run template.
+    return render_template('/cb_sweep_details.html',
+                            title="CB Sweep",
+                            user=session,
+                            hosts=results)
+
 #########################################
 #            OTHER FUNCTIONS            #
 #########################################

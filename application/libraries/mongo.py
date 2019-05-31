@@ -260,20 +260,6 @@ def get_one_case():
 
     print(results)
 
-def get_one_user_info(data_type, data_value):
-    '''
-    Gets the user information using a value and type
-    that exists in the database.
-    
-    :param data_type:
-    :param data_value:
-    :return user_data:
-    '''
-
-    # Queries the MongoDB database for any information regarding
-    # the email account at question.
-    return app.config['DOBY_DB'].users.find_one({data_type: data_value})
-
 def get_one_task(data_type, data_value):
     '''
     Gets the task information using a value and type
@@ -287,6 +273,20 @@ def get_one_task(data_type, data_value):
     # Queries the MongoDB database for any information regarding
     # the TUID at question.
     return app.config['DOBY_DB'].task_history.find_one({data_type: data_value})
+
+def get_one_user_info(data_type, data_value):
+    '''
+    Gets the user information using a value and type
+    that exists in the database.
+    
+    :param data_type:
+    :param data_value:
+    :return user_data:
+    '''
+
+    # Queries the MongoDB database for any information regarding
+    # the email account at question.
+    return app.config['DOBY_DB'].users.find_one({data_type: data_value})
 
 def get_one_alert(data_type, data_value):
     '''
