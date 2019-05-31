@@ -6,3 +6,5 @@ __pycache__/
 
 # Ignoring files
 .DS_Store
+mongo.log
+doby.log
