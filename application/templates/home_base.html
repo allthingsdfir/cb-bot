@@ -36,6 +36,12 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">Doby Bot</div>
             </a>
+            <br>
+
+            <div id="case_name" class="sidebar-brand d-flex align-items-center justify-content-center sidebar-brand-text mx-3">
+                <!-- HERE GOES THE CASE NAME-->
+            </div>
+
 
             <br><br><br><br>
             <div class="sidebar-heading">Apps</div>
@@ -153,14 +159,6 @@
                     </button>
 
                     <!-- Title -->
-
-                    <div id="case_name">
-                        <!-- HERE GOES ALL OF THE ALERTS. CHECK JAVASCRIPT FUNCTION-->
-
-                    </div>
-                    <div>
-                        <h4>CASE19-001</h4>
-                    </div>
                     
                     <!-- Topbar Search -->
                     <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
@@ -329,14 +327,15 @@
         <script src="../static/vendor/sb-admin/js/demo/chart-area-demo.js"></script>
 
         <script>
-            function getCaseInformation() {
-                $.get("/api/v1/get/case/name", function (data) {
-                    // Define JSON data into a variable.
-                    html_data += '<h4>' + data + '</h4>';
-                    document.getElementById("case_details").innerHTML = html_data;
-                });
-            }
+            $.get("/api/v1/get/case/name", function (data) {
+                // Define JSON data into a variable.
+                var html_data = '';
+                html_data += '<h6>' + data + '</h6>';
+                document.getElementById("case_name").innerHTML = html_data;
+            });
+        </script>
 
+        <script>
             function getAlert() {
                 $.get("/api/v1/get/case/name", function (data) {
                     // Define JSON data into a variable.
