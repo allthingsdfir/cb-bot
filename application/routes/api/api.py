@@ -298,6 +298,7 @@ def restart_task(tuid):
         # Runs a subprocess
         process = subprocess.Popen(['python',
                                     script_path,
+                                    app.config['OUTPUT_DIRECTORY'],
                                     str(task_object['tuid']),
                                     task_object['file_name']],
                                     shell=False)
@@ -305,6 +306,7 @@ def restart_task(tuid):
         # Runs a subprocess
         process = subprocess.Popen(['python',
                                     script_path,
+                                    app.config['OUTPUT_DIRECTORY'],
                                     str(task_object['tuid'])],
                                     shell=False)
 
