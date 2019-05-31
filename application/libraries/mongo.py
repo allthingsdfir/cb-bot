@@ -253,8 +253,12 @@ def get_one_case():
     '''
 
     # Queries the MongoDB database for any information regarding
-    # the TUID at question.
+    # the case name.
     return app.config['DOBY_DB'].server_settings.find_one({'name': 'Doby'})
+
+    results = app.config['DOBY_DB'].server_settings.find_one({'name': 'Doby'})
+
+    print(results)
 
 def get_one_user_info(data_type, data_value):
     '''
