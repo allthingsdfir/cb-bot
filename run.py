@@ -23,22 +23,24 @@ def init_db():
                                     stdout=out,
                                     stderr=out)
 
+def init_logging():
+    # Enables logging in DEBUG mode.
+    log_path = '{}/doby.log'.format(os.getcwd())
+    logging.basicConfig(filename=log_path,
+                        level=logging.DEBUG)
+
 if __name__ == '__main__':
     
     # Starts the MongoDB process.
     init_db()
 
     # Enables logging in DEBUG mode.
-    log_path = '{}/doby.log'.format(os.getcwd())
-    logging.basicConfig(filename=log_path,
-                        level=logging.DEBUG)
-
+    init_logging()
+    
     # Runs Doby bot.
     app.run(debug=True,
             host='0.0.0.0',
-            port=8080,
-            # ssl_context='adhoc',
-            threaded=True
-            # ssl_context=('/etc/ssl/certs/doby.crt',
-            #              '/etc/ssl/private/doby.key')
-            )
+            port=443,
+            threaded=True,
+            ssl_context=('/etc/ssl/certs/doby.crt',
+                         '/etc/ssl/private/doby.key')
