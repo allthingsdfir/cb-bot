@@ -359,6 +359,8 @@ def sweep_details(tuid):
     # Query mongo for all of the hosts.
     results = mongo.get_all_sweep_hosts(int(tuid))
 
+    sweep_name = (mongo.get_one_task('tuid', int(tuid)))['name']
+
     # This will set results to False if there was no
     # existing entry in the database.
     if len(results) == 0:
@@ -368,6 +370,7 @@ def sweep_details(tuid):
     return render_template('/cb_sweep_details.html',
                             title="CB Sweep",
                             user=session,
+                            sweep_name=sweep_name,
                             hosts=results)
 
 #########################################

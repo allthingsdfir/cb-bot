@@ -56,7 +56,7 @@
     </div>
 
 
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-2 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -75,26 +75,46 @@
         </div>
     </div>
 
-    <div class="col-xl-5 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+    <div class="col-xl-2 col-md-6 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Last Updated Host List</div>
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            Disk Utilization</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <div id="last_updated"></div>
+                                <div id="disk_utilization"></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        <i class="fas fa-compact-disc fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Last Updated Host List</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <div id="last_updated"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-sync-alt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 
 <!-- Content Row -->
@@ -423,6 +443,13 @@
         });
     }
 
+    function getDiskUtil() {
+        $.get("/api/v1/get/diskutil", function (data) {
+            // $('#all_sweeps_count').replaceWith(data_start)
+            document.getElementById("disk_utilization").innerHTML = data;
+        });
+    }
+
     function updateChart(sweeps_active, sweeps_all) {
         // Set new default font family and font color to mimic Bootstrap's default styling
         Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -462,6 +489,7 @@
     }
 
     updateCount();
+    getDiskUtil();
     getGif();
     setInterval(updateCount, 10000);
 

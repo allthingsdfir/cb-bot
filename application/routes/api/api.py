@@ -42,6 +42,31 @@ def api_get_case_name():
     # Return the number of hosts.
     return str(results['case'])
 
+@api_bp.route('/api/v1/get/diskutil', methods=['GET'])
+@fresh_login_required
+def api_get_diskutil():
+    '''
+    API call to get a count of all the hosts.
+    '''
+
+    # Query the system for the disk utilization
+    # statistics by using the 'df' command.
+    df = subprocess.Popen(["df","-h"], stdout=subprocess.PIPE)
+
+    # Since multiple lines can be returned, we
+    # want root folder.
+    for line in df.stdout:
+        # Split each element of the results.
+        splitline = line.decode().split()
+
+        # If the line that we are looking at is the
+        # root directory, return that data.
+        if splitline[5] == '/':
+            return splitline[4]
+    
+    # If nothing works, return N/A.
+    return 'N/A'
+
 @api_bp.route('/api/v1/get/hosts/all/count', methods=['GET'])
 @fresh_login_required
 def api_hosts_all():
