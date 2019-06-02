@@ -184,9 +184,10 @@ def register():
             user['account_type'] = request.form['input_account_type']
             user['avatar'] = request.form['input_avatar']
             user['theme_color'] = "primary"
-            user['authenticated'] = False
             user['active'] = True
             
+            print("here")
+
             # Get user information.
             db_user = mongo.get_one_user_info("email", user['email'])
 
@@ -220,7 +221,7 @@ def register():
                                     user=session)
 
             # Calculate Hashed password and delete plaintext password
-            user['password'] = passwd.hash(user['password'])
+            user['password'] = (passwd.hash(user['password'])).decode()
 
             del user['password_repeat']
 
@@ -231,8 +232,8 @@ def register():
             user['last_logon'] = ''
             user['uuid'] = mongo.get_largest_uuid() + 1
 
-            # Create SFTP account for the user.
-            create_sftp(user['email'], user['password'])
+            # # Create SFTP account for the user.
+            # create_sftp(user['email'], user['password'])
 
             # Add user to the MongoDB database 'users' collection.
             mongo.add_user(user)
@@ -474,7 +475,7 @@ def create_sftp(email, password):
     time.sleep(1)
 
     # Flush the screen
-    proc.stdin.flush()
+    change_password_proc.stdin.flush()
 
 # def create_token(email, user_id, timestamp):
 #     '''

@@ -317,7 +317,8 @@ def api_reset_user_password(uuid):
             mongo.update_user_info(user_data['_id'], 'password', hashed_password.decode())
 
             # Create SFTP account for the user.
-            auth.create_sftp(user_data['email'], app.config['DEFAULT_PASSWORD'])
+            create_sftp(user_data['email'], app.config['DEFAULT_PASSWORD'])
+            
             
             # Record log entry
             message = 'Admin user "{}" reset password for "".'.format(session['email'], user_data['email'])
@@ -417,3 +418,33 @@ def restart_task(tuid):
 
     # Returns to where the user was before. Referrer page.
     return redirect(request.referrer)
+
+
+
+#########################################
+#            OTHER FUNCTIONS            #
+#########################################
+def create_sftp(email, password):
+    '''
+    Creates an SFTP account for a newly registered user.
+    '''
+
+    # Command to create user and add to the 'sftp' group.
+    add_user = subprocess.Popen(["sudo", "useradd", "-M", email, "-g", "sftp"])
+    time.sleep(2)
+
+    # Change user's password.
+    change_password_proc = subprocess.Popen(["sudo", "passwd", email], stdin=subprocess.PIPE)
+    time.sleep(1)
+
+    # Generate password format.
+    password = ('{}\n'.format(password)).encode()
+
+    # Provide password when requested.
+    change_password_proc.stdin.write(password)
+    time.sleep(1)
+    change_password_proc.stdin.write(password)
+    time.sleep(1)
+
+    # Flush the screen
+    change_password_proc.stdin.flush()
