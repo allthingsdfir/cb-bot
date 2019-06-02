@@ -5,6 +5,7 @@ import hashlib
 import os
 import random
 import subprocess
+import time
 
 import bcrypt
 import pymongo
@@ -145,8 +146,18 @@ def create_admin_account():
     user['registration_date'] = datetime.datetime.utcnow()
     user['last_password_change'] = datetime.datetime.utcnow()
 
+    # Create SFTP account for the user.
+    create_sftp(user['email'], password)
+
+    # Blank the password out.
+    password = ''
+
     # Adds the newly created user to the mongo database.
     db.users.insert_one(user)
+
+    # Print message or user added.
+    print("[*]\n[*] ------------------------")
+    print("[*]\n[*] Adding generic Doby server configs...")
 
 def create_base_folders():
     '''
@@ -159,10 +170,35 @@ def create_base_folders():
 
     # Create folders
     os.makedirs('{}/data'.format(cwd), exist_ok=True)
-    os.makedirs('{}/sweep_output'.format(cwd), exist_ok=True)
+    os.makedirs('/data/sweep_output', exist_ok=True)
     os.makedirs('{}/temp'.format(cwd), exist_ok=True)
     os.makedirs('{}/temp/logs'.format(cwd), exist_ok=True)
-    
+
+def create_sftp(email, password):
+    '''
+    Creates an SFTP account for the admin user.
+    '''
+
+    # Command to create user and add to the 'sftp' group.
+    add_user = subprocess.Popen(["sudo", "useradd", "-M", email, "-g", "sftp"])
+    time.sleep(2)
+
+    # Change user's password.
+    change_password_proc = subprocess.Popen(["sudo", "passwd", email], stdin=subprocess.PIPE)
+    time.sleep(1)
+
+    # Generate password format.
+    password = ('{}\n'.format(password)).encode()
+
+    # Provide password when requested.
+    change_password_proc.stdin.write(password)
+    time.sleep(1)
+    change_password_proc.stdin.write(password)
+    time.sleep(1)
+
+    # Flush the screen
+    proc.stdin.flush()
+
 def create_collections():
     '''
     Creates MongoDB collections for Doby CB. Even if the collection

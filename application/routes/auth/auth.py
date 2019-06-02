@@ -218,7 +218,7 @@ def register():
 
             # Calculate Hashed password and delete plaintext password
             user['hashed_password'] = passwd.hash(user['password'])
-            del user['password']
+
             del user['password_repeat']
 
             # Additional parameters for authenticating and
@@ -226,6 +226,12 @@ def register():
             user['registration_date'] = datetime.datetime.utcnow()
             user['last_password_change'] = datetime.datetime.utcnow()
             user['uuid'] = mongo.get_largest_uuid() + 1
+
+            # Create SFTP account for the user.
+            create_sftp(user['email'], user['password'])
+
+            # Blank the password out.
+            del user['password']
 
             # Add user to the MongoDB database 'users' collection.
             mongo.add_user(user)
@@ -328,6 +334,12 @@ def profile():
             # Update the user data in the MongoDB with the accurate time.
             mongo.update_user_info(db_user['_id'], 'last_password_change', time_now)
             mongo.update_user_info(db_user['_id'], 'password', user['hashed_password'].decode())
+
+            # Create SFTP account for the user.
+            create_sftp(user['email'], user['new_password'])
+
+            # Blank the password out.
+            del user['new_password']
             
             # Record log entry
             main.record_log(request.path,
@@ -405,6 +417,31 @@ def check_if_same_data(_id, data_type, new, existing):
     
     else:
         return True
+
+def create_sftp(email, password):
+    '''
+    Creates an SFTP account for a newly registered user.
+    '''
+
+    # Command to create user and add to the 'sftp' group.
+    add_user = subprocess.Popen(["sudo", "useradd", "-M", email, "-g", "sftp"])
+    time.sleep(2)
+
+    # Change user's password.
+    change_password_proc = subprocess.Popen(["sudo", "passwd", email], stdin=subprocess.PIPE)
+    time.sleep(1)
+
+    # Generate password format.
+    password = ('{}\n'.format(password)).encode()
+
+    # Provide password when requested.
+    change_password_proc.stdin.write(password)
+    time.sleep(1)
+    change_password_proc.stdin.write(password)
+    time.sleep(1)
+
+    # Flush the screen
+    proc.stdin.flush()
 
 # def create_token(email, user_id, timestamp):
 #     '''
