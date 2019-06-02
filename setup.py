@@ -197,7 +197,7 @@ def create_sftp(email, password):
     time.sleep(1)
 
     # Flush the screen
-    proc.stdin.flush()
+    change_password_proc.stdin.flush()
 
 def create_collections():
     '''
