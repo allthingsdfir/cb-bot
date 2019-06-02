@@ -319,7 +319,6 @@ def api_reset_user_password(uuid):
             # Create SFTP account for the user.
             create_sftp(user_data['email'], app.config['DEFAULT_PASSWORD'])
             
-            
             # Record log entry
             message = 'Admin user "{}" reset password for "".'.format(session['email'], user_data['email'])
 

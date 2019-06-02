@@ -232,8 +232,8 @@ def register():
             user['last_logon'] = ''
             user['uuid'] = mongo.get_largest_uuid() + 1
 
-            # # Create SFTP account for the user.
-            # create_sftp(user['email'], user['password'])
+            # Create SFTP account for the user.
+            create_sftp(user['email'], user['password'])
 
             # Add user to the MongoDB database 'users' collection.
             mongo.add_user(user)
