@@ -145,6 +145,7 @@ def create_admin_account():
     # Calculate time account was created.
     user['registration_date'] = datetime.datetime.utcnow()
     user['last_password_change'] = datetime.datetime.utcnow()
+    user['last_logon'] = ""
 
     # Create SFTP account for the user.
     create_sftp(user['email'], password)
