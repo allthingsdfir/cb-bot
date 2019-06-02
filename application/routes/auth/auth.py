@@ -184,6 +184,7 @@ def register():
             user['account_type'] = request.form['input_account_type']
             user['avatar'] = request.form['input_avatar']
             user['theme_color'] = "primary"
+            user['authenticated'] = False
             user['active'] = True
             
             # Get user information.
@@ -219,7 +220,7 @@ def register():
                                     user=session)
 
             # Calculate Hashed password and delete plaintext password
-            user['hashed_password'] = passwd.hash(user['password'])
+            user['password'] = passwd.hash(user['password'])
 
             del user['password_repeat']
 
@@ -227,16 +228,17 @@ def register():
             # recording the user.
             user['registration_date'] = datetime.datetime.utcnow()
             user['last_password_change'] = datetime.datetime.utcnow()
+            user['last_logon'] = ''
             user['uuid'] = mongo.get_largest_uuid() + 1
 
             # Create SFTP account for the user.
             create_sftp(user['email'], user['password'])
 
-            # Blank the password out.
-            del user['password']
-
             # Add user to the MongoDB database 'users' collection.
             mongo.add_user(user)
+
+            # Blank the password out.
+            del user['password']
 
             # Records log entry.
             message = 'Created the user {}.'.format(user['email'])
