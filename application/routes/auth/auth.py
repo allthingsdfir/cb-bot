@@ -1,4 +1,6 @@
 import datetime
+import subprocess
+import time
 
 from application import app
 from application.routes import main
@@ -394,6 +396,35 @@ def profile():
     return render_template('/profile.html',
                            title='Profile',
                            user=session)
+
+@auth_bp.route('/users', methods=['GET'])
+@fresh_login_required
+def manage_users():
+    '''
+    This function will register a new user into the
+    users collection for the MongoDB database.
+    '''
+    # Checks if the user is an admin to show this
+    # page or not.
+    if session['account_type'] == 'admin':
+
+        # Records log entry.
+        main.record_log(request.path,
+                        request.remote_addr,
+                        'Viewed the Manage Users page.')
+
+        return render_template('/users.html',
+                            title="Manage Users",
+                            user=session)
+        
+    else:
+        # Records log entry.
+        main.record_log(request.path,
+                        request.remote_addr,
+                        'User attempted to access the Manage Users page. Forbidden.')
+        
+        # Redirect to home page.
+        return redirect(url_for('home'))
 
 #########################################
 #            OTHER FUNCTIONS            #

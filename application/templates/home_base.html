@@ -117,7 +117,7 @@
             </li>
 
             {% if user.account_type == "admin" %}
-            <li class="nav-item {% if title in ['Register', 'Settings'] %}active{% else %}{% endif %}"">
+            <li class="nav-item {% if title in ['Register', 'Settings', 'Manage Users'] %}active{% else %}{% endif %}"">
                 <a class=" nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                 aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-cog"></i>
@@ -125,6 +125,7 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/users">Manage Users</a>
                         <a class="collapse-item" href="/register">Register User</a>
                         <a class="collapse-item" href="/settings">Settings</a>
                     </div>

@@ -151,6 +151,14 @@ def get_all_host_list_refresh_job():
 
     return list(app.config['DOBY_DB'].task_history.find({"task": {"$eq": "job"}, "type": {"$eq": "Refresh Host List"}}).collation({ "locale": "en_US", "strength": 1 }).sort('created', pymongo.DESCENDING))
 
+def get_all_users():
+    '''
+    Gets all of the users for this Doby instance.
+    '''
+
+    # Return all users
+    return list(app.config['DOBY_DB'].users.find({}).collation({ "locale": "en_US", "strength": 1 }).sort('uuid', pymongo.DESCENDING))
+
 def get_server_settings():
     '''
     Gets the CB Server Configuration fro mthe MongoDB database.

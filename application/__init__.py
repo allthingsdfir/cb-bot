@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 # Application configuration
 app.config['SECRET_KEY'] = '1w86x19c2tfaxmf3rdyiv65x5q1raa43p9psycqyaei56249m19fww614871'
+app.config['DEFAULT_PASSWORD'] = "Doby4n62019!!!"
 app.config['SESSION_TIMEOUT'] = datetime.timedelta(minutes=60)
 app.config['TOKEN_TIMEOUT'] = datetime.timedelta(minutes=10)
 

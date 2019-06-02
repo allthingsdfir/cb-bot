@@ -1,12 +1,14 @@
 import json
 import os
 import subprocess
+import datetime
 
 import requests
 from flask import Blueprint, redirect, request, session
 from flask_login import LoginManager, current_user, fresh_login_required
 
 from application import app
+from application.libraries import password as passwd
 from application.libraries import mongo
 from application.routes import auth, main
 
@@ -244,6 +246,31 @@ def api_get_alerts():
     # Returns a list of all the alerts.
     return json.dumps(alerts)
 
+@api_bp.route('/api/v1/get/users/all', methods=['GET'])
+@fresh_login_required
+def api_get_users():
+    '''
+    This function will get all of the users registered.
+    '''
+
+    # Query MongoDB for all of the users.
+    results = mongo.get_all_users()
+
+    # Go through all users and remove values we do not
+    # need to pass to the user.
+    for item in results:
+        del item['_id']
+        del item['active']
+        del item['avatar']
+        del item['last_logon']
+        del item['last_password_change']
+        del item['registration_date']
+        del item['password']
+        del item['theme_color']
+ 
+    # Return the data for all of the tasks
+    return json.dumps(results)
+
 @api_bp.route('/api/v1/update/alert/<auid>', methods=['GET'])
 @fresh_login_required
 def api_update_alert(auid):
@@ -259,6 +286,47 @@ def api_update_alert(auid):
 
     # Returns home. Need to return to page before.
     return redirect(request.referrer)
+
+@api_bp.route('/api/v1/update/user/<uuid>/password', methods=['GET'])
+@fresh_login_required
+def api_reset_user_password(uuid):
+    '''
+    This function will reset a user's password
+    '''
+
+    # Checks if the user is an admin to show this
+    # page or not.
+    if session['account_type'] == 'admin':
+
+        # Query MongoDB for the user's information.
+        user_data = mongo.get_one_user_info('uuid', int(uuid))
+
+        # If we have a user account, let's reset
+        # the user's password.
+        if user_data is not None:
+            
+            # Reset the user's password to a default password.
+            hashed_password = passwd.hash(app.config['DEFAULT_PASSWORD'])
+
+            # Change session variable information
+            time_now = datetime.datetime.utcnow()
+            session['last_password_change'] = time_now
+
+            # Update the user data in the MongoDB with the accurate time.
+            mongo.update_user_info(user_data['_id'], 'last_password_change', time_now)
+            mongo.update_user_info(user_data['_id'], 'password', hashed_password.decode())
+
+            # Create SFTP account for the user.
+            auth.create_sftp(user_data['email'], app.config['DEFAULT_PASSWORD'])
+            
+            # Record log entry
+            message = 'Admin user "{}" reset password for "".'.format(session['email'], user_data['email'])
+
+            main.record_log(request.path,
+                            request.remote_addr,
+                            message)
+
+            return redirect(request.referrer)
 
 @api_bp.route('/api/v1/stop/task/<tuid>', methods=['GET'])
 @fresh_login_required

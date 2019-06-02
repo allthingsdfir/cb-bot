@@ -1,0 +1,129 @@
+{% extends "home_base.html" %}
+
+{% block header %}
+
+<link href="../static/vendor/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Manage Users</h1>
+</div>
+
+<p class="mb-4">
+    The following section shows all the users that are registered on this Doby instance.
+</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">User List</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="cb_history_table" class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Account Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <!-- <tfoot>
+                    <tr>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Account Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot> -->
+                <tbody id="user_list">
+                    <!-- Here's where we list all of the tasks -->
+                </tbody>
+
+                <!-- {% if history %}
+                <tbody>
+                    {% for item in history %}
+                    <tr>
+                        <td>{{ item.uuid }}</td>
+                        <td>{{ item.first_name }}</td>
+                        <td>{{ item.last_name }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.account_type }}</td>
+                        <td align="center">
+                            <a href="/api/v1/restart/task/{{ item.tuid }}" style="color: #28a745; padding-right: 8px;" {% if item.active %}class="disabled"{% else %}{% endif %}><i class="fas fa-play"></i></a>
+                            <a href="/api/v1/stop/task/{{ item.tuid }}" style="color: #dc3545; padding-right: 8px;" {% if item.active %}{% else %}class="disabled"{% endif %}><i class="fas fa-pause"></i></a>
+                            <a href="/api/v1/restart/task/{{ item.tuid }}"><i class="fas fa-redo"></i></a>
+
+                            <style>
+                                a.disabled {
+                                    pointer-events: none;
+                                    opacity: 0.3;
+                                    cursor: default;
+                                }
+                            </style>
+                        </td>
+                        <td><a href="sweep_{{ item.tuid }}">Details</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                {% else %}
+                {% endif %} -->
+            </table>
+        </div>
+    </div>
+</div>
+
+
+    
+{% endblock %}
+
+{% block apiscripts %}
+    <script>
+        function getUsers() {
+            $.get("/api/v1/get/users/all", function (data) {
+                // Define JSON data into a variable.
+                var json_data = JSON.parse(data)
+
+                // Check if there are any tasks. If no, just return blank
+                // Else, build up the divs.
+                if (json_data.length == 0) {
+                    var html_data = '';
+                    document.getElementById("user_list").innerHTML = html_data;
+                } else {
+                    createTableDiv(json_data);
+                }
+            });
+        }
+
+        function createTableDiv(data) {
+            var html_data = '';
+
+            // Go through each task and create a div for that task.
+            $.each(data, function(key, value){
+                html_data += '<tr>'
+                html_data += '<td>' + value.uuid + '</td>'
+                html_data += '<td>' + value.first_name + '</td>'
+                html_data += '<td>' + value.last_name + '</td>'
+                html_data += '<td>' + value.email + '</td>'
+                html_data += '<td>' + value.account_type + '</td>'
+                html_data += '<td><a href="/api/v1/update/user/' + value.uuid + '/password">Reset Password</a></td>'
+                html_data += '</tr>'
+
+            })
+
+            // Return the div blocks to be presented.
+            document.getElementById("user_list").innerHTML = html_data;
+        }
+
+        getUsers();
+    </script>
+    <script src="../static/vendor/datatables/js/jquery.dataTables.js"></script>
+    <script src="../static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
