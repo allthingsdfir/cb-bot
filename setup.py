@@ -81,9 +81,9 @@ def apply_generic_server_settings():
     print("[*] you have the CB data you need.")
 
     # Adds the newly created server settings/config.
-    db.settings.insert_one(giphy_settings)
-    db.settings.insert_one(cb_server_settings)
-    db.settings.insert_one(case_settings)
+    db.server_settings.insert_one(giphy_settings)
+    db.server_settings.insert_one(cb_server_settings)
+    db.server_settings.insert_one(case_settings)
 
 def create_admin_account():
     '''
@@ -104,7 +104,7 @@ def create_admin_account():
     user['last_name'] = str()
 
     # Pre-defined falues.
-    user['avatar'] = str('avatar_{}'.format(random.randint(1,10)))
+    user['avatar'] = str('avatar_{}'.format(random.randint(1,9)))
     user['theme_color'] = str('primary')
     user['active'] = True
     user['uuid'] = get_largest_uuid() + 1
