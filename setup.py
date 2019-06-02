@@ -133,7 +133,7 @@ def create_admin_account():
         # Check if password are the same.
         if password == retype_password:
             del retype_password
-            user['password'] = hash(password)
+            user['password'] = hash(password).decode()
             flag = True
 
         # If password is not the same, keep trying. Reset variables.
@@ -178,13 +178,15 @@ def create_sftp(email, password):
     '''
     Creates an SFTP account for the admin user.
     '''
+    # Dev Null output
+    dev_null = open(os.devnull, 'w')
 
     # Command to create user and add to the 'sftp' group.
-    add_user = subprocess.Popen(["sudo", "useradd", "-M", email, "-g", "sftp"])
+    add_user = subprocess.Popen(["sudo", "useradd", "-M", email, "-g", "sftp"], stdout=dev_null)
     time.sleep(2)
 
     # Change user's password.
-    change_password_proc = subprocess.Popen(["sudo", "passwd", email], stdin=subprocess.PIPE)
+    change_password_proc = subprocess.Popen(["sudo", "passwd", email], stdin=subprocess.PIPE, stdout=dev_null)
     time.sleep(1)
 
     # Generate password format.
