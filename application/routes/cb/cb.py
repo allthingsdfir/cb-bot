@@ -94,7 +94,7 @@ def refresh_host_list():
     # script_path = script_path.replace(' ','\ ')
     
     # Runs a subprocess
-    process = subprocess.Popen(['python', script_path, str(task['tuid'])], shell=False)
+    process = subprocess.Popen(['python3', script_path, str(task['tuid'])], shell=False)
 
     # Assign the process id to the task object.
     task['pid'] = process.pid
@@ -156,7 +156,7 @@ def run_sweep():
         if input_flag == "TRUE":
             sweep['file_name'] = (request.form['input_file_name']).strip()
             # Runs a subprocess
-            process = subprocess.Popen(['python',
+            process = subprocess.Popen(['python3',
                                         script_path,
                                         app.config['OUTPUT_DIRECTORY'],
                                         str(sweep['tuid']),
@@ -164,7 +164,7 @@ def run_sweep():
                                         shell=False)
         else:
             # Runs a subprocess
-            process = subprocess.Popen(['python',
+            process = subprocess.Popen(['python3',
                                         script_path,
                                         app.config['OUTPUT_DIRECTORY'],
                                         str(sweep['tuid'])],

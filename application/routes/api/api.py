@@ -390,7 +390,7 @@ def restart_task(tuid):
     # required.
     if task_object.get('file_name'):
         # Runs a subprocess
-        process = subprocess.Popen(['python',
+        process = subprocess.Popen(['python3',
                                     script_path,
                                     app.config['OUTPUT_DIRECTORY'],
                                     str(task_object['tuid']),
@@ -398,7 +398,7 @@ def restart_task(tuid):
                                     shell=False)
     else:
         # Runs a subprocess
-        process = subprocess.Popen(['python',
+        process = subprocess.Popen(['python3',
                                     script_path,
                                     app.config['OUTPUT_DIRECTORY'],
                                     str(task_object['tuid'])],
