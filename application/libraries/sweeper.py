@@ -18,7 +18,7 @@ DOBY_DB = MONGO_CLIENT.doby
 # Get configuration from the MongoDB. There should only be
 # one item or none. Potential implementation of multiple
 # CB Server Configuration is possible, just not implemented yet.
-list_data = list(DOBY_DB.server_settings.find({}))
+list_data = list(DOBY_DB.server_settings.find({"name": "Carbon Black"}))
 
 # Determines if there is data to be sent back. If there
 # are no configurations set, then it should return blank.
