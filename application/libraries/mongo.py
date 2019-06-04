@@ -251,7 +251,7 @@ def get_one_command(cuid):
     :returns command_specs:
     '''
 
-    return app.config['DOBY_DB'].sweep_commands.find_one({"cuid": {"$eq": int(cuid)}})
+    return app.config['DOBY_DB'].sweep_commands.find_one({"cuid": {"$eq": int(float(cuid))}})
 
 def get_one_case():
     '''
