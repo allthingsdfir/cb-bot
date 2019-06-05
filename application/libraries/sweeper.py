@@ -580,7 +580,7 @@ class CB_DOBY():
         Downloads file to directory
         '''
         # Checks if directory exists before dumping to folder.
-        output_folder = "/{}_{}".format(OUTPUT_DIRECTORY, self.TUID, (self.sweep_name).replace(' ', '_'))
+        output_folder = "{}/{}_{}".format(OUTPUT_DIRECTORY, self.TUID, (self.sweep_name).replace(' ', '_'))
         hunt_file_stripped = ((self.out_file).split('\\')[-1]).replace(' ', '_')
         output_filename = "{}_{}".format(sensor_name, hunt_file_stripped)
         output_file_path = "{}/{}".format(output_folder, output_filename)
