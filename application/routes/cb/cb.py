@@ -39,6 +39,48 @@ login_manager.needs_refresh_message_category = 'info'
 #########################################
 #       WEB APPLICATION FUNCTIONS       #
 #########################################
+@cb_bp.route('/cb/create', methods=['GET', 'POST'])
+@fresh_login_required
+def create_sweep():
+    '''
+    This is the run sweep page. This will allow the user to set
+    up a sweep to run against all the systems in the environment.
+    '''
+
+    # Get all sweeps.
+    sweeps = mongo.get_all_sweep_commands()
+
+    # Checks to see if it's a POST or GET request.
+    if request.method == 'POST':
+
+        # Records log entry.
+        message = 'Created new sweep type: {}'.format(sweep['name'])
+        main.record_log(request.path,
+                        request.remote_addr,
+                        message)
+
+        # Return template with user created
+        return render_template('/cb_create.html',
+                        title="Create Sweep",
+                        type="success",
+                        value=message,
+                        sweeps=sweeps,
+                        user=session)
+
+    # If it's not a POST request, it will most likely be
+    # a GET request. Just return the login template.
+    else:
+        # Records log entry.
+        main.record_log(request.path,
+                        request.remote_addr,
+                        'Viewed Create Sweep page.')
+
+        # Returns the CB Run template.
+        return render_template('/cb_create.html',
+                                title="Create Sweep",
+                                sweeps=sweeps,
+                                user=session)
+
 @cb_bp.route('/cb/endpoints', methods=['GET'])
 @fresh_login_required
 def hosts():
@@ -177,14 +219,14 @@ def run_sweep():
         mongo.add_task(sweep)
 
         # Records log entry.
-        message = 'Created sweep: {} (Task #{})'.format(sweep['name'], sweep['tuid'])
+        message = 'Created Revelio sweep: {} (Task #{})'.format(sweep['name'], sweep['tuid'])
         main.record_log(request.path,
                         request.remote_addr,
                         message)
 
         # Return template with user created
         return render_template('/cb_run.html',
-                        title="CB Run Sweep",
+                        title="Revelio",
                         type="success",
                         value=message,
                         sweeps=sweeps,
@@ -196,11 +238,11 @@ def run_sweep():
         # Records log entry.
         main.record_log(request.path,
                         request.remote_addr,
-                        'Viewed CB Run Sweep page.')
+                        'Viewed Revelio page.')
 
         # Returns the CB Run template.
         return render_template('/cb_run.html',
-                                title="CB Run Sweep",
+                                title="Revelio",
                                 sweeps=sweeps,
                                 user=session)
 
