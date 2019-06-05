@@ -39,7 +39,7 @@ login_manager.needs_refresh_message_category = 'info'
 #########################################
 #       WEB APPLICATION FUNCTIONS       #
 #########################################
-@cb_bp.route('/cb/hosts', methods=['GET'])
+@cb_bp.route('/cb/endpoints', methods=['GET'])
 @fresh_login_required
 def hosts():
     '''
