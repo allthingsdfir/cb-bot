@@ -251,7 +251,7 @@ def get_one_command(cuid):
     :returns command_specs:
     '''
 
-    return app.config['DOBY_DB'].sweep_commands.find_one({"cuid": {"$eq": int(float(cuid))}})
+    return app.config['DOBY_DB'].sweep_commands.find_one({"cuid": {"$eq": int(cuid)}})
 
 def get_one_case():
     '''
@@ -264,9 +264,7 @@ def get_one_case():
     # the case name.
     return app.config['DOBY_DB'].server_settings.find_one({'name': 'Doby'})
 
-    results = app.config['DOBY_DB'].server_settings.find_one({'name': 'Doby'})
-
-    print(results)
+    # results = app.config['DOBY_DB'].server_settings.find_one({'name': 'Doby'})
 
 def get_one_task(data_type, data_value):
     '''
