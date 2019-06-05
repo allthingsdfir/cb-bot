@@ -47,26 +47,29 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Command</div>
                             </div>
-                            <input type="text" class="form-control" name="input_sweep_name" id="input_command"
-                                placeholder="E.g. Appcompat Hunt" required="true">
+                            <textarea type="text" class="form-control" name="input_sweep_name" id="input_command"
+                                placeholder='cmd.exe /c reg save "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\AppCompatCache" "C:\Windows\Temp\appcompat.hve"' rows="3" required="true"></textarea>
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <select required class="form-control" id="input_sweep_type" name="input_command_type">
+                                <option disabled selected value=""> --- Select Command Type --- </option>
+                                <option value="1">Run command and get a file back</option>
+                                <option value="2">Upload a file and run</option>
+                                <option value="3">Collect a file with a given path</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <select required class="form-control" id="input_sweep_type" name="input_device_type">
+                                <option disabled selected value=""> --- Select Device Type --- </option>
+                                <option value="LINUX">Linux</option>
+                                <option value="MAC">Mac OS</option>
+                                <option value="WINDOWS">Windows</option>
+                            </select>
                         </div>
                     </div>
-
-                    <select required class="form-control" id="input_sweep_type" name="input_command_type">
-                        <option disabled selected value=""> --- Select Command Type --- </option>
-                        <option value="LINUX">Linux</option>
-                        <option value="MAC">Mac OS</option>
-                        <option value="WINDOWS">Windows</option>
-                    </select>
-
-                    <select required class="form-control" id="input_sweep_type" name="input_device_type">
-                        <option disabled selected value=""> --- Select Device Type --- </option>
-                        <option value="LINUX">Linux</option>
-                        <option value="MAC">Mac OS</option>
-                        <option value="WINDOWS">Windows</option>
-                    </select>
-
-
+                    
                     <div class="form-group" id="file_name_div" hidden="true" disabled="true">
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
