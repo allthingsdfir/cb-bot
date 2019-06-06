@@ -52,6 +52,25 @@ def create_sweep():
 
     # Checks to see if it's a POST or GET request.
     if request.method == 'POST':
+        # Get all variables input by the user.
+        sweep = dict()
+        
+        # Parse input data.
+        sweep['command'] = request.form['input_command'].strip()
+        sweep['command_type'] = 1
+        sweep['created'] = datetime.datetime.utcnow()
+        sweep['cuid'] = int(mongo.get_largest_cuid() + 1)
+        sweep['description'] = request.form['input_description'].strip()
+        sweep['device_type'] = request.form['input_device_type']
+        sweep['modified'] = datetime.datetime.utcnow()
+        sweep['name'] = request.form['input_name'].strip().title()
+        sweep['output_file'] = request.form['input_output_file'].strip()
+        sweep['owner'] = session['email']
+        sweep['require_file'] = False
+        sweep['require_input'] = False
+
+        # Add record to the database.
+        mongo.add_sweep(sweep)
 
         # Records log entry.
         message = 'Created new sweep type: {}'.format(sweep['name'])

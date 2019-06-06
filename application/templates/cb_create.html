@@ -13,7 +13,7 @@
 </div>
 
 <p class="mb-4">
-    Here you can create a sweep for revelio to run.
+    Here you can create a sweep for revelio to run. All of the sweeps you will create here, will run a command and collect the output file that you provide. <b>Note:</b> please make sure to output a file to the system (i.e. usually in a temporary directory like "C:\Windows\Temp") and include it in your command, as well as, what the name of the file will be that Doby will need to collect. Make sure it's something standard throughout and not unique per system.
 </p>
 
 <div class="row">
@@ -39,35 +39,47 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Name</div>
                             </div>
-                            <input type="text" class="form-control" name="input_sweep_name" id="input_sweep_name"
+                            <input type="text" class="form-control" name="input_name" id="input_name"
                                 placeholder="E.g. Appcompat Hunt" required="true">
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Description</div>
+                            </div>
+                            <textarea type="text" class="form-control" name="input_description" id="input_description"
+                                placeholder='E.g. This sweep will collect all of the Application Compatibility Cache files from the systems of interest. It will run under its current conditions and will not reboot the machine.' rows="3" required="true"></textarea>
                         </div>
 
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Command</div>
                             </div>
-                            <textarea type="text" class="form-control" name="input_sweep_name" id="input_command"
-                                placeholder='cmd.exe /c reg save "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\AppCompatCache" "C:\Windows\Temp\appcompat.hve"' rows="3" required="true"></textarea>
+                            <textarea type="text" class="form-control" name="input_command" id="input_command"
+                                placeholder='E.g. cmd.exe /c reg save "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\AppCompatCache" "C:\Windows\Temp\appcompat.hve"' rows="3" required="true"></textarea>
                         </div>
 
                         <div class="input-group mb-2">
-                            <select required class="form-control" id="input_sweep_type" name="input_command_type">
-                                <option disabled selected value=""> --- Select Command Type --- </option>
-                                <option value="1">Run command and get a file back</option>
-                                <option value="2">Upload a file and run</option>
-                                <option value="3">Collect a file with a given path</option>
-                            </select>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Output File</div>
+                            </div>
+                            <input type="text" class="form-control" name="input_output_file" id="input_output_file"
+                                placeholder="E.g. C:\Windows\Temp\appcompat.hve" required="true">
                         </div>
 
                         <div class="input-group mb-2">
-                            <select required class="form-control" id="input_sweep_type" name="input_device_type">
+                            <select required class="form-control" id="input_device_type" name="input_device_type">
                                 <option disabled selected value=""> --- Select Device Type --- </option>
                                 <option value="LINUX">Linux</option>
                                 <option value="MAC">Mac OS</option>
                                 <option value="WINDOWS">Windows</option>
                             </select>
                         </div>
+
+                        <div class="input-group mb-2">
+
+                        </div>
+
                     </div>
                     
                     <div class="form-group" id="file_name_div" hidden="true" disabled="true">
@@ -85,6 +97,27 @@
             </div>
         </div>
     </div>
+    {% if sweeps %}
+    <div class="col-xl-6 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Existing Sweep Types</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                {% for sweep in sweeps %}
+                <div class="card mb-2 border-left-info">
+                    <div class="card-body">
+                        <div class="text-xl font-weight-bold text-info text-uppercase mb-1">{{ sweep.name }}</div>
+                        {{ sweep.description }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}{% endif %}
 </div>
 
 <!-- /.container-fluid -->

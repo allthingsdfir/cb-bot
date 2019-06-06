@@ -16,6 +16,17 @@ def add_alert(alert):
     # Adds the log entry to the alerts collection.
     app.config['DOBY_DB'].alerts.insert(alert)
 
+def add_sweep(sweep):
+    '''
+    Adds a sweep command to the MongoDB database 'sweep_commands'
+    collection
+
+    :param sweep:
+    '''
+
+    # Adds the log entry to the sweep_commands collection.
+    app.config['DOBY_DB'].sweep_commands.insert(sweep)
+
 def add_log_entry(timestamp, ip, user, account_type, page, message):
     '''
     Adds a log entry into the databse which will include
@@ -194,6 +205,22 @@ def get_giphy_settings():
     else:
         return ""
 
+def get_largest_cuid():
+    '''
+    Gets the largest CUID for the tasks in the database.
+    
+    :return tuid:
+    '''
+
+    # Queries the MongoDB database for the largest CUIDs.
+    task_list = list(app.config['DOBY_DB'].sweep_commands.find({}).sort('cuid', pymongo.DESCENDING))
+
+    # Checks if there are no CUIDs. If none, return 0.
+    if len(task_list) == 0:
+        return 0
+
+    return task_list[0]['tuid']
+
 def get_largest_tuid():
     '''
     Gets the largest TUID for the tasks in the database.
@@ -204,7 +231,7 @@ def get_largest_tuid():
     # Queries the MongoDB database for the largest TUIDs.
     task_list = list(app.config['DOBY_DB'].task_history.find({}).sort('tuid', pymongo.DESCENDING))
 
-    # Checks if there are no TUIDs. If none, return 1.
+    # Checks if there are no TUIDs. If none, return 0.
     if len(task_list) == 0:
         return 0
 
@@ -220,7 +247,7 @@ def get_largest_uuid():
     # Queries the MongoDB database for the largest UUID
     user_list = list(app.config['DOBY_DB'].users.find({}).sort('uuid', pymongo.DESCENDING))
 
-    # Checks if there are no TUIDs. If none, return 1.
+    # Checks if there are no UUIDs. If none, return 0.
     if len(user_list) == 0:
         return 0
 
@@ -236,7 +263,7 @@ def get_largest_auid():
     # Queries the MongoDB database for the largest AUID
     alert_list = list(app.config['DOBY_DB'].users.find({}).sort('auid', pymongo.DESCENDING))
 
-    # Checks if there are no AUIDs. If none, return 1.
+    # Checks if there are no AUIDs. If none, return 0.
     if len(alert_list) == 0:
         return 0
 
