@@ -106,7 +106,7 @@ def get_all_sweeps():
     Gets all of the sweeps that were run on this CB instance.
     '''
     
-    return list(app.config['DOBY_DB'].task_history.find({"task": {"$eq": "revelio"}}).collation({ "locale": "en_US", "strength": 1 }).sort('tuid', pymongo.DESCENDING))
+    return list(app.config['DOBY_DB'].task_history.find({"task": {"$eq": "sweep"}}).collation({ "locale": "en_US", "strength": 1 }).sort('tuid', pymongo.DESCENDING))
 
 def get_all_sweep_commands():
     '''
