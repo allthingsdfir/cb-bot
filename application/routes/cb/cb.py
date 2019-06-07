@@ -39,7 +39,7 @@ login_manager.needs_refresh_message_category = 'info'
 #########################################
 #       WEB APPLICATION FUNCTIONS       #
 #########################################
-@cb_bp.route('/cb/create', methods=['GET', 'POST'])
+@cb_bp.route('/cb/sweep_create', methods=['GET', 'POST'])
 @fresh_login_required
 def create_sweep():
     '''

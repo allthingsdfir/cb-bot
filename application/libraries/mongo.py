@@ -219,7 +219,7 @@ def get_largest_cuid():
     if len(task_list) == 0:
         return 0
 
-    return task_list[0]['tuid']
+    return task_list[0]['cuid']
 
 def get_largest_tuid():
     '''
