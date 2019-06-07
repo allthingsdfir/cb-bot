@@ -184,6 +184,9 @@ class CB_DOBY():
                 else:
                     # Just quit the application
                     quit()
+            
+            # Here we would need to update the host timestamp if possible.
+            # Potential future implementation
             else:
                 pass
 
