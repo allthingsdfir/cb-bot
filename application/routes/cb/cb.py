@@ -412,27 +412,31 @@ def sweep_details(tuid):
     This is the sweep history page. This will get all of the previous
     sweep runs and their current status.
     '''
-    # Records log entry.
-    main.record_log(request.path,
-                    request.remote_addr,
-                    'Viewed CB Sweep #{} details.'.format(tuid))
+    try:
+        # Query mongo for all of the hosts.
+        results = mongo.get_all_sweep_hosts(int(tuid))
 
-    # Query mongo for all of the hosts.
-    results = mongo.get_all_sweep_hosts(int(tuid))
+        # Records log entry.
+        main.record_log(request.path,
+                        request.remote_addr,
+                        'Viewed CB Sweep #{} details.'.format(tuid))
 
-    sweep_name = (mongo.get_one_task('tuid', int(tuid)))['name']
+        sweep_name = (mongo.get_one_task('tuid', int(tuid)))['name']
 
-    # This will set results to False if there was no
-    # existing entry in the database.
-    if len(results) == 0:
-        results = False
+        # This will set results to False if there was no
+        # existing entry in the database.
+        if len(results) == 0:
+            results = False
 
-    # Returns the CB Run template.
-    return render_template('/cb_sweep_details.html',
-                            title="CB Sweep",
-                            user=session,
-                            sweep_name=sweep_name,
-                            hosts=results)
+        # Returns the CB Run template.
+        return render_template('/cb_sweep_details.html',
+                                title="CB Sweep",
+                                user=session,
+                                sweep_name=sweep_name,
+                                hosts=results)
+    
+    except:
+        return redirect(url_for('cb.history'))
 
 #########################################
 #            OTHER FUNCTIONS            #
