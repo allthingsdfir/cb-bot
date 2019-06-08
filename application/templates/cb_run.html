@@ -43,7 +43,7 @@
                             <select required class="form-control" id="input_sweep_type" name="input_sweep_type" onchange="collect_upload(this);">
                                 <option disabled selected value=""> --- Select Sweep Type --- </option>
                                 {% if sweeps %}{% for sweep in sweeps %}
-                                <option value="{{ sweep.cuid }}|{{ sweep.require_input }}">{{ sweep.name }}</option>
+                                <option value="{{ sweep.cuid }}|{{ sweep.require_input }}|{{ sweep.require_file }}">{{ sweep.name }}</option>
                                 {% endfor %}{% else %}{% endif %}
                             </select>
                         </div>
@@ -59,6 +59,27 @@
                             <input type="text" class="form-control" name="input_sweep_name" id="input_sweep_name"
                                 placeholder="E.g. Mega Appcompat Sweep" required="true">
                         </div>
+                    </div>
+                    <div class="form-group" id="upload_file_div" hidden="true" disabled="true">
+                        <div class="input-group mb-2">
+                            <p>Please make sure to include "C:\Windows\Temp\" path in your command as doby will upload to that directory.</p>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Command To Execute</div>
+                            </div>
+                            <input disabled="true" required="false" type="text" class="form-control" name="input_command" id="input_command"
+                                placeholder="E.g. cmd.exe C:\Windows\Temp\script.bat">
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Upload File</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="input_upload_file">
+                                <label class="custom-file-label" for="input_upload_file">Choose</label>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="form-group" id="file_name_div" hidden="true" disabled="true">
                         <div class="input-group mb-2">
@@ -108,8 +129,12 @@
     <script src="../static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script>
         function collect_upload(that){
-            if (that.value.includes("True")) {
+            if (that.value.includes("True|False")) {
                 document.getElementById("file_name_div").hidden = false;
+                document.getElementById("input_file_name").disabled = false;
+                document.getElementById("input_file_name").required = false;
+            } else if (that.value.includes("True|True")) {
+                document.getElementById("upload_file_div").hidden = false;
                 document.getElementById("input_file_name").disabled = false;
                 document.getElementById("input_file_name").required = false;
             } else {

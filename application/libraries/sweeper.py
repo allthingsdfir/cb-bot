@@ -50,6 +50,13 @@ try:
 except:
     INPUT_FILE = False
 
+# Input value is optional. If set to false, then
+# there is no input file.
+try:
+    COMMAND_EXECUTE = str(sys.argv[4])
+except:
+    COMMAND_EXECUTE = False
+
 # Get error count for all of the data collection. 
 # If self.ERROR_COUNT reaches the threshold, it will
 # stop the queue.
@@ -91,6 +98,12 @@ class CB_DOBY():
             # We have to ensure if we need to insert another command or not.
             # self.command = self.command.replace('{||}', out_file)
             
+        # This is another validator looking for the file to
+        # upload to CB.
+        elif self.command_type == 2:
+            self.upload_file = INPUT_FILE
+            self.command = COMMAND_EXECUTE
+
         else:
             self.out_file = command_specs['output_file']
 
@@ -202,6 +215,8 @@ class CB_DOBY():
                             # we check for the command type, and follow
                             # the set of actions we need per job.
 
+                            print(self.command_type)
+
                             # ==== Type 1: Run command and get file output. ====
                             if self.command_type == 1:
                                 # Execute the command that we want it to do.
@@ -225,7 +240,7 @@ class CB_DOBY():
                                         self.queue_list.put(sensor_id)
 
                                     # Delete file on disk.
-                                    results = self.delete_file(session_id, sensor_name)
+                                    results = self.delete_file(session_id, sensor_name, self.out_file)
 
                                     # Store updated list in Mongo.
                                     self.update_completed_hosts_task()
@@ -239,10 +254,43 @@ class CB_DOBY():
 
                             # ==== Type 2: Upload file and run. ====
                             elif self.command_type == 2:
-                                pass
+
+                                # Send request to upload file.
+                                upload_status = self.upload_file(session_id, sensor_name)
+
+                                # If upload worked, execute it.
+                                if upload_status == True:
+                                    # Execute the command that we want it to do.
+                                    command_status = self.command_execute(session_id, sensor_name)
+
+                                    if command_status == True:
+                                        # We were not able to get a file, there was an error.
+                                        self.update_one_host_sweep('status', 'Success. File uploaded and command executed.', host_object_id)
+                                        self.queue_list.task_done()
+                                        self.queue_list.put(sensor_id)
+
+                                        # Delete file on disk.
+                                        results = self.delete_file(session_id, sensor_name, self.upload_file)
+
+                                        # Store updated list in Mongo.
+                                        self.update_completed_hosts_task()
+
+                                    else:
+                                        # We were not able to run a command.
+                                        self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
+                                        self.queue_list.task_done()
+                                        self.queue_list.put(sensor_id)
+
+                                # Re-add to queue and update host status.
+                                else:
+                                    # We were not able to upload file.
+                                    self.update_one_host_sweep('status', 'Error uploading file to the system.', host_object_id)
+                                    self.queue_list.task_done()
+                                    self.queue_list.put(sensor_id)
 
                             # ==== Type 3: Get file from system. ====
                             elif self.command_type == 3:
+                                
                                 # Goes to collect the file.
                                 file_results = self.get_file_request(session_id, sensor_name)
 
@@ -260,7 +308,7 @@ class CB_DOBY():
                                     self.queue_list.put(sensor_id)
 
                                 # Delete file on disk.
-                                results = self.delete_file(session_id, sensor_name)
+                                results = self.delete_file(session_id, sensor_name, self.out_file)
 
                                 # Store updated list in Mongo.
                                 self.update_completed_hosts_task()
@@ -492,6 +540,108 @@ class CB_DOBY():
         # the waiting period.
         return False
 
+    def upload_file(self, session_id, sensor_name):
+        '''
+        Uploads a file to the CB server to then push to
+        the systems reporting in CB.
+        '''
+        # Variables used for the POST request.
+        request_url = '{}/integrationServices/v3/cblr/session/{}/file'.format(self.CB_ROOT_URL, session_id)
+
+        header = {'X-Auth-Token': self.CB_XAUTH_TOKEN}
+
+        upload_file = {'file': open(self.upload_file, 'rb')}
+
+        # Sends POST request to obtain a file
+        response = requests.post(request_url,
+                                 headers=header,
+                                 file=files,
+                                 verify=False,
+                                 timeout=180)
+
+        # Makes sure we get a successful response.
+        if response.status_code == 200:
+            # Gets the file id.
+            file_id = json.loads((response.content).decode()).get('id')
+
+            # Returns True or False if upload worked well.
+            return self.put_file_request(self, session_id, sensor_name, file_id)
+
+        else:
+            return False
+
+    def put_file_request(self, session_id, sensor_name, file_id):
+        '''
+        Puts file on the system.
+        '''
+        # Extract the filename. Remove all path.
+        file_name = ((self.out_file).split('/'))[-1]
+        upload_file = 'C:\\Windows\\Temp\\{}'.format(file_name)
+
+        # Variables used for the POST request.
+        request_url = '{}/integrationServices/v3/cblr/session/{}/command'.format(self.CB_ROOT_URL, session_id)
+
+        header = {'X-Auth-Token': self.CB_XAUTH_TOKEN,
+                  'Content-Type': "application/json"}
+
+        body = {"file_id": file_id,
+                "name": "put file",
+                "object": upload_file}
+
+        # Sends POST request to obtain a file
+        response = requests.post(request_url,
+                                 headers=header,
+                                 data=json.dumps(body),
+                                 verify=False,
+                                 timeout=180)
+
+        # Makes sure we get a successful response.
+        if response.status_code == 200:
+            # Gets the command id.
+            file_upload_id = json.loads((response.content).decode()).get('id')
+
+            # Checks status until done.
+            return self.put_file_check(session_id, sensor_name, file_upload_id)
+
+        else:
+            return False
+
+    def put_file_check(self, session_id, sensor_name, file_upload_id):
+        '''
+        Checks status of the file for download
+        '''
+        # This counter is to make sure that this does not die.
+        # It should never die, but you never know.
+        count = 0 
+
+        # This is to try a request every 2 seconds for every 5 minutes.
+        while count < self.WAITING_PERIOD:
+            # Sleep for interval in seconds
+            time.sleep(self.SLEEP_INTERVAL)
+
+            # Variables used for the POST request.
+            request_url = '{}/integrationServices/v3/cblr/session/{}/command/{}'.format(self.CB_ROOT_URL, session_id, file_upload_id)
+            header = {'X-Auth-Token': self.CB_XAUTH_TOKEN,
+                      'Content-Type': "application/json"}
+
+            # Sends GET request to obtain command execution status
+            response = requests.get(request_url,
+                                    headers=header,
+                                    verify=False,
+                                    timeout=180)
+
+            # Makes sure we get a successful response
+            if response.status_code == 200:
+                # Checks if the command has completed or not.
+                if json.loads((response.content).decode()).get('status') == "complete":
+                    return True
+
+            # Keep adding to the counter to exit.
+            count += self.SLEEP_INTERVAL
+
+        # Assuming no live session could be established after 2 minutes
+        return False
+
     def get_file_request(self, session_id, sensor_name):
         '''
         Grabs a file from CB. It needs to execute a
@@ -675,7 +825,7 @@ class CB_DOBY():
         # Change the completed_hosts count on the specific task.
         update_task('completed_hosts', completed_count, self.task_object_id)
 
-    def delete_file(self, session_id, sensor_name):
+    def delete_file(self, session_id, sensor_name, file_to_delete):
         '''
         Deletes the file created on disk.
         '''
@@ -690,7 +840,7 @@ class CB_DOBY():
 
         body = {"session_id": session_id,
                 "name": "delete file",
-                "object": self.out_file}
+                "object": file_to_delete}
 
         # Sends POST request to obtain a file
         response = requests.post(request_url,

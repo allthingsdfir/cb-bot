@@ -224,6 +224,7 @@ def run_sweep():
                                         sweep['file_name']],
                                         shell=False)
         else:
+            sweep['file_name'] = ""
             # Runs a subprocess
             process = subprocess.Popen(['python3',
                                         script_path,
