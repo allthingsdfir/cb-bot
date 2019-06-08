@@ -70,12 +70,12 @@
                                 placeholder="E.g. cmd.exe C:\Windows\Temp\script.bat">
                         </div>
 
-                        <div class="input-group">
+                        <div class="input-group mb-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Upload File</span>
                             </div>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="input_upload_file">
+                                <input type="file" disabled="true" required="false" class="custom-file-input" id="input_upload_file">
                                 <label class="custom-file-label" for="input_upload_file">Choose</label>
                             </div>
                         </div>
@@ -135,8 +135,10 @@
                 document.getElementById("input_file_name").required = false;
             } else if (that.value.includes("True|True")) {
                 document.getElementById("upload_file_div").hidden = false;
-                document.getElementById("input_file_name").disabled = false;
-                document.getElementById("input_file_name").required = false;
+                document.getElementById("input_command").disabled = false;
+                document.getElementById("input_command").required = false;
+                document.getElementById("input_upload_file").disabled = false;
+                document.getElementById("input_upload_file").required = false;
             } else {
                 document.getElementById("file_name_div").hidden = true;
                 document.getElementById("input_file_name").disabled = true;
