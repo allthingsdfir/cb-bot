@@ -200,6 +200,7 @@ def run_sweep():
         sweep['task'] = 'sweep'
         sweep['type'] = command_data['name']
         sweep['command_run'] = command_data['command']
+        print("here")
         sweep['owner'] = session['email']
         sweep['uuid'] = session['id']
         sweep['cuid'] = cuid
