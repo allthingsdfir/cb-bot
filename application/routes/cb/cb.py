@@ -192,6 +192,9 @@ def run_sweep():
         input_flag = (request.form['input_sweep_type'].split('|')[1]).upper()
         file_flag = (request.form['input_sweep_type'].split('|')[2]).upper()
 
+        print(input_flag)
+        print(file_flag)
+
         # Collect sweep information from the Mongo DB.
         command_data = mongo.get_one_command(cuid)
 
@@ -200,7 +203,6 @@ def run_sweep():
         sweep['task'] = 'sweep'
         sweep['type'] = command_data['name']
         sweep['command_run'] = command_data['command']
-        print("here")
         sweep['owner'] = session['email']
         sweep['uuid'] = session['id']
         sweep['cuid'] = cuid
@@ -227,7 +229,7 @@ def run_sweep():
                                         sweep['file_name']],
                                         shell=False)
 
-        if input_flag == "TRUE" and file_flag == "TRUE":
+        elif input_flag == "TRUE" and file_flag == "TRUE":
             sweep['file_name'] = (request.form['input_upload_file']).strip()
             sweep['command_run'] = (request.form['input_command']).strip()
 
