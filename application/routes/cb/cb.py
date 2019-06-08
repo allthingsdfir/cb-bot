@@ -190,6 +190,7 @@ def run_sweep():
         # Parse sweep information
         cuid = request.form['input_sweep_type'].split('|')[0]
         input_flag = (request.form['input_sweep_type'].split('|')[1]).upper()
+        file_flag = (request.form['input_sweep_type'].split('|')[2]).upper()
 
         # Collect sweep information from the Mongo DB.
         command_data = mongo.get_one_command(cuid)
@@ -198,6 +199,7 @@ def run_sweep():
         sweep['name'] = request.form['input_sweep_name']
         sweep['task'] = 'sweep'
         sweep['type'] = command_data['name']
+        sweep['command_run'] = command_data['command']
         sweep['owner'] = session['email']
         sweep['uuid'] = session['id']
         sweep['cuid'] = cuid
@@ -214,7 +216,7 @@ def run_sweep():
 
         # This section is to take in the inputs that are not
         # required.
-        if input_flag == "TRUE":
+        if input_flag == "TRUE" and file_flag == "FALSE":
             sweep['file_name'] = (request.form['input_file_name']).strip()
             # Runs a subprocess
             process = subprocess.Popen(['python3',
@@ -223,6 +225,22 @@ def run_sweep():
                                         str(sweep['tuid']),
                                         sweep['file_name']],
                                         shell=False)
+
+        if input_flag == "TRUE" and file_flag == "TRUE":
+            sweep['file_name'] = (request.form['input_upload_file']).strip()
+            sweep['command_run'] = (request.form['input_command']).strip()
+
+            print(sweep['file_name'])
+            print(sweep['command_run'])
+
+            # Runs a subprocess
+            # process = subprocess.Popen(['python3',
+            #                             script_path,
+            #                             app.config['OUTPUT_DIRECTORY'],
+            #                             str(sweep['tuid']),
+            #                             sweep['file_name']],
+            #                             shell=False)
+
         else:
             sweep['file_name'] = ""
             # Runs a subprocess
