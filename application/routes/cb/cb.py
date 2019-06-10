@@ -253,8 +253,8 @@ def run_sweep():
                                         str(sweep['tuid'])],
                                         shell=False)
 
-        # Assign the process id to the task object.
-        sweep['pid'] = process.pid
+        # # Assign the process id to the task object.
+        # sweep['pid'] = process.pid
 
         # Tell MongoDB to add task to the collection
         mongo.add_task(sweep)
