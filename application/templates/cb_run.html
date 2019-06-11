@@ -124,6 +124,11 @@
     <script src="../static/vendor/datatables/js/jquery.dataTables.js"></script>
     <script src="../static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script>
+        $('input[type="file"]').change(function (selected_file) {
+            var name = selected_file.target.files[0].name;
+            $('.custom-file-label').html(name);
+        });
+
         function collect_upload(that){
             if (that.value.includes("True|False")) {
                 document.getElementById("file_name_div").hidden = false;

@@ -255,7 +255,7 @@ def run_sweep():
 
             # Extract filepath
             uploaded_filename = secure_filename(uploaded_file.filename)
-            sweep['file_name'] = os.path.join(app.config['UPLOAD_DIRECTORY'], filename)
+            sweep['file_name'] = os.path.join(app.config['UPLOAD_DIRECTORY'], uploaded_filename)
 
             # Save file to the upload folder directory.
             file.save(sweep['file_name'])
