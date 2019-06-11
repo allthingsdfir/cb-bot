@@ -35,7 +35,7 @@
                 {%else%}
                 <br>
                 {%endif%}
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <h5><b>Step 1</b></h5>
                     <p>Select a sweep to run</p>
                     <div class="form-group row">
@@ -71,14 +71,9 @@
                                 placeholder="E.g. cmd.exe C:\Windows\Temp\script.bat">
                         </div>
 
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Upload File</span>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" disabled="true" class="custom-file-input" id="input_upload_file" name="upload_file">
-                                <label class="custom-file-label" for="input_upload_file">Choose file</label>
-                            </div>
+                        <div class="custom-file">
+                            <input type="file" disabled="true" required="false" class="custom-file-input" id="input_upload_file" name="upload_file">
+                            <label class="custom-file-label" for="input_upload_file">Choose file</label>
                         </div>
 
                     </div>
@@ -139,6 +134,7 @@
                 document.getElementById("input_command").disabled = false;
                 document.getElementById("input_command").required = true;
                 document.getElementById("input_upload_file").disabled = false;
+                document.getElementById("input_upload_file").required = true;
             } else {
                 document.getElementById("file_name_div").hidden = true;
                 document.getElementById("input_file_name").disabled = true;
