@@ -214,9 +214,7 @@ class CB_DOBY():
                             # perform different sets of actions. So here,
                             # we check for the command type, and follow
                             # the set of actions we need per job.
-
-                            print(self.command_type)
-
+                            
                             # ==== Type 1: Run command and get file output. ====
                             if self.command_type == 1:
                                 # Execute the command that we want it to do.
@@ -574,6 +572,8 @@ class CB_DOBY():
         '''
         Puts file on the system.
         '''
+        print("file_id that was recorded in CB".format(file_id))
+
         # Extract the filename. Remove all path.
         file_name = ((self.out_file).split('/'))[-1]
         upload_file = 'C:\\Windows\\Temp\\{}'.format(file_name)
@@ -612,6 +612,8 @@ class CB_DOBY():
         '''
         # This counter is to make sure that this does not die.
         # It should never die, but you never know.
+
+        print(file_upload_id)
         count = 0 
 
         # This is to try a request every 2 seconds for every 5 minutes.
@@ -634,6 +636,7 @@ class CB_DOBY():
             if response.status_code == 200:
                 # Checks if the command has completed or not.
                 if json.loads((response.content).decode()).get('status') == "complete":
+                    print("uploaded file")
                     return True
 
             # Keep adding to the counter to exit.

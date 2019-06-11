@@ -253,17 +253,19 @@ def run_sweep():
                                         sweeps=sweeps,
                                         user=session)
 
-            # Save filepath.
+            # Save fipath.
             uploaded_filename = secure_filename(uploaded_file.filename)
             sweep['file_name'] = os.path.join(app.config['UPLOAD_DIRECTORY'], uploaded_filename)
 
             # Save file
             uploaded_file.save(sweep['file_name'])
             
-
             # Extract command to run.
             sweep['command_run'] = (request.form['input_command']).strip()
 
+            print(['python3', script_path, app.config['OUTPUT_DIRECTORY'], str(sweep['tuid']), sweep['file_name'], sweep['command_run']])
+
+            quit()
             # Runs a subprocess
             process = subprocess.Popen(['python3',
                                         script_path,
