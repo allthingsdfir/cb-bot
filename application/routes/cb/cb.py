@@ -20,6 +20,8 @@ from flask_login import fresh_login_required
 from flask_login import logout_user
 from flask_login import login_user
 
+from werkzeug.utils import secure_filename
+
 #########################################
 #        WEB ROUTE CONFIGURATION        #
 #########################################
@@ -192,9 +194,6 @@ def run_sweep():
         input_flag = (request.form['input_sweep_type'].split('|')[1]).upper()
         file_flag = (request.form['input_sweep_type'].split('|')[2]).upper()
 
-        print(input_flag)
-        print(file_flag)
-
         # Collect sweep information from the Mongo DB.
         command_data = mongo.get_one_command(cuid)
 
@@ -230,19 +229,48 @@ def run_sweep():
                                         shell=False)
 
         elif input_flag == "TRUE" and file_flag == "TRUE":
-            sweep['file_name'] = (request.form['input_upload_file']).strip()
+            # Check if the file exists. We don't want to continue
+            # if there isn't a file to be uploaded.
+            if 'upload_file' not in request.files:
+                # Return template with user created
+                return render_template('/cb_run.html',
+                                        title="Revelio",
+                                        type="danger",
+                                        value="You forgot to upload a file! Try again.",
+                                        sweeps=sweeps,
+                                        user=session)
+
+            # Grab filename
+            uploaded_file = request.files['upload_file']
+
+            # Check if filename is not blank.
+            if uploaded_file.filename == "":
+                # Return template with user created
+                return render_template('/cb_run.html',
+                                        title="Revelio",
+                                        type="danger",
+                                        value="You forgot to upload a file! Try again.",
+                                        sweeps=sweeps,
+                                        user=session)
+
+            # Extract filepath
+            uploaded_filename = secure_filename(uploaded_file.filename)
+            sweep['file_name'] = os.path.join(app.config['UPLOAD_DIRECTORY'], filename)
+
+            # Save file to the upload folder directory.
+            file.save(sweep['file_name'])
+
+            # Extract command to run.
             sweep['command_run'] = (request.form['input_command']).strip()
 
-            print(sweep['file_name'])
-            print(sweep['command_run'])
-
             # Runs a subprocess
-            # process = subprocess.Popen(['python3',
-            #                             script_path,
-            #                             app.config['OUTPUT_DIRECTORY'],
-            #                             str(sweep['tuid']),
-            #                             sweep['file_name']],
-            #                             shell=False)
+            process = subprocess.Popen(['python3',
+                                        script_path,
+                                        app.config['OUTPUT_DIRECTORY'],
+                                        str(sweep['tuid']),
+                                        sweep['file_name'],
+                                        sweep['command_run']],
+                                        shell=False)
 
         else:
             sweep['file_name'] = ""
@@ -253,8 +281,8 @@ def run_sweep():
                                         str(sweep['tuid'])],
                                         shell=False)
 
-        # # Assign the process id to the task object.
-        # sweep['pid'] = process.pid
+        # Assign the process id to the task object.
+        sweep['pid'] = process.pid
 
         # Tell MongoDB to add task to the collection
         mongo.add_task(sweep)
@@ -265,7 +293,7 @@ def run_sweep():
                         request.remote_addr,
                         message)
 
-        # Return template with user created
+        # Return template with revelio created
         return render_template('/cb_run.html',
                         title="Revelio",
                         type="success",

@@ -25,4 +25,8 @@ app.config['UPLOAD_DIRECTORY'] =  "{}/upload".format(app.config['TEMP_DIRECTORY'
 app.config['LOG_DIRECTORY'] =  "{}/logs".format(app.config['TEMP_DIRECTORY'])
 app.config['OUTPUT_DIRECTORY'] =  "/data/sweep_output".format(app.config['WEB_DIRECTORY'])
 
+# Accepted extensions for Doby to upload
+# This is not implemented yet, but can be implemented.
+app.config['ALLOWED_EXTENSIONS'] = set(['exe', 'bat', 'cmd'])
+
 from application.routes import main
