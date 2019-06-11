@@ -174,6 +174,7 @@ def create_base_folders():
     os.makedirs('/data/sweep_output', exist_ok=True)
     os.makedirs('{}/temp'.format(cwd), exist_ok=True)
     os.makedirs('{}/temp/logs'.format(cwd), exist_ok=True)
+    os.makedirs('{}/temp/upload'.format(cwd), exist_ok=True)
 
 def create_sftp(email, password):
     '''
