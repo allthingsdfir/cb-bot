@@ -489,7 +489,7 @@ def sweep_details(tuid):
                                 hosts=results)
     
     except:
-        return redirect(url_for('cb.history'))
+        return redirect(url_for('cb.sweep_history'))
 
 #########################################
 #            OTHER FUNCTIONS            #
