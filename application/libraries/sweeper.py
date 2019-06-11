@@ -484,6 +484,8 @@ class CB_DOBY():
                 "name": "create process",
                 "wait": "true",
                 "object": self.command}
+            
+        print(body)
 
         # Sends POST request to obtain execute a command
         response = requests.post(request_url,
