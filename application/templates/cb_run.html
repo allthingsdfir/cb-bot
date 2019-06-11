@@ -76,7 +76,7 @@
                                 <span class="input-group-text">Upload File</span>
                             </div>
                             <div class="custom-file">
-                                <input type="file" disabled="true" required="false" class="custom-file-input" id="input_upload_file" name="upload_file">
+                                <input type="file" disabled="true" class="custom-file-input" id="input_upload_file" name="upload_file">
                                 <label class="custom-file-label" for="input_upload_file">Choose file</label>
                             </div>
                         </div>
@@ -139,7 +139,6 @@
                 document.getElementById("input_command").disabled = false;
                 document.getElementById("input_command").required = true;
                 document.getElementById("input_upload_file").disabled = false;
-                document.getElementById("input_upload_file").required = true;
             } else {
                 document.getElementById("file_name_div").hidden = true;
                 document.getElementById("input_file_name").disabled = true;
