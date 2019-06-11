@@ -252,13 +252,14 @@ class CB_DOBY():
 
                         # ==== Type 2: Upload file and run. ====
                         elif self.command_type == 2:
-                            print(sensor_name)
+                            
 
                             # Send request to upload file.
                             upload_status = self.upload_file_to_cb(session_id, sensor_name)
 
                             # If upload worked, execute it.
                             if upload_status == True:
+                                print(sensor_name)
                                 print("time to execute command")
                                 # Execute the command that we want it to do.
                                 command_status = self.command_execute(session_id, sensor_name)
