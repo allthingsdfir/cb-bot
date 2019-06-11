@@ -252,12 +252,14 @@ class CB_DOBY():
 
                         # ==== Type 2: Upload file and run. ====
                         elif self.command_type == 2:
+                            print(sensor_name)
 
                             # Send request to upload file.
-                            upload_status = self.upload_file(session_id, sensor_name)
+                            upload_status = self.upload_file_to_cb(session_id, sensor_name)
 
                             # If upload worked, execute it.
                             if upload_status == True:
+                                print("time to execute command")
                                 # Execute the command that we want it to do.
                                 command_status = self.command_execute(session_id, sensor_name)
 
@@ -538,7 +540,7 @@ class CB_DOBY():
         # the waiting period.
         return False
 
-    def upload_file(self, session_id, sensor_name):
+    def upload_file_to_cb(self, session_id, sensor_name):
         '''
         Uploads a file to the CB server to then push to
         the systems reporting in CB.
@@ -553,7 +555,7 @@ class CB_DOBY():
         # Sends POST request to obtain a file
         response = requests.post(request_url,
                                  headers=header,
-                                 file=files,
+                                 files=upload_file,
                                  verify=False,
                                  timeout=180)
 
@@ -563,7 +565,7 @@ class CB_DOBY():
             file_id = json.loads((response.content).decode()).get('id')
 
             # Returns True or False if upload worked well.
-            return self.put_file_request(self, session_id, sensor_name, file_id)
+            return self.put_file_request(session_id, sensor_name, file_id)
 
         else:
             return False
@@ -572,10 +574,10 @@ class CB_DOBY():
         '''
         Puts file on the system.
         '''
-        print("file_id that was recorded in CB".format(file_id))
+        print("file_id that was recorded in CB {}".format(file_id))
 
         # Extract the filename. Remove all path.
-        file_name = ((self.out_file).split('/'))[-1]
+        file_name = ((self.upload_file).split('/'))[-1]
         upload_file = 'C:\\Windows\\Temp\\{}'.format(file_name)
 
         # Variables used for the POST request.
@@ -612,8 +614,6 @@ class CB_DOBY():
         '''
         # This counter is to make sure that this does not die.
         # It should never die, but you never know.
-
-        print(file_upload_id)
         count = 0 
 
         # This is to try a request every 2 seconds for every 5 minutes.
