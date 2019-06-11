@@ -258,7 +258,7 @@ def run_sweep():
             sweep['file_name'] = os.path.join(app.config['UPLOAD_DIRECTORY'], uploaded_filename)
 
             # Save file to the upload folder directory.
-            file.save(sweep['file_name'])
+            uploaded_file.save(sweep['file_name'])
 
             # Extract command to run.
             sweep['command_run'] = (request.form['input_command']).strip()
