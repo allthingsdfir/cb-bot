@@ -576,8 +576,6 @@ class CB_DOBY():
         '''
         Puts file on the system.
         '''
-        print("file_id that was recorded in CB {}".format(file_id))
-
         # Extract the filename. Remove all path.
         file_name = ((self.upload_file).split('/'))[-1]
         upload_file = 'C:\\Windows\\Temp\\{}'.format(file_name)
@@ -603,6 +601,7 @@ class CB_DOBY():
         if response.status_code == 200:
             # Gets the command id.
             file_upload_id = json.loads((response.content).decode()).get('id')
+            print("file_upload_id that was recorded in CB {}".format(file_id))
 
             # Checks status until done.
             return self.put_file_check(session_id, sensor_name, file_upload_id)
