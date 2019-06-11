@@ -77,7 +77,7 @@
                             </div>
                             <div class="custom-file">
                                 <input type="file" disabled="true" required="false" class="custom-file-input" id="input_upload_file" name="upload_file">
-                                <label class="custom-file-label" for="input_upload_file"></label>
+                                <label class="custom-file-label" for="input_upload_file">Choose file</label>
                             </div>
                         </div>
 
@@ -133,17 +133,17 @@
             if (that.value.includes("True|False")) {
                 document.getElementById("file_name_div").hidden = false;
                 document.getElementById("input_file_name").disabled = false;
-                document.getElementById("input_file_name").required = false;
+                document.getElementById("input_file_name").required = true;
             } else if (that.value.includes("True|True")) {
                 document.getElementById("upload_file_div").hidden = false;
                 document.getElementById("input_command").disabled = false;
-                document.getElementById("input_command").required = false;
+                document.getElementById("input_command").required = true;
                 document.getElementById("input_upload_file").disabled = false;
-                document.getElementById("input_upload_file").required = false;
+                document.getElementById("input_upload_file").required = true;
             } else {
                 document.getElementById("file_name_div").hidden = true;
                 document.getElementById("input_file_name").disabled = true;
-                document.getElementById("input_file_name").required = true;
+                document.getElementById("input_file_name").required = false;
             }
         }
     </script>
