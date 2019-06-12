@@ -355,9 +355,9 @@ def server_settings():
                                      new_settings['min_check_in_time'],
                                      existing_settings['min_check_in_time']))
         results.append(check_if_same(existing_settings['_id'],
-                                     'api_key',
-                                     new_settings['api_key'],
-                                     existing_settings['api_key']))
+                                     'input_connector_id',
+                                     new_settings['input_connector_id'],
+                                     existing_settings['input_connector_id']))
         results.append(check_if_same(existing_settings['_id'],
                                      'max_sessions',
                                      new_settings['max_sessions'],
