@@ -237,7 +237,7 @@ class CB_DOBY():
                                     # We were not able to get a file, there was an error.
                                     self.update_one_host_sweep('status', 'Command ran, but was unable to collect results.', host_object_id)
                                     self.queue_list.task_done()
-                                    self.queue_list.put(sensor_id)
+                                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                                 # Delete file on disk.
                                 results = self.delete_file(session_id, sensor_name, self.out_file)
@@ -249,7 +249,7 @@ class CB_DOBY():
                                 # We were not able to run a command.
                                 self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
                                 self.queue_list.task_done()
-                                self.queue_list.put(sensor_id)
+                                self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
 
                         # ==== Type 2: Upload file and run. ====
@@ -268,7 +268,7 @@ class CB_DOBY():
                                     # We were not able to get a file, there was an error.
                                     self.update_one_host_sweep('status', 'Success. File uploaded and command executed.', host_object_id)
                                     self.queue_list.task_done()
-                                    self.queue_list.put(sensor_id)
+                                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                                     # Delete file on disk.
                                     results = self.delete_file(session_id, sensor_name, self.upload_file)
@@ -280,14 +280,14 @@ class CB_DOBY():
                                     # We were not able to run a command.
                                     self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
                                     self.queue_list.task_done()
-                                    self.queue_list.put(sensor_id)
+                                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                             # Re-add to queue and update host status.
                             else:
                                 # We were not able to upload file.
                                 self.update_one_host_sweep('status', 'Error uploading file to the system.', host_object_id)
                                 self.queue_list.task_done()
-                                self.queue_list.put(sensor_id)
+                                self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                         # ==== Type 3: Get file from system. ====
                         elif self.command_type == 3:
@@ -306,7 +306,7 @@ class CB_DOBY():
                                 # We were not able to get a file, there was an error.
                                 self.update_one_host_sweep('status', 'Unable to collect file!', host_object_id)
                                 self.queue_list.task_done()
-                                self.queue_list.put(sensor_id)
+                                self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                             # Delete file on disk.
                             results = self.delete_file(session_id, sensor_name, self.out_file)
@@ -329,22 +329,22 @@ class CB_DOBY():
                     else:
                         self.update_one_host_sweep('status', 'Could not establish a CB session.', host_object_id)
                         self.queue_list.task_done()
-                        self.queue_list.put(sensor_id)
+                        self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                 else:
                     self.update_one_host_sweep('status', 'Host falls outside of minimum check in time.', host_object_id)
                     self.queue_list.task_done()
-                    self.queue_list.put(sensor_id)
+                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
             else:
                 self.update_one_host_sweep('status', 'No last reported timestamp recorded.', host_object_id)
                 self.queue_list.task_done()
-                self.queue_list.put(sensor_id)
+                self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
             # except Exception as e:
             #     self.ERROR_COUNT += 1
             #     self.queue_list.task_done()
-            #     self.queue_list.put(sensor_id)
+            #     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
             #     # ========= DEV =========
             #     print("Some error ocurred. Count is at: {}".format(self.ERROR_COUNT))
@@ -638,7 +638,6 @@ class CB_DOBY():
             if response.status_code == 200:
                 # Checks if the command has completed or not.
                 if json.loads((response.content).decode()).get('status') == "complete":
-                    print("uploaded file")
                     return True
 
             # Keep adding to the counter to exit.
