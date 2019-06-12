@@ -333,6 +333,7 @@ def server_settings():
         new_settings['root_url'] = request.form['input_root_url']
         new_settings['api_key'] = request.form['input_api_key']
         new_settings['connector_id'] = request.form['input_connector_id']
+        new_settings['min_check_in_time'] = request.form['input_min_check_in_time']
         new_settings['max_sessions'] = request.form['input_max_sessions']
 
         # Gets the CB Server Configuration
@@ -350,9 +351,13 @@ def server_settings():
                                      new_settings['api_key'],
                                      existing_settings['api_key']))
         results.append(check_if_same(existing_settings['_id'],
-                                     'connector_id',
-                                     new_settings['connector_id'],
-                                     existing_settings['connector_id']))
+                                     'min_check_in_time',
+                                     new_settings['min_check_in_time'],
+                                     existing_settings['min_check_in_time']))
+        results.append(check_if_same(existing_settings['_id'],
+                                     'api_key',
+                                     new_settings['api_key'],
+                                     existing_settings['api_key']))
         results.append(check_if_same(existing_settings['_id'],
                                      'max_sessions',
                                      new_settings['max_sessions'],
