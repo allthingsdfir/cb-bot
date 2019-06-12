@@ -263,9 +263,6 @@ def run_sweep():
             # Extract command to run.
             sweep['command_run'] = (request.form['input_command']).strip()
 
-            print(['python3', script_path, app.config['OUTPUT_DIRECTORY'], str(sweep['tuid']), sweep['file_name'], sweep['command_run']])
-
-            quit()
             # Runs a subprocess
             process = subprocess.Popen(['python3',
                                         script_path,
