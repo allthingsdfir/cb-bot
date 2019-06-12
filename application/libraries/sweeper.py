@@ -158,71 +158,140 @@ class CB_DOBY():
                 # Kills the thread and ultimately the sweep.
                 quit()
 
-            # try:
-            # Collects an available queue object
-            queue_obj = self.queue_list.get(timeout=1)
-            
-            # Define the sensor name and the id based
-            # on the queue object obtained.
-            print(queue_obj)
-            sensor_name = queue_obj.split('||')[0]
-            sensor_id = queue_obj.split('||')[1]
+            try:
+                # Collects an available queue object
+                queue_obj = self.queue_list.get(timeout=1)
+                
+                # Define the sensor name and the id based
+                # on the queue object obtained.
+                print(queue_obj)
+                sensor_name = queue_obj.split('||')[0]
+                sensor_id = queue_obj.split('||')[1]
 
-            # Host Mongo DB object ID
-            host_object_id = self.get_sweep_log_host_id(sensor_id)
+                # Host Mongo DB object ID
+                host_object_id = self.get_sweep_log_host_id(sensor_id)
 
-            # We need to check the time of the sensor's last
-            # reported timestamp. If falls within the scope,
-            # work on it.
-            host_last_reported = self.get_host_last_reported_time(sensor_id)
+                # We need to check the time of the sensor's last
+                # reported timestamp. If falls within the scope,
+                # work on it.
+                host_last_reported = self.get_host_last_reported_time(sensor_id)
 
-            # Check if no timestamp was recorded
-            if host_last_reported != False:
-                # Continue since there is a host_last_reported
-                time_elapsed = datetime.datetime.utcnow() - host_last_reported
-                duration = time_elapsed.total_seconds()
-                total_diff = int(divmod(duration, 3600)[0])
+                # Check if no timestamp was recorded
+                if host_last_reported != False:
+                    # Continue since there is a host_last_reported
+                    time_elapsed = datetime.datetime.utcnow() - host_last_reported
+                    duration = time_elapsed.total_seconds()
+                    total_diff = int(divmod(duration, 3600)[0])
 
-                # Validate if time is greater than the self.CB_MIN_CHECK_IN_TIME
-                # before proceeding. if it is greater, just break and re-add
-                # the host back to the list.
-                if total_diff <= self.CB_MIN_CHECK_IN_TIME:
+                    # Validate if time is greater than the self.CB_MIN_CHECK_IN_TIME
+                    # before proceeding. if it is greater, just break and re-add
+                    # the host back to the list.
+                    if total_diff <= self.CB_MIN_CHECK_IN_TIME:
 
-                    # # ========= DEV =========
-                    # print("Active threads: {}".format(threading.active_count()))
-                    # print("Queue size: {}".format(queue.Queue.qsize(self.queue_list)))
-                    # print("Working on host: {} | {}".format(sensor_name, sensor_id))
-                    # # ========= DEV =========
+                        # # ========= DEV =========
+                        # print("Active threads: {}".format(threading.active_count()))
+                        # print("Queue size: {}".format(queue.Queue.qsize(self.queue_list)))
+                        # print("Working on host: {} | {}".format(sensor_name, sensor_id))
+                        # # ========= DEV =========
 
-                    print("[TASK ID: {}] Active threads: {}".format(self.TUID, threading.active_count()))
-                    print("[TASK ID: {}] Queue Size: {}".format(self.TUID, queue.Queue.qsize(self.queue_list)))
+                        print("[TASK ID: {}] Active threads: {}".format(self.TUID, threading.active_count()))
+                        print("[TASK ID: {}] Queue Size: {}".format(self.TUID, queue.Queue.qsize(self.queue_list)))
 
-                    ###########################
-                    # Step 1: Open CB Session #
-                    ###########################
+                        ###########################
+                        # Step 1: Open CB Session #
+                        ###########################
 
-                    # Attempts to get a LR session.
-                    session_id = self.session_open(sensor_id, sensor_name)
+                        # Attempts to get a LR session.
+                        session_id = self.session_open(sensor_id, sensor_name)
 
-                    # Check if response was valid. -1 indicates that
-                    # nothing was sent back. Adds the sensor_id to the list
-                    # of unfinished ones.
-                    if session_id != -1:
-                        ############################################
-                        # Step 2: Check Command Type And Run Sweep #
-                        ############################################
+                        # Check if response was valid. -1 indicates that
+                        # nothing was sent back. Adds the sensor_id to the list
+                        # of unfinished ones.
+                        if session_id != -1:
+                            ############################################
+                            # Step 2: Check Command Type And Run Sweep #
+                            ############################################
 
-                        # Depending on the type of sweep, we need to
-                        # perform different sets of actions. So here,
-                        # we check for the command type, and follow
-                        # the set of actions we need per job.
-                        
-                        # ==== Type 1: Run command and get file output. ====
-                        if self.command_type == 1:
-                            # Execute the command that we want it to do.
-                            command_status = self.command_execute(session_id, sensor_name)
+                            # Depending on the type of sweep, we need to
+                            # perform different sets of actions. So here,
+                            # we check for the command type, and follow
+                            # the set of actions we need per job.
+                            
+                            # ==== Type 1: Run command and get file output. ====
+                            if self.command_type == 1:
+                                # Execute the command that we want it to do.
+                                command_status = self.command_execute(session_id, sensor_name)
 
-                            if command_status == True:
+                                if command_status == True:
+                                    # Goes to collect the file.
+                                    file_results = self.get_file_request(session_id, sensor_name)
+
+                                    # This is if the file collection was complete.
+                                    if file_results == True:
+                                        # Update the host in the sweep log.
+                                        self.update_one_host_sweep('status', 'Results collected!', host_object_id)
+                                        self.update_one_host_sweep('complete', True, host_object_id)
+                                        self.update_one_host_sweep('completed_timestamp', datetime.datetime.utcnow(), host_object_id)
+
+                                    else:
+                                        # We were not able to get a file, there was an error.
+                                        self.update_one_host_sweep('status', 'Command ran, but was unable to collect results.', host_object_id)
+                                        self.queue_list.task_done()
+                                        self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+
+                                    # Delete file on disk.
+                                    results = self.delete_file(session_id, sensor_name, self.out_file)
+
+                                    # Store updated list in Mongo.
+                                    self.update_completed_hosts_task()
+
+                                else:
+                                    # We were not able to run a command.
+                                    self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
+                                    self.queue_list.task_done()
+                                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+
+
+                            # ==== Type 2: Upload file and run. ====
+                            elif self.command_type == 2:
+                                
+
+                                # Send request to upload file.
+                                upload_status = self.upload_file_to_cb(session_id, sensor_name)
+
+                                # If upload worked, execute it.
+                                if upload_status == True:
+                                    # Execute the command that we want it to do.
+                                    command_status = self.command_execute(session_id, sensor_name)
+
+                                    if command_status == True:
+                                        # We were not able to get a file, there was an error.
+                                        self.update_one_host_sweep('status', 'Success. File uploaded and command executed.', host_object_id)
+                                        self.queue_list.task_done()
+                                        self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+
+                                        # Delete file on disk.
+                                        results = self.delete_file(session_id, sensor_name, self.upload_file)
+
+                                        # Store updated list in Mongo.
+                                        self.update_completed_hosts_task()
+
+                                    else:
+                                        # We were not able to run a command.
+                                        self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
+                                        self.queue_list.task_done()
+                                        self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+
+                                # Re-add to queue and update host status.
+                                else:
+                                    # We were not able to upload file.
+                                    self.update_one_host_sweep('status', 'Error uploading file to the system.', host_object_id)
+                                    self.queue_list.task_done()
+                                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+
+                            # ==== Type 3: Get file from system. ====
+                            elif self.command_type == 3:
+                                
                                 # Goes to collect the file.
                                 file_results = self.get_file_request(session_id, sensor_name)
 
@@ -235,7 +304,7 @@ class CB_DOBY():
 
                                 else:
                                     # We were not able to get a file, there was an error.
-                                    self.update_one_host_sweep('status', 'Command ran, but was unable to collect results.', host_object_id)
+                                    self.update_one_host_sweep('status', 'Unable to collect file!', host_object_id)
                                     self.queue_list.task_done()
                                     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
@@ -246,110 +315,41 @@ class CB_DOBY():
                                 self.update_completed_hosts_task()
 
                             else:
-                                # We were not able to run a command.
-                                self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
-                                self.queue_list.task_done()
-                                self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+                                print("COMMAND DOES NOT EXIST! NEED TO ADD ACTION.")
 
+                            ##################################################
+                            # Step 3: Close Session & Remove Host From Queue #
+                            ##################################################
 
-                        # ==== Type 2: Upload file and run. ====
-                        elif self.command_type == 2:
-                            
-
-                            # Send request to upload file.
-                            upload_status = self.upload_file_to_cb(session_id, sensor_name)
-
-                            # If upload worked, execute it.
-                            if upload_status == True:
-                                # Execute the command that we want it to do.
-                                command_status = self.command_execute(session_id, sensor_name)
-
-                                if command_status == True:
-                                    # We were not able to get a file, there was an error.
-                                    self.update_one_host_sweep('status', 'Success. File uploaded and command executed.', host_object_id)
-                                    self.queue_list.task_done()
-                                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
-
-                                    # Delete file on disk.
-                                    results = self.delete_file(session_id, sensor_name, self.upload_file)
-
-                                    # Store updated list in Mongo.
-                                    self.update_completed_hosts_task()
-
-                                else:
-                                    # We were not able to run a command.
-                                    self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
-                                    self.queue_list.task_done()
-                                    self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
-
-                            # Re-add to queue and update host status.
-                            else:
-                                # We were not able to upload file.
-                                self.update_one_host_sweep('status', 'Error uploading file to the system.', host_object_id)
-                                self.queue_list.task_done()
-                                self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
-
-                        # ==== Type 3: Get file from system. ====
-                        elif self.command_type == 3:
-                            
-                            # Goes to collect the file.
-                            file_results = self.get_file_request(session_id, sensor_name)
-
-                            # This is if the file collection was complete.
-                            if file_results == True:
-                                # Update the host in the sweep log.
-                                self.update_one_host_sweep('status', 'Results collected!', host_object_id)
-                                self.update_one_host_sweep('complete', True, host_object_id)
-                                self.update_one_host_sweep('completed_timestamp', datetime.datetime.utcnow(), host_object_id)
-
-                            else:
-                                # We were not able to get a file, there was an error.
-                                self.update_one_host_sweep('status', 'Unable to collect file!', host_object_id)
-                                self.queue_list.task_done()
-                                self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
-
-                            # Delete file on disk.
-                            results = self.delete_file(session_id, sensor_name, self.out_file)
-
-                            # Store updated list in Mongo.
-                            self.update_completed_hosts_task()
+                            # Close session without caring what command type it is
+                            # or if the commands successfully ran or not.
+                            self.session_close(session_id, sensor_name)
+                            self.queue_list.task_done()
 
                         else:
-                            print("COMMAND DOES NOT EXIST! NEED TO ADD ACTION.")
-
-                        ##################################################
-                        # Step 3: Close Session & Remove Host From Queue #
-                        ##################################################
-
-                        # Close session without caring what command type it is
-                        # or if the commands successfully ran or not.
-                        self.session_close(session_id, sensor_name)
-                        self.queue_list.task_done()
+                            self.update_one_host_sweep('status', 'Could not establish a CB session.', host_object_id)
+                            self.queue_list.task_done()
+                            self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                     else:
-                        self.update_one_host_sweep('status', 'Could not establish a CB session.', host_object_id)
+                        self.update_one_host_sweep('status', 'Host falls outside of minimum check in time.', host_object_id)
                         self.queue_list.task_done()
                         self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                 else:
-                    self.update_one_host_sweep('status', 'Host falls outside of minimum check in time.', host_object_id)
+                    self.update_one_host_sweep('status', 'No last reported timestamp recorded.', host_object_id)
                     self.queue_list.task_done()
                     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
-            else:
-                self.update_one_host_sweep('status', 'No last reported timestamp recorded.', host_object_id)
+            except Exception as e:
+                self.ERROR_COUNT += 1
                 self.queue_list.task_done()
                 self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
-            # except Exception as e:
-            #     self.ERROR_COUNT += 1
-            #     self.queue_list.task_done()
-            #     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
-
-            #     # ========= DEV =========
-            #     print("Some error ocurred. Count is at: {}".format(self.ERROR_COUNT))
-            #     print(e)
-            #     # ========= DEV =========
+                # ========= DEV =========
+                print("Some error ocurred. Count is at: {}".format(self.ERROR_COUNT))
+                print(e)
+                # ========= DEV =========
 
     def session_check(self, session_id, sensor_name):
         '''
@@ -906,7 +906,7 @@ def get_command_specs():
     :returns command_specs:
     '''
 
-    return DOBY_DB.sweep_commands.find_one({"cuid": {"$eq": CUID}})
+    return list(DOBY_DB.sweep_commands.find_one({"cuid": {"$eq": CUID}}))[0]
 
 def get_hosts_to_sweep(device_type):
     '''
