@@ -26,6 +26,7 @@ if len(list_data) > 0:
     config = list_data[0]
 
 else:
+    print("[*] No config file provided.")
     quit()
 
 # Output folder path.
@@ -1067,6 +1068,7 @@ def main():
     # Checks if the hostlist is blank or not before proceeding.
     # If no hosts, quit.
     if len(host_list) == 0:
+        print("[*] There are no hosts available to sweep")
         # Change Task status to inactive and terminate the program.
         update_task('active', False, _id)
 
@@ -1084,8 +1086,8 @@ def main():
         # Tell Mongo to add alert.
         create_alert(alert)
 
-
         quit()
+
     # # ========= DEV =========
     # print("Running sweep on {} hosts.".format(len(host_list)))
     # # ========= DEV =========
