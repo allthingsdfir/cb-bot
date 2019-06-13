@@ -216,9 +216,13 @@ def run_sweep():
         script_path = '{}/sweeper.py'.format(app.config['LIBRARIES_DIRECTORY'])
         # script_path = script_path.replace(' ','\ ')
 
+        # Extract command_type in order to determine the command
+        # type so that we can send the proper command over.
+        command_type = mongo.get_command_type(cuid)
+
         # This section is to take in the inputs that are not
         # required.
-        if input_flag == "TRUE" and file_flag == "FALSE":
+        if command_type == 3:
             sweep['file_name'] = (request.form['input_file_name']).strip()
             # Runs a subprocess
             process = subprocess.Popen(['python3',
@@ -228,7 +232,7 @@ def run_sweep():
                                         sweep['file_name']],
                                         shell=False)
 
-        elif input_flag == "TRUE" and file_flag == "TRUE":
+        elif command_type == 2:
             # Check if the file exists. We don't want to continue
             # if there isn't a file to be uploaded.
             if 'upload_file' not in request.files:

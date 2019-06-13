@@ -170,6 +170,16 @@ def get_all_users():
     # Return all users
     return list(app.config['DOBY_DB'].users.find({}).collation({ "locale": "en_US", "strength": 1 }).sort('uuid', pymongo.DESCENDING))
 
+def get_command_type(cuid):
+    '''
+    Gets the command type given the CUID.
+
+    :params cuid:
+    :returns command_type:
+    '''
+
+    return list(app.config['DOBY_DB'].sweep_commands.find({"cuid": {"$eq": cuid}}))[0]
+
 def get_server_settings():
     '''
     Gets the CB Server Configuration fro mthe MongoDB database.

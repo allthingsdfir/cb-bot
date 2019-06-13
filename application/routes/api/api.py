@@ -386,9 +386,13 @@ def restart_task(tuid):
     script_path = '{}/sweeper.py'.format(app.config['LIBRARIES_DIRECTORY'])
     # script_path = script_path.replace(' ','\ ')
 
+    # Extract command_type in order to determine the command
+    # type so that we can send the proper command over.
+    command_type = mongo.get_command_type(cuid)
+    
     # This section is to take in the inputs that are not
     # required.
-    if task_object.get('file_name'):
+    if command_type == 3:
         # Runs a subprocess
         process = subprocess.Popen(['python3',
                                     script_path,
@@ -396,6 +400,17 @@ def restart_task(tuid):
                                     str(task_object['tuid']),
                                     task_object['file_name']],
                                     shell=False)
+
+    elif command_type == 2:
+        # Runs a subprocess
+        process = subprocess.Popen(['python3',
+                                    script_path,
+                                    app.config['OUTPUT_DIRECTORY'],
+                                    str(task_object['tuid']),
+                                    task_object['file_name']],
+                                    task_object['command_run']],
+                                    shell=False)
+
     else:
         # Runs a subprocess
         process = subprocess.Popen(['python3',
