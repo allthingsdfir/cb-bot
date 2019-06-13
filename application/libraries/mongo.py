@@ -113,7 +113,7 @@ def get_all_sweep_commands():
     Gets all of the sweep commands
     '''
     
-    return list(app.config['DOBY_DB'].sweep_commands.find({}).collation({ "locale": "en_US", "strength": 1 }).sort('name', pymongo.DESCENDING))
+    return list(app.config['DOBY_DB'].sweep_commands.find({}).collation({ "locale": "en_US", "strength": 1 }).sort('name', pymongo.ASCENDING))
 
 def get_all_sweep_hosts(tuid):
     '''
