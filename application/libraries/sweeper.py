@@ -989,10 +989,11 @@ def start_queue(host_list, command_specs, _id, sweep_name):
 
 def get_sweep_log_host_count():
     '''
-    Get host count on all of the hosts.
+    Get host count on all of the hosts for a
+    specific TUID. 
     '''
 
-    return DOBY_DB.sweep_log.count({})
+    return DOBY_DB.sweep_log.count({"tuid": TUID})
 
 def update_task(data_type, data_value, _id):
     '''
