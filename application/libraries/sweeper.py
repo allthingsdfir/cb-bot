@@ -949,7 +949,7 @@ def start_queue(host_list, command_specs, _id, sweep_name):
     in CB.
     '''
     # Update the MongoDB details for the task
-    total_hosts = len(host_list)
+    total_hosts = get_sweep_log_host_count()
     update_task('total_hosts', total_hosts, _id)
 
     # Create a master dictionary to return.
@@ -986,6 +986,13 @@ def start_queue(host_list, command_specs, _id, sweep_name):
 
     except Exception as e:
         print("Error at 'start_queue' function: {}".format(e))
+
+def get_sweep_log_host_count():
+    '''
+    Get host count on all of the hosts.
+    '''
+
+    return DOBY_DB.sweep_log.count({})
 
 def update_task(data_type, data_value, _id):
     '''
