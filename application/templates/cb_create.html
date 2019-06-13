@@ -110,9 +110,14 @@
                 <div class="card mb-2 border-left-info">
                     <div class="card-body">
                         <div class="text-xl font-weight-bold text-info text-uppercase mb-1">{{ sweep.name }}</div>
+                        <br><br><b>Description:</b><br>
                         {{ sweep.description }}
                         <br><br><b>Command:</b><br>
-                        {{ sweep.command }}
+                        {% if sweep.command == "" %}
+                            N/A
+                        {% else %}
+                            {{ sweep.command }}
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
