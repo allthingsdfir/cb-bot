@@ -190,7 +190,7 @@ def run_sweep():
         sweep = dict()
         
         # Parse sweep information
-        cuid = request.form['input_sweep_type'].split('|')[0]
+        cuid = int(request.form['input_sweep_type'].split('|')[0])
         input_flag = (request.form['input_sweep_type'].split('|')[1]).upper()
         file_flag = (request.form['input_sweep_type'].split('|')[2]).upper()
 
