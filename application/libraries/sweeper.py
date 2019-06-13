@@ -164,7 +164,6 @@ class CB_DOBY():
                 
                 # Define the sensor name and the id based
                 # on the queue object obtained.
-                print(queue_obj)
                 sensor_name = queue_obj.split('||')[0]
                 sensor_id = queue_obj.split('||')[1]
 
@@ -485,8 +484,6 @@ class CB_DOBY():
                 "name": "create process",
                 "wait": "true",
                 "object": self.command}
-            
-        print(body)
 
         # Sends POST request to obtain execute a command
         response = requests.post(request_url,
@@ -602,7 +599,6 @@ class CB_DOBY():
         if response.status_code == 200:
             # Gets the command id.
             file_upload_id = json.loads((response.content).decode()).get('id')
-            print("file_upload_id that was recorded in CB {}".format(file_id))
 
             # Checks status until done.
             return self.put_file_check(session_id, sensor_name, file_upload_id)
@@ -906,7 +902,7 @@ def get_command_specs():
     :returns command_specs:
     '''
 
-    return list(DOBY_DB.sweep_commands.find_one({"cuid": {"$eq": CUID}}))[0]
+    return DOBY_DB.sweep_commands.find_one({"cuid": {"$eq": CUID}})
 
 def get_hosts_to_sweep(device_type):
     '''
