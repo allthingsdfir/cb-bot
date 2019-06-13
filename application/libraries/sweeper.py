@@ -54,9 +54,9 @@ except:
 # Input value is optional. If set to false, then
 # there is no input file.
 try:
-    COMMAND_EXECUTE = str(sys.argv[4])
+    COMMAND_TO_EXECUTE = str(sys.argv[4])
 except:
-    COMMAND_EXECUTE = False
+    COMMAND_TO_EXECUTE = False
 
 # Get error count for all of the data collection. 
 # If self.ERROR_COUNT reaches the threshold, it will
@@ -78,7 +78,6 @@ class CB_DOBY():
         self.task_object_id = _id
         self.sweep_name = sweep_name
         self.command_type = command_specs['command_type']
-        self.command = command_specs['command']
 
         self.ERROR_COUNT = ERROR_COUNT
         self.ERROR_THRESHOLD = ERROR_THRESHOLD
@@ -96,6 +95,7 @@ class CB_DOBY():
         # add it to the commmand for execution on the endpoint.
         if self.command_type == 3:
             self.out_file = INPUT_FILE
+            self.command = command_specs['command']
             # We have to ensure if we need to insert another command or not.
             # self.command = self.command.replace('{||}', out_file)
             
@@ -103,9 +103,10 @@ class CB_DOBY():
         # upload to CB.
         elif self.command_type == 2:
             self.upload_file = INPUT_FILE
-            self.command = COMMAND_EXECUTE
+            self.command = COMMAND_TO_EXECUTE
 
         else:
+            self.command = command_specs['command']
             self.out_file = command_specs['output_file']
 
     def run_sweep(self):
