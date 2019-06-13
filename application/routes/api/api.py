@@ -388,7 +388,7 @@ def restart_task(tuid):
 
     # Extract command_type in order to determine the command
     # type so that we can send the proper command over.
-    command_type = mongo.get_command_type(cuid)
+    command_type = mongo.get_command_type(task_object['cuid'])
     
     # This section is to take in the inputs that are not
     # required.
