@@ -407,7 +407,7 @@ def restart_task(tuid):
                                     script_path,
                                     app.config['OUTPUT_DIRECTORY'],
                                     str(task_object['tuid']),
-                                    task_object['file_name']],
+                                    task_object['file_name'],
                                     task_object['command_run']],
                                     shell=False)
 
