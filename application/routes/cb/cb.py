@@ -49,9 +49,6 @@ def create_sweep():
     up a sweep to run against all the systems in the environment.
     '''
 
-    # Get all sweeps.
-    sweeps = mongo.get_all_sweep_commands()
-
     # Checks to see if it's a POST or GET request.
     if request.method == 'POST':
         # Get all variables input by the user.
@@ -80,6 +77,9 @@ def create_sweep():
                         request.remote_addr,
                         message)
 
+        # Get all sweeps.
+        sweeps = mongo.get_all_sweep_commands()
+
         # Return template with user created
         return render_template('/cb_create.html',
                         title="Create Sweep",
@@ -91,6 +91,9 @@ def create_sweep():
     # If it's not a POST request, it will most likely be
     # a GET request. Just return the login template.
     else:
+        # Get all sweeps.
+        sweeps = mongo.get_all_sweep_commands()
+
         # Records log entry.
         main.record_log(request.path,
                         request.remote_addr,
