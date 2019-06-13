@@ -425,8 +425,8 @@
             // Get all active sweeps
             $.get("/api/v1/get/tasks/sweeps/active/count", function (sweeps_active) {
                 document.getElementById("active_sweeps_count").innerHTML = sweeps_active;
-                sweeps_all = sweeps_all - sweeps_active;
-                updateChart(sweeps_active, sweeps_all);
+                sweeps_inactive = sweeps_all - sweeps_active;
+                updateChart(sweeps_active, sweeps_inactive);
             });
         });
 
@@ -450,7 +450,7 @@
         });
     }
 
-    function updateChart(sweeps_active, sweeps_all) {
+    function updateChart(sweeps_active, sweeps_inactive) {
         // Set new default font family and font color to mimic Bootstrap's default styling
         Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.global.defaultFontColor = '#858796';
@@ -462,7 +462,7 @@
             data: {
                 labels: ["Active", "Inactive"],
                 datasets: [{
-                    data: [sweeps_active, sweeps_all],
+                    data: [sweeps_active, sweeps_inactive],
                     backgroundColor: ['#4e73df', '#1cc88a'],
                     hoverBackgroundColor: ['#2e59d9', '#17a673'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",

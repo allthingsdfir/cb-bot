@@ -131,7 +131,7 @@ def get_all_sweeps_active():
     Gets all of the active sweeps that were run on this CB instance.
     '''
     
-    return list(app.config['DOBY_DB'].task_history.find({"task": {"$eq": "revelio"}, "active": {"$eq": True}}).collation({ "locale": "en_US", "strength": 1 }).sort('name', pymongo.DESCENDING))
+    return list(app.config['DOBY_DB'].task_history.find({"task": {"$eq": "sweep"}, "active": {"$eq": True}}).collation({ "locale": "en_US", "strength": 1 }).sort('name', pymongo.DESCENDING))
 
 def get_all_jobs():
     '''
