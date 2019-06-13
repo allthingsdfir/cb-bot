@@ -178,7 +178,7 @@ def get_command_type(cuid):
     :returns command_type:
     '''
 
-    return list(app.config['DOBY_DB'].sweep_commands.find({"cuid": {"$eq": cuid}}))[0]
+    return app.config['DOBY_DB'].sweep_commands.find_one({"cuid": {"$eq": cuid}})
 
 def get_server_settings():
     '''
