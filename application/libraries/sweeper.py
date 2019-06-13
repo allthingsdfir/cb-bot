@@ -267,8 +267,8 @@ class CB_DOBY():
                                     if command_status == True:
                                         # We were not able to get a file, there was an error.
                                         self.update_one_host_sweep('status', 'Success. File uploaded and command executed.', host_object_id)
-                                        self.queue_list.task_done()
-                                        self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+                                        self.update_one_host_sweep('complete', True, host_object_id)
+                                        self.update_one_host_sweep('completed_timestamp', datetime.datetime.utcnow(), host_object_id)
 
                                         # Delete file on disk.
                                         results = self.delete_file(session_id, sensor_name, self.upload_file)
