@@ -44,7 +44,7 @@ def add_sweep_commands():
 
     print("[*] ------------------------")
     print("[*] Adding all sweep commands to the database...")
-    
+
     os.system('mongoimport --port 5051 -d doby -c sweep_commands --file /opt/doby/sweep_commands.json --jsonArray')
 
     print("[*]\n[*] Added sweep commands!")
@@ -355,6 +355,9 @@ def main():
     
     # Changes the run file so that you can execute it.
     os.system('chmod 600 /opt/doby/run.py')
+
+    # Restart SSHD services. Primarily for SFTP.
+    os.system('systemctl restart sshd')
 
     print("[*]\n[*]\n[*] SETUP COMPLETE! ")
 
