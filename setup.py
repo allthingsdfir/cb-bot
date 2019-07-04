@@ -37,6 +37,29 @@ db = client.doby
 
 print("[*] Database 'doby' created!")
 
+def add_sweep_commands():
+    '''
+    Adds all of the sweeps to the database.
+    '''
+
+    print("[*] ------------------------")
+    print("[*] Adding all sweep commands to the database...")
+
+    process = subprocess.Popen(['mongoimport',
+                                '--port','5051',
+                                '-d',
+                                'doby',
+                                '-c',
+                                'sweep_commands',
+                                '--file',
+                                '/opt/doby/sweep_commands.json',
+                                '--jsonArray'],
+                                shell=False,
+                                stdout=out,
+                                stderr=out)
+
+    print("[*]\n[*] Added sweep commands!")
+
 def apply_generic_server_settings():
     '''
     Creating all of the basic server settings used in this
@@ -339,6 +362,9 @@ def main():
     create_collections()
     create_admin_account()
     apply_generic_server_settings()
+    add_sweep_commands()
+
+    print("[*]\n[*]\n[*] SETUP COMPLETE! ")
 
 if __name__ == "__main__":
     main()
