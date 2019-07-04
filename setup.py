@@ -44,19 +44,8 @@ def add_sweep_commands():
 
     print("[*] ------------------------")
     print("[*] Adding all sweep commands to the database...")
-
-    process = subprocess.Popen(['mongoimport',
-                                '--port','5051',
-                                '-d',
-                                'doby',
-                                '-c',
-                                'sweep_commands',
-                                '--file',
-                                '/opt/doby/sweep_commands.json',
-                                '--jsonArray'],
-                                shell=False,
-                                stdout=out,
-                                stderr=out)
+    
+    os.system('mongoimport --port 5051 -d doby -c sweep_commands --file /opt/doby/sweep_commands.json --jsonArray')
 
     print("[*]\n[*] Added sweep commands!")
 
