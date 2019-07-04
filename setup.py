@@ -363,6 +363,12 @@ def main():
     create_admin_account()
     apply_generic_server_settings()
     add_sweep_commands()
+    
+    # Changes the run file so that you can execute it.
+    subprocess.Popen(['chmod','600','/opt/doby/run.py'], 
+                     shell=False,
+                     stdout=out,
+                     stderr=out)
 
     print("[*]\n[*]\n[*] SETUP COMPLETE! ")
 
