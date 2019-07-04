@@ -365,10 +365,7 @@ def main():
     add_sweep_commands()
     
     # Changes the run file so that you can execute it.
-    subprocess.Popen(['chmod','600','/opt/doby/run.py'], 
-                     shell=False,
-                     stdout=out,
-                     stderr=out)
+    os.system('chmod 600 /opt/doby/run.py')
 
     print("[*]\n[*]\n[*] SETUP COMPLETE! ")
 
