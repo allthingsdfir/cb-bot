@@ -357,7 +357,8 @@ def main():
     os.system('chmod 600 /opt/doby/run.py')
 
     # Ensure that password authentication is enabled for SSH.
-    os.system("sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/gI' /etc/ssh/sshd_config")
+    os.system("sed '$d' /etc/ssh/sshd_config")
+    os.system("echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config")
 
     # Restart SSHD services. Primarily for SFTP.
     os.system('systemctl restart sshd')
