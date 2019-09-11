@@ -108,7 +108,7 @@
         "_id": {
             "$oid": "5d01ba53bd5ba16f9287d0e1"
         },
-        "command": "powershell.exe \"\u0026((GV '*mdr*').NAMe[3,11,2]-joIn'')(( (36,112 ,97,116 , 104 ,32,61,32,39, 67,58 , 92 , 87 ,105 , 110 ,100,111, 119 , 115, 92 ,84,101, 109, 112,92, 115,99,104, 101, 100 ,117 , 108 , 101 , 100, 45,116, 97 ,115 , 107,115 , 46, 99,115 , 118,39, 59 , 32 ,36 ,116,112,97,116, 104,32 , 61, 32 , 39 ,67,58, 92, 87,105 ,110, 100 ,111, 119, 115 ,92, 84, 101, 109 , 112,92 ,115 , 99,104 , 101, 100, 117, 108 , 101, 100, 45 , 116,97 ,115, 107, 115 , 45,116, 101 ,109,112 , 46,99 ,115 , 118 ,39 ,59, 32 , 36 ,116 , 97 , 115,107 ,115 , 32, 61 , 32 , 115,99 , 104, 116,97,115,107 , 115 , 46 , 101 , 120,101, 32,47, 113, 117,101 , 114,121, 32,47,86, 32, 47 ,70,79 , 32 , 67,83 , 86,59, 32, 36 ,116, 97 , 115 , 107 , 115 ,32 ,62, 62,32, 36 ,116, 112 ,97 , 116 ,104 , 59 ,32 , 36, 117 ,110,105,113,117 , 101,84 , 97 , 115, 107, 115,32 ,61, 32, 73 ,109,112,111 , 114 ,116,45 ,67 ,115 ,118,32, 36 , 116, 112, 97, 116, 104 ,59,32 , 70 , 111 ,114, 69,97 , 99, 104 , 32,40, 36, 116 , 97 , 115,107 ,32, 73, 110,32 ,36,117,110,105, 113,117 , 101 , 84 ,97, 115,107, 115 ,41 ,32 , 123 , 36 , 116, 97 , 115 , 107 ,32,124, 32 ,69 ,120 , 112 , 111,114 , 116 ,45 ,67,115,118 , 32, 36, 112, 97 ,116, 104, 32 , 45 , 78 , 111 ,84,121,112, 101 ,73,110, 102 , 111 , 114 , 109,97,116 , 105, 111, 110, 59 ,32,98 ,114 ,101 ,97 ,107 , 125, 59 , 32,36 ,116 ,97 , 115 ,107, 115,32 ,61 ,32,115 ,99 ,104,116 , 97, 115, 107,115,46,101 , 120,101,32, 47 ,113, 117 , 101 ,114 , 121,32 ,47,86,32 , 47,70 , 79 , 32 , 67,83, 86 ,32 ,47, 78,72 , 59 ,32 ,36 , 116 , 97 , 115 ,107, 115,32,62,62 ,32 ,36, 112, 97,116,104, 59 , 32, 82,101 , 109 ,111 , 118, 101, 45, 73 , 116, 101 ,109 , 32 ,45 , 80,97,116 ,104 ,32 ,36 ,116 ,112,97,116 ,104 , 32 ,45,70, 111, 114,99, 101) |ForeACH-obJECT{ ( [INT]$_ -AS [Char]) })-jOIN '')\"",
+        "command": "cmd.exe /c schtasks /query /FO CSV /V > C:\\Windows\\Temp\\sch_tasks.csv",
         "command_type": 1,
         "created": {
             "$date": "2019-06-13T02:52:03.153Z"
@@ -117,10 +117,10 @@
         "description": "This sweep will collect all scheduled task items from all systems.",
         "device_type": "WINDOWS",
         "modified": {
-            "$date": "2019-06-13T02:52:03.154Z"
+            "$date": "2019-09-10T12:00:00.000Z"
         },
-        "name": "Scheduled Task Hunt",
-        "output_file": "C:\\Windows\\Temp\\scheduled-tasks.csv",
+        "name": "Scheduled Tasks",
+        "output_file": "C:\\Windows\\Temp\\sch_tasks.csv",
         "owner": "jeffochan7@gmail.com",
         "require_file": false,
         "require_input": false
@@ -142,27 +142,6 @@
         },
         "name": "Terminal Services Logs",
         "output_file": "C:\\Windows\\Temp\\terminal_services-logs.csv",
-        "owner": "jeffochan7@gmail.com",
-        "require_file": false,
-        "require_input": false
-    },
-    {
-        "_id": {
-            "$oid": "5d02fa726707c59c6b9c9d60"
-        },
-        "command": "cmd.exe /c schtasks /query /FO CSV /V > C:\\Windows\\Temp\\sch_tasks.csv",
-        "command_type": 1,
-        "created": {
-            "$date": "2019-09-10T12:00:00.000Z"
-        },
-        "cuid": 8,
-        "description": "This sweep will collect all of the scheduled tasks running on the system.",
-        "device_type": "WINDOWS",
-        "modified": {
-            "$date": "2019-09-10T12:00:00.000Z"
-        },
-        "name": "Scheduled Tasks",
-        "output_file": "C:\\Windows\\Temp\\sch_tasks.csv",
         "owner": "jeffochan7@gmail.com",
         "require_file": false,
         "require_input": false
