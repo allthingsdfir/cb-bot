@@ -145,5 +145,26 @@
         "owner": "jeffochan7@gmail.com",
         "require_file": false,
         "require_input": false
+    },
+        {
+        "_id": {
+            "$oid": "5d02fa726707c59c6b9c9d60"
+        },
+        "command": "cmd.exe /c schtasks /query /FO CSV /V > C:\\Windows\\Temp\\sch_tasks.csv",
+        "command_type": 1,
+        "created": {
+            "$date": "2019-09-10T12:00:00.000Z"
+        },
+        "cuid": 8,
+        "description": "This sweep will collect all of the scheduled tasks running on the system.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-09-10T12:00:00.000Z"
+        },
+        "name": "Scheduled Tasks",
+        "output_file": "C:\\Windows\\Temp\\sch_tasks.csv",
+        "owner": "jeffochan7@gmail.com",
+        "require_file": false,
+        "require_input": false
     }
 ]
