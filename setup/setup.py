@@ -50,7 +50,7 @@ def add_sweep_commands():
     print("[*] Adding all sweep commands to the database...")
 
     # Calls mongo to import sweep commands in JSON file.
-    command = 'mongoimport --port 5051 -d cb_bot -c sweep_commands --file {}/sweep_commands.json --jsonArray'.format(os.getcwd())
+    command = 'mongoimport --port 5051 -d cb_bot -c sweep_commands --file {}/setup/sweep_commands.json --jsonArray'.format(os.getcwd())
     os.system(command)
 
     print("[*]\n[*] Added sweep commands!")
