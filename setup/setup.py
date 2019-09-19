@@ -11,14 +11,14 @@ import bcrypt
 import pymongo
 
 # Create data folder before starting MongoDB
-os.makedirs('{}/data'.format(os.getcwd()), exist_ok=True)
-os.makedirs('{}/logs'.format(os.getcwd()), exist_ok=True)
+os.makedirs('{}/../data'.format(os.getcwd()), exist_ok=True)
+os.makedirs('{}/../logs'.format(os.getcwd()), exist_ok=True)
 
 # Starts up a MongoDB child process.
 # Runs a subprocess. If you can tee it, great. but
 # having the open function will output the log nicely.
 # mongod --dbpath data/ --port 5051 | tee mongo.log
-with open('{}/logs/mongo.log'.format(os.getcwd()),"wb") as out:
+with open('{}/../logs/mongo.log'.format(os.getcwd()),"wb") as out:
     process = subprocess.Popen(['mongod',
                                 '--dbpath',
                                 'data/',
@@ -47,7 +47,7 @@ def add_sweep_commands():
     print("[*] Adding all sweep commands to the database...")
 
     # Calls mongo to import sweep commands in JSON file.
-    command = 'mongoimport --port 5051 -d cb_bot -c sweep_commands --file {}/setup/sweep_commands.json --jsonArray'.format(os.getcwd())
+    command = 'mongoimport --port 5051 -d cb_bot -c sweep_commands --file {}/sweep_commands.json --jsonArray'.format(os.getcwd())
     os.system(command)
 
     print("[*]\n[*] Added sweep commands!")
@@ -190,9 +190,9 @@ def create_base_folders():
     # Create folders
     # Some folders may have already been created, but don't worry
     # it will just skip it. Adding here just in case.
-    os.makedirs('{}/data'.format(cwd), exist_ok=True)
-    os.makedirs('{}/data/sweep_output'.format(cwd), exist_ok=True)
-    os.makedirs('{}/logs'.format(cwd), exist_ok=True)
+    os.makedirs('{}/../data'.format(cwd), exist_ok=True)
+    os.makedirs('{}/../data/sweep_output'.format(cwd), exist_ok=True)
+    os.makedirs('{}/../logs'.format(cwd), exist_ok=True)
 
 def create_sftp(email, password):
     '''
