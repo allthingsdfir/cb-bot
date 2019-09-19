@@ -177,8 +177,7 @@ def create_admin_account():
     # Adds the newly created user to the mongo database.
     db.users.insert_one(user)
 
-    # Print message or user added.
-    print("[*]\n[*] ------------------------")
+    # Print message for user added.
     print("[*]\n[*] Successfully created user and granted SFTP access!")
 
 def create_base_folders():
@@ -228,7 +227,6 @@ def create_sftp(email, password):
     # Flush the screen
     change_password_proc.stdin.flush()
     time.sleep(2)
-    print('\n\n')
 
 def create_collections():
     '''
@@ -369,7 +367,7 @@ def main():
     add_sweep_commands()
     
     # Changes the run file so that you can execute it.
-    os.system('chmod 600 /opt/cb_bot/run.py')
+    os.system('chmod 600 {}/cb_bot/run.py'.format(cwd))
 
     # Ensure that password authentication is enabled for SSH.
     os.system("cp /etc/ssh/sshd_config /etc/ssh/sshd_config_tmp")
