@@ -206,6 +206,7 @@ def create_sftp(email, password):
 
     # Command to create 'sftp' group.
     create_sftp_group = subprocess.Popen(["sudo", "addgroup", "sftp"], stdout=dev_null)
+    time.sleep(2)
 
     # Command to create user and add to the 'sftp' group.
     add_user = subprocess.Popen(["sudo", "useradd", "-M", email, "-g", "sftp"], stdout=dev_null)
