@@ -178,7 +178,7 @@ def create_admin_account():
     db.users.insert_one(user)
 
     # Print message for user added.
-    print("[*]\n[*] Successfully created user and granted SFTP access!")
+    print("\n[*]\n[*] Successfully created user and granted SFTP access!")
 
 def create_base_folders():
     '''
@@ -367,7 +367,7 @@ def main():
     add_sweep_commands()
     
     # Changes the run file so that you can execute it.
-    os.system('chmod 600 {}/cb_bot/run.py'.format(cwd))
+    os.system('chmod 600 {}/run.py'.format(cwd))
 
     # Ensure that password authentication is enabled for SSH.
     os.system("cp /etc/ssh/sshd_config /etc/ssh/sshd_config_tmp")
