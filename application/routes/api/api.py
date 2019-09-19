@@ -207,22 +207,28 @@ def api_get_gif():
     # Query MongoDB for the Giphy settings.
     giphy_settings = mongo.get_giphy_settings()
 
-    # Assign the values accordingly to request data.
-    url = giphy_settings['root_url']
-    parameters = {"api_key": giphy_settings['api_key'],
-                  "rating": giphy_settings['rating']}
+    # Checks if there is an API key for Giphy.
+    if giphy_settings['api_key']:
+        # Assign the values accordingly to request data.
+        url = giphy_settings['root_url']
+        parameters = {"api_key": giphy_settings['api_key'],
+                    "rating": giphy_settings['rating']}
 
-    # Send request to Giphy for a link.
-    results = requests.get(giphy_settings['root_url'],
-                           params=parameters)
+        # Send request to Giphy for a link.
+        results = requests.get(giphy_settings['root_url'],
+                            params=parameters)
 
-    # Parse the data to extract just the link
-    if results.status_code == 200:
-        # Data unparsed
-        data = json.loads(results.text)
+        # Parse the data to extract just the link
+        if results.status_code == 200:
+            # Data unparsed
+            data = json.loads(results.text)
 
-        # Return just the link that we need.
-        return data['data']['images']['downsized']['url']
+            # Return just the link that we need.
+            return data['data']['images']['downsized']['url']
+    
+    # If there is no Giphy API key, then return messsage.
+    else:
+        return 'No API key supplied! Get a Giphy API key to get a Random Gif of the Day.'
 
 @api_bp.route('/api/v1/get/alerts/user', methods=['GET'])
 @fresh_login_required
