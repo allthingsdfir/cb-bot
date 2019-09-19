@@ -1,0 +1,149 @@
+[
+    {
+        "_id": {
+            "$oid": "5cf9f3f18ffb84b48d83675e"
+        },
+        "command": "",
+        "command_type": 3,
+        "created": {
+            "$date": "2019-06-07T05:09:52.731Z"
+        },
+        "cuid": 2,
+        "description": "This sweep will collect a specific file from Windows systems.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-06-07T05:09:52.732Z"
+        },
+        "name": "Windows File Acquisition",
+        "output_file": "",
+        "owner": "allthingsdfir.com",
+        "require_file": false,
+        "require_input": true
+    },
+    {
+        "_id": {
+            "$oid": "5cff24a86c8021ab3adf6bb4"
+        },
+        "command": "",
+        "command_type": 2,
+        "created": {
+            "$date": "2019-06-07T05:09:52.731Z"
+        },
+        "cuid": 3,
+        "description": "This sweep will take the file that you provide, upload it to the system and execute a command.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-06-07T05:09:52.732Z"
+        },
+        "name": "Upload And Execute File",
+        "output_file": "",
+        "owner": "allthingsdfir.com",
+        "require_file": true,
+        "require_input": true
+    },
+    {
+        "_id": {
+            "$oid": "5d017eaadbdcd701e0e2922e"
+        },
+        "command": "cmd.exe /c reg save \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\AppCompatCache\" \"C:\\Windows\\Temp\\appcompat.hve\"",
+        "command_type": 1,
+        "created": {
+            "$date": "2019-06-06T05:09:52.731Z"
+        },
+        "cuid": 1,
+        "description": "This sweep will collect Application Compatibility Cache data from the systems. Note that it will not force a reboot on the system, so it will take data from the current registry setting and extract the AppCompat hive.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-06-06T05:09:52.732Z"
+        },
+        "name": "Appcompatcache Hunt",
+        "output_file": "C:\\Windows\\Temp\\appcompat.hve",
+        "owner": "allthingsdfir.com",
+        "require_file": false,
+        "require_input": false
+    },
+    {
+        "_id": {
+            "$oid": "5d019d63ae0c561a4eead71c"
+        },
+        "command": "powershell.exe \". ( $enV:ComSPec[4,15,25]-jOIn'')(\"$( SeT-iTEm  'vaRIaBlE:oFS'  '' )\"+[STRING]( '36}112m97c116:104}32d61m32U39c67m58:92U87U105m110}100Z111t119Z115}92t84d101t109y112t92t112y111m119m101t114:115d104F101y108F108m45}108c111Z103d115y46Z99:115c118c39F59m32y36Z104m32c61F32}39F34Z99F111}109m112:117:116y101y114m95U110t97}109c101}34c44}34U101y118:101}110Z116m95c105U100Z34Z44m34c108:111m103d95y110m97m109U101F34t44}34}116}105}109}101F95U99d114}101F97t116c101c100t34Z44}34F108y101c118U101m108d95F100t105F115m112c108}97y121:95F110y97U109c101:34c44:34c109}101y115Z115t97:103c101m34d39m59t32t36t104c32d62d32:36U112c97y116:104}59Z32U71t101d116t45y87y105d110F69:118m101U110Z116y32F45}76c111Z103c78m97U109}101}32m34Z87:105d110y100:111y119t115:32U80c111m119F101m114d83U104}101d108c108y34m32c45d69U114d114y111}114y65:99d116t105d111Z110y32U83t105m108d101:110y116}108F121c67F111m110c116Z105d110t117d101}32U124F32Z83F101d108d101c99d116}45}79F98m106Z101t99U116F32:45F80d114m111F112Z101m114t116d121F32m76}111}103d78F97y109Z101t44y32y73y100m44t32F84d105m109:101F67y114t101m97t116F101c100d44y32U76:101c118Z101Z108}68U105F115:112m108y97}121:78y97:109F101:44U32y77m101}115t115U97m103U101}32Z124d32d70y111F114}69}97y99m104:32F123Z36t115c32}61F32c39c34}39F32d43F32Z36m101:110d118m58t99m111U109U112U117}116d101y114}110m97y109t101d32c43y32U39y34:44c34:39t32t43F32F36U95m46:73d68F32}43:32U39d34y44t34}39}32Z43}32}36t95Z46y76F111t103c78m97m109m101d32U43}32U39F34y44:34d39t32U43y32m36c95U46t84}105}109F101}67}114m101}97:116c101}100c32Z43Z32}39y34m44}34}39U32}43U32U36U95}46F76}101U118U101d108m68:105:115y112}108Z97U121:78:97Z109c101t32m43Z32Z39U34d44y34}39y32d43m32m36:95y46c77d101Z115d115U97d103U101c46Z114U101F112Z108d97c99t101U40y34Z96F110}34y44:34t124t34:41t46Z114F101y112c108}97F99y101F40m34y96d114m34:44d34F34c41d46t114m101U112t108c97m99U101d40F39}34d39t44}34}39Z34}41t32Z43:32y39m34y39m59c32F36Z115U32:62c62m32Z36c112Z97c116}104t125'.SplIt('m}:cUFZtdy' )| %{( [InT] $_ -as [ChaR])} ) +\\\"$(sv 'oFs'  ' ' ) \\\")\"",
+        "command_type": 1,
+        "created": {
+            "$date": "2019-06-13T00:48:35.314Z"
+        },
+        "cuid": 4,
+        "description": "This will collect all of the \"Windows PowerShell\" log entries from the systems.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-06-13T00:48:35.315Z"
+        },
+        "name": "Powershell Log Hunt",
+        "output_file": "C:\\Windows\\Temp\\powershell-logs.csv",
+        "owner": "allthingsdfir.com",
+        "require_file": false,
+        "require_input": false
+    },
+    {
+        "_id": {
+            "$oid": "5d019da7ae0c561a4eead71e"
+        },
+        "command": "powershell.exe -JOIn \"('36!112C97@116C104n32r61:32@39r67@58C92C87;105B110r100h111q119;115@92!84n101h109B112B92!55B48r52r53q45n108h111r103C115n46:99:115@118;39;59r32B36@104;32q61!32C39q34!99;111h109q112q117r116;101C114n95;110h97B109r101n34@44@34h101@118C101r110q116;95@105B100h34r44n34:108n111@103r95:110;97;109q101n34h44h34C116r105n109!101h95h99!114h101C97B116q101!100:34q44r34r108C101q118@101:108q95q100;105n115:112q108h97@121q95q110@97q109B101@34@44q34q109B101C115r115C97C103B101n34C39h59!32;36h104q32n62;32r36n112;97n116;104r59r32C71h101r116q45B87n105r110@69C118B101@110@116h32r45;76C111!103!78r97B109C101;32:34q83;121B115;116@101h109:34r32h45n69!114n114n111q114;65q99n116C105;111!110;32@83!105:108r101:110!116h108;121q67!111n110;116:105@110B117C101n32;124!32C87q104:101h114C101;45r79r98B106C101:99r116h32h123C36:95!46;73r68h32r45:101h113n32@34B55q48h52r53!34r125B32:124!32r83B101C108;101n99C116q45n79@98h106@101q99!116q32@45C80B114C111r112h101C114r116r121n32;76q111r103h78B97!109r101B44B32;73q100n44r32;84@105h109q101;67@114@101n97!116r101C100C44n32B76r101@118q101!108h68q105B115q112B108@97q121h78q97@109:101!44h32@77h101h115:115r97@103r101r32;124h32r70q111r114;69q97q99@104r32;123h36r115h32q61n32n39@34:39!32r43r32n36n101B110h118;58h99C111r109;112h117:116B101;114@110h97B109B101!32:43;32r39@34C44@34;39!32:43!32h36:95q46;73h68@32B43;32C39!34!44;34h39;32@43r32r36!95:46@76!111!103C78C97r109:101:32@43C32;39q34B44;34h39q32q43B32C36;95:46!84!105;109@101r67n114r101q97@116h101h100:32@43:32q39B34q44C34:39;32!43h32q36r95n46!76C101q118n101:108n68C105!115q112:108!97n121:78n97@109r101B32!43C32!39:34r44@34r39n32@43n32B36h95:46:77q101n115:115r97!103C101@46n114q101B112:108B97:99@101:40:34n96:110h34C44q34h124:34!41C46h114r101;112@108h97h99r101h40n34C96!114:34B44:34r34!41!46r114r101C112B108!97:99@101:40B39n34@39h44h34C39q34h41!32:43r32q39!34C39:59n32B36r115B32n62C62;32!36:112;97q116C104:125' -SPLIT 'n'-sPLIT'B'-split 'C' -sPlit 'h'-spLIt';'-SPLiT'!' -sPLIt 'r' -sPLiT 'q'-SpLit'@'-sPLiT ':'| foREACh-oBJect {([char] [INT]$_) } )|. ( $eNV:comSpEC[4,15,25]-jOIN'')\"",
+        "command_type": 1,
+        "created": {
+            "$date": "2019-06-13T00:49:43.545Z"
+        },
+        "cuid": 5,
+        "description": "This sweep will collect all of the log entries from the \"System\" logs that contain the 7045 EID. This will indicate what services were installed on the systems.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-06-13T00:49:43.546Z"
+        },
+        "name": "7045 Eid Service Logs Hunt",
+        "output_file": "C:\\Windows\\Temp\\7045-logs.csv",
+        "owner": "allthingsdfir.com",
+        "require_file": false,
+        "require_input": false
+    },
+    {
+        "_id": {
+            "$oid": "5d01ba53bd5ba16f9287d0e1"
+        },
+        "command": "cmd.exe /c schtasks /query /FO CSV /V > C:\\Windows\\Temp\\sch_tasks.csv",
+        "command_type": 1,
+        "created": {
+            "$date": "2019-06-13T02:52:03.153Z"
+        },
+        "cuid": 6,
+        "description": "This sweep will collect all scheduled task items from all systems.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-09-10T12:00:00.000Z"
+        },
+        "name": "Scheduled Tasks",
+        "output_file": "C:\\Windows\\Temp\\sch_tasks.csv",
+        "owner": "allthingsdfir.com",
+        "require_file": false,
+        "require_input": false
+    },
+    {
+        "_id": {
+            "$oid": "5d02fa726707c59c6b9c9d58"
+        },
+        "command": "powershell.exe \".( $shEllid[1]+$sheLLid[13]+'X') ([StRIng]::joIn('', ('36\u0026112s97U116U104\u002632,61e32o39\u002667s58A92%87A105s110s100%111,119e115A92g84A101A109s112o92U116V101g114U109U105A110e97\u0026108A95,115U101g114%118U105\u002699U101e115o45U108g111s103,115%46V99%115A118%39\u002659\u002632g36A104g32,61V32g39A34\u002699e111A109e112%117o116s101V114e95V110o97,109s101o34U44,34V101\u0026118e101A110%116,95\u0026105s100,34g44e34g108V111%103e95o110\u002697\u0026109U101%34e44A34U116s105\u0026109g101g95A99%114%101g97o116V101,100s34o44U34s108U101A118e101s108V95\u0026100U105o115o112e108A97V121,95g110A97o109,101o34%44\u002634%109A101g115A115,97%103\u0026101s34e39A59s32g36,104V32g62g32V36U112e97e116%104e59A32A71,101,116e45s87e105s110U69V118U101s110g116g32,45A76,111%103V78s97g109V101U32\u002634\u002642g84%101,114g109g105g110\u002697e108g83U101s114%118V105U99U101,115g42s34o32V45e69\u0026114,114o111\u0026114s65s99,116,105g111%110e32V83g105\u0026108U101A110,116V108o121e67A111A110g116%105U110s117\u0026101V32V124,32%87s104\u0026101g114e101U45%79s98V106e101%99U116\u002632V123s36,95o46\u002673\u002668,32g45o105%110g32o50\u002649U44g50\u002650g44\u002650,51e44s50V52o44o50e53,44A49s49A52A57o125e32V124s32o83U101e108V101\u002699U116,45s79V98e106%101\u002699s116U32\u002645\u002680e114o111V112o101e114e116g121,32U76s111%103U78V97,109s101\u002644%32V73g100V44\u002632o84V105\u0026109U101g67V114%101g97A116s101o100A44V32g76%101o118\u0026101,108A68e105\u0026115,112,108g97%121A78o97\u0026109s101U44\u002632\u002677,101%115,115%97A103V101U32g124,32\u002670\u0026111U114o69\u002697%99s104e32,123U36s115,32%61A32,39g34,39,32%43s32%36s101o110s118\u002658s99\u0026111U109g112,117U116g101g114,110A97A109%101U32o43A32\u002639e34g44%34g39g32s43%32s36s95A46,73o68\u002632o43e32g39,34%44g34s39A32V43%32g36V95A46o76e111g103U78%97A109g101,32g43U32,39%34A44,34%39s32,43A32\u002636o95\u002646U84%105A109\u0026101e67\u0026114g101g97,116,101,100,32V43A32,39,34o44o34A39\u002632e43s32A36e95%46V76o101e118g101o108\u002668g105A115o112g108\u002697A121e78A97g109%101o32e43,32%39A34A44U34U39A32V43o32s36V95U46\u002677s101V115U115U97s103V101V46o114g101,112V108s97e99,101,40V34U96e110o34o44V34V124\u002634A41s46%114s101,112U108s97A99\u0026101s40%34o96s114o34U44%34e34U41o46,114V101V112o108\u002697A99%101V40s39\u002634e39\u002644%34s39V34A41e32U43A32V39U34\u002639e59,32\u002636A115V32s62A62%32%36,112\u002697g116e104s125'-SpLIT'V'-SplIt '\u0026'-SPliT's'-sPLIt'A' -split 'e'-spLIt',' -SPliT '%'-splIT'g' -SPLIT 'U'-sPliT'o' | %{([chAR] [int]$_) } ) ) )\"",
+        "command_type": 1,
+        "created": {
+            "$date": "2019-06-14T01:37:54.508Z"
+        },
+        "cuid": 7,
+        "description": "This sweep will collect all of the Terminal Services event logs. Some of the EIDs are: 21, 22, 23, 24, 25, and 1149.",
+        "device_type": "WINDOWS",
+        "modified": {
+            "$date": "2019-06-14T01:37:54.508Z"
+        },
+        "name": "Terminal Services Logs",
+        "output_file": "C:\\Windows\\Temp\\terminal_services-logs.csv",
+        "owner": "allthingsdfir.com",
+        "require_file": false,
+        "require_input": false
+    }
+]
