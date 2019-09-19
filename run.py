@@ -13,7 +13,7 @@ def init_db():
     # Runs a subprocess. If you can tee it, great. but
     # having the open function will output the log nicely.
     # mongod --dbpath data/ --port 5051 | tee mongo.log
-    with open('{}/mongo.log'.format(os.getcwd()),"wb") as out:
+    with open('{}/logs/mongo.log'.format(os.getcwd()),"wb") as out:
         process = subprocess.Popen(['mongod',
                                     '--dbpath',
                                     'data/',
@@ -25,7 +25,7 @@ def init_db():
 
 def init_logging():
     # Enables logging in DEBUG mode.
-    log_path = '{}/doby.log'.format(os.getcwd())
+    log_path = '{}/logs/cb_bot.log'.format(os.getcwd())
     logging.basicConfig(filename=log_path,
                         level=logging.DEBUG)
 
@@ -36,10 +36,10 @@ if __name__ == '__main__':
     # Enables logging in DEBUG mode.
     init_logging()
 
-    # Runs Doby bot.
+    # Runs CB Bot.
     app.run(debug=True,
             host='0.0.0.0',
             port=443,
             threaded=True,
-            ssl_context=('/etc/ssl/certs/doby.crt',
-                         '/etc/ssl/private/doby.key'))
+            ssl_context=('/etc/ssl/certs/cb_bot.crt',
+                         '/etc/ssl/private/cb_bot.key'))

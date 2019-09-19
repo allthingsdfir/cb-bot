@@ -11,9 +11,9 @@ requests.packages.urllib3.disable_warnings()
 
 # Database configuration
 MONGO_CLIENT = pymongo.MongoClient('127.0.0.1', 5051)
-DOBY_DB = MONGO_CLIENT.doby
+CB_BOT_DB = MONGO_CLIENT.cb_bot
 
-class CB_DOBY():
+class CB_BOT():
 
     def __init__(self, queue_list, total_hosts, _id, auid, CB_ROOT_URL, CB_XAUTH_TOKEN):
         self.queue_list = queue_list
@@ -32,7 +32,7 @@ class CB_DOBY():
         '''
 
         # Adds the log entry to the activity_logs collection.
-        DOBY_DB.cb_hosts.insert_one(sensor)
+        CB_BOT_DB.cb_hosts.insert_one(sensor)
 
     def get_host_validity(self, sensor_data):
         '''
@@ -47,9 +47,9 @@ class CB_DOBY():
         # or just the hostname being passed. We also validate
         # that here.
         if sensor_data is dict():
-            results = list(DOBY_DB.cb_hosts.find({"hostname": { "$eq": sensor_data.get('deviceName') } }))
+            results = list(CB_BOT_DB.cb_hosts.find({"hostname": { "$eq": sensor_data.get('deviceName') } }))
         else:
-            results = list(DOBY_DB.cb_hosts.find({"hostname": { "$eq": sensor_data } }))
+            results = list(CB_BOT_DB.cb_hosts.find({"hostname": { "$eq": sensor_data } }))
 
         # If the count of results is greater than 0 (usually 1), then
         # it should return that host exists. Otherwise, return false.
@@ -87,7 +87,7 @@ class CB_DOBY():
 
         # Queries the MongoDB database for any information regarding
         # the TUID at question.
-        return DOBY_DB.alerts.find_one({'auid': self.auid})
+        return CB_BOT_DB.alerts.find_one({'auid': self.auid})
 
     def get_one_sensor(self, hostname):
         '''
@@ -214,7 +214,7 @@ class CB_DOBY():
         '''
 
         # Updates the record for the user.
-        DOBY_DB.alerts.update_one({'_id': _id},
+        CB_BOT_DB.alerts.update_one({'_id': _id},
                                   {'$set': {'message_date': message_date,
                                             'created': created,
                                             'active': True}},
@@ -230,7 +230,7 @@ class CB_DOBY():
         '''
 
         # Updates the record for the task.
-        DOBY_DB.cb_hosts.update_one({'_id': _id},
+        CB_BOT_DB.cb_hosts.update_one({'_id': _id},
                                     {'$set': {data_type: data_value}},
                                     upsert=False)
 
@@ -244,7 +244,7 @@ class CB_DOBY():
         '''
 
         # Updates the record for the task.
-        DOBY_DB.task_history.update_one({'_id': _id},
+        CB_BOT_DB.task_history.update_one({'_id': _id},
                                         {'$set': {data_type: data_value}},
                                         upsert=False)
 
@@ -296,8 +296,8 @@ def get_all_sensors(CS_CONCURRENT_SESSIONS, CB_ROOT_URL, CB_XAUTH_TOKEN, _id, au
             for i in range(int(CS_CONCURRENT_SESSIONS)):
                 # Start multi-threading and run "run_cb_gather" function
                 # to start running the query that we want it to do.
-                doby_worker = CB_DOBY(queue_list, total_hosts, _id, auid, CB_ROOT_URL, CB_XAUTH_TOKEN)
-                worker = threading.Thread(target=doby_worker.start_updating, daemon=True)
+                cb_bot_worker = CB_BOT(queue_list, total_hosts, _id, auid, CB_ROOT_URL, CB_XAUTH_TOKEN)
+                worker = threading.Thread(target=cb_bot_worker.start_updating, daemon=True)
                 worker.start()
                 workers_list.append(worker)
             queue_list.join()
@@ -319,7 +319,7 @@ def get_server_settings():
     # Get configuration from the MongoDB. There should only be
     # one item or none. Potential implementation of multiple
     # CB Server Configuration is possible, just not implemented yet.
-    list_data = list(DOBY_DB.server_settings.find({"name" : "Carbon Black"}))
+    list_data = list(CB_BOT_DB.server_settings.find({"name" : "Carbon Black"}))
 
     # Determines if there is data to be sent back. If there
     # are no configurations set, then it should return blank.
@@ -339,7 +339,7 @@ def update_task(data_type, data_value, _id):
     '''
 
     # Updates the record for the task.
-    DOBY_DB.task_history.update_one({'_id': _id},
+    CB_BOT_DB.task_history.update_one({'_id': _id},
                                     {'$set': {data_type: data_value}},
                                     upsert=False)
 
@@ -349,7 +349,7 @@ def get_task_object_id(tuid):
     the MongoDB database.
     '''
     # Queries Mongo for the task.
-    return DOBY_DB.task_history.find_one({'tuid': int(tuid)})['_id']
+    return CB_BOT_DB.task_history.find_one({'tuid': int(tuid)})['_id']
 
 def get_task_owner(tuid):
     '''
@@ -357,7 +357,7 @@ def get_task_owner(tuid):
     the MongoDB database.
     '''
     # Queries Mongo for the task.
-    return (DOBY_DB.task_history.find_one({'tuid': int(tuid)})['owner'])
+    return (CB_BOT_DB.task_history.find_one({'tuid': int(tuid)})['owner'])
 
 def create_alert(alert):
     '''
@@ -368,7 +368,7 @@ def create_alert(alert):
     '''
 
     # Adds the log entry to the alerts collection.
-    DOBY_DB.alerts.insert_one(alert)
+    CB_BOT_DB.alerts.insert_one(alert)
 
 def get_largest_auid():
     '''
@@ -378,7 +378,7 @@ def get_largest_auid():
     '''
 
     # Queries the MongoDB database for the largest AUID
-    user_list = list(DOBY_DB.alerts.find({}).sort('auid', pymongo.DESCENDING))
+    user_list = list(CB_BOT_DB.alerts.find({}).sort('auid', pymongo.DESCENDING))
 
     # Checks if there are no AUIDs.
     if len(user_list) == 0:
@@ -388,7 +388,7 @@ def get_largest_auid():
 
 def main():
     '''
-    Main function for Doby.
+    Main function for cb_bot.
     '''
     # Gets the CB settings from the database.
     config = get_server_settings()

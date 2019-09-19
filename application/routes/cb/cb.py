@@ -241,7 +241,7 @@ def run_sweep():
             if 'upload_file' not in request.files:
                 # Return template with user created
                 return render_template('/cb_run.html',
-                                        title="Revelio",
+                                        title="Sweep",
                                         type="danger",
                                         value="You forgot to upload a file! Try again.",
                                         sweeps=sweeps,
@@ -254,7 +254,7 @@ def run_sweep():
             if uploaded_file.filename == "":
                 # Return template with user created
                 return render_template('/cb_run.html',
-                                        title="Revelio",
+                                        title="Sweep",
                                         type="danger",
                                         value="You forgot to upload a file! Try again.",
                                         sweeps=sweeps,
@@ -295,14 +295,14 @@ def run_sweep():
         mongo.add_task(sweep)
 
         # Records log entry.
-        message = 'Created Revelio sweep: {} (Task #{})'.format(sweep['name'], sweep['tuid'])
+        message = 'Created Sweep sweep: {} (Task #{})'.format(sweep['name'], sweep['tuid'])
         main.record_log(request.path,
                         request.remote_addr,
                         message)
 
-        # Return template with revelio created
+        # Return template with sweep created
         return render_template('/cb_run.html',
-                        title="Revelio",
+                        title="Sweep",
                         type="success",
                         value=message,
                         sweeps=sweeps,
@@ -314,11 +314,11 @@ def run_sweep():
         # Records log entry.
         main.record_log(request.path,
                         request.remote_addr,
-                        'Viewed Revelio page.')
+                        'Viewed Sweep page.')
 
         # Returns the CB Run template.
         return render_template('/cb_run.html',
-                                title="Revelio",
+                                title="Sweep",
                                 sweeps=sweeps,
                                 user=session)
 

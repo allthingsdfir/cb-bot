@@ -16,7 +16,7 @@
         },
         "name": "Windows File Acquisition",
         "output_file": "",
-        "owner": "jeffochan7@gmail.com",
+        "owner": "allthingsdfir.com",
         "require_file": false,
         "require_input": true
     },
@@ -37,7 +37,7 @@
         },
         "name": "Upload And Execute File",
         "output_file": "",
-        "owner": "jeffochan7@gmail.com",
+        "owner": "allthingsdfir.com",
         "require_file": true,
         "require_input": true
     },
@@ -58,7 +58,7 @@
         },
         "name": "Appcompatcache Hunt",
         "output_file": "C:\\Windows\\Temp\\appcompat.hve",
-        "owner": "jeffochan7@gmail.com",
+        "owner": "allthingsdfir.com",
         "require_file": false,
         "require_input": false
     },
@@ -79,7 +79,7 @@
         },
         "name": "Powershell Log Hunt",
         "output_file": "C:\\Windows\\Temp\\powershell-logs.csv",
-        "owner": "jeffochan7@gmail.com",
+        "owner": "allthingsdfir.com",
         "require_file": false,
         "require_input": false
     },
@@ -100,7 +100,7 @@
         },
         "name": "7045 Eid Service Logs Hunt",
         "output_file": "C:\\Windows\\Temp\\7045-logs.csv",
-        "owner": "jeffochan7@gmail.com",
+        "owner": "allthingsdfir.com",
         "require_file": false,
         "require_input": false
     },
@@ -121,7 +121,7 @@
         },
         "name": "Scheduled Tasks",
         "output_file": "C:\\Windows\\Temp\\sch_tasks.csv",
-        "owner": "jeffochan7@gmail.com",
+        "owner": "allthingsdfir.com",
         "require_file": false,
         "require_input": false
     },
@@ -142,7 +142,7 @@
         },
         "name": "Terminal Services Logs",
         "output_file": "C:\\Windows\\Temp\\terminal_services-logs.csv",
-        "owner": "jeffochan7@gmail.com",
+        "owner": "allthingsdfir.com",
         "require_file": false,
         "require_input": false
     }

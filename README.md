@@ -1,2 +1,2 @@
-# Doby
-This is the placeholder for Doby, a Carbon Black wrapper web application for security analysts.
+# CB Bot
+This is the placeholder for CB Bot, a Carbon Black wrapper web application for security analysts.

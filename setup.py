@@ -12,12 +12,13 @@ import pymongo
 
 # Create data folder before starting MongoDB
 os.makedirs('{}/data'.format(os.getcwd()), exist_ok=True)
+os.makedirs('{}/logs'.format(os.getcwd()), exist_ok=True)
 
 # Starts up a MongoDB child process.
 # Runs a subprocess. If you can tee it, great. but
 # having the open function will output the log nicely.
 # mongod --dbpath data/ --port 5051 | tee mongo.log
-with open('{}/mongo.log'.format(os.getcwd()),"wb") as out:
+with open('{}/logs/mongo.log'.format(os.getcwd()),"wb") as out:
     process = subprocess.Popen(['mongod',
                                 '--dbpath',
                                 'data/',
@@ -28,14 +29,14 @@ with open('{}/mongo.log'.format(os.getcwd()),"wb") as out:
                                 stderr=out)
 
 #################################
-#     Create 'doby' database    #
+#    Create 'cb_bot' database   #
 #################################
-print("[*]\n[*] Creating 'doby' database...")
+print("[*]\n[*] Creating 'cb_bot' database...")
 
 client = pymongo.MongoClient('127.0.0.1', 5051)
-db = client.doby
+db = client.cb_bot
 
-print("[*] Database 'doby' created!")
+print("[*] Database 'cb_bot' created!")
 
 def add_sweep_commands():
     '''
@@ -45,24 +46,24 @@ def add_sweep_commands():
     print("[*] ------------------------")
     print("[*] Adding all sweep commands to the database...")
 
-    os.system('mongoimport --port 5051 -d doby -c sweep_commands --file /opt/doby/sweep_commands.json --jsonArray')
+    os.system('mongoimport --port 5051 -d cb_bot -c sweep_commands --file /opt/cb_bot/sweep_commands.json --jsonArray')
 
     print("[*]\n[*] Added sweep commands!")
 
 def apply_generic_server_settings():
     '''
     Creating all of the basic server settings used in this
-    unique Doby instance.
+    unique cb_bot instance.
     '''
     
     print("[*] ------------------------")
-    print("[*] Adding generic Doby server configs...")
+    print("[*] Adding generic cb_bot server configs...")
 
     print("[*]\n[*] Let's start by naming/numbering your case.")
     case_name = str(validate_user_input('Case Number/Name (e.g. CASE19-001, PWN_CLIENT')).lower()
     
     case_settings = {
-        "name" : "Doby",
+        "name" : "cb_bot",
         "case" : case_name
     }
 
@@ -99,7 +100,7 @@ def apply_generic_server_settings():
 
 def create_admin_account():
     '''
-    Creating an admin account for the initial usage of Doby.
+    Creating an admin account for the initial usage of cb_bot.
     The user can select any username for this method. If the
     script is re-run, it will still create another user. So,
     beware.
@@ -124,7 +125,7 @@ def create_admin_account():
     
     # Printing message indicating the creation of a user account.
     print('[*] ------------------------')
-    print('[*] Let\'s set up an admin account for Doby.')
+    print('[*] Let\'s set up an admin account for cb_bot.')
 
     # Get and validate user input.
     user['email'] = str(validate_user_input('Email')).lower()
@@ -160,6 +161,9 @@ def create_admin_account():
     user['last_logon'] = ""
 
     # Create SFTP account for the user.
+    print('[*] Setting up SFTP account for this user.')
+    print('[*] IGNORE ANY MESSAGES REGARDING PASSWORD PROMPT!\n')
+    time.sleep(1)
     create_sftp(user['email'], password)
 
     # Blank the password out.
@@ -170,23 +174,23 @@ def create_admin_account():
 
     # Print message or user added.
     print("[*]\n[*] ------------------------")
-    print("[*]\n[*] Adding generic Doby server configs...")
+    print("[*]\n[*] Adding generic cb_bot server configs...")
 
 def create_base_folders():
     '''
     Creates all of the base folders needed for
-    Doby to run.
+    cb_bot to run.
     '''
 
     # Get current working directory
     cwd = os.getcwd()
 
     # Create folders
+    # Some folders may have already been created, but don't worry
+    # it will just skip it. Adding here just in case.
     os.makedirs('{}/data'.format(cwd), exist_ok=True)
-    os.makedirs('/data/sweep_output', exist_ok=True)
-    os.makedirs('{}/temp'.format(cwd), exist_ok=True)
-    os.makedirs('{}/temp/logs'.format(cwd), exist_ok=True)
-    os.makedirs('{}/temp/upload'.format(cwd), exist_ok=True)
+    os.makedirs('{}/data/sweep_output'.format(cwd), exist_ok=True)
+    os.makedirs('{}/logs'.format(cwd), exist_ok=True)
 
 def create_sftp(email, password):
     '''
@@ -214,18 +218,19 @@ def create_sftp(email, password):
 
     # Flush the screen
     change_password_proc.stdin.flush()
+    print('\n')
 
 def create_collections():
     '''
-    Creates MongoDB collections for Doby CB. Even if the collection
+    Creates MongoDB collections for cb_bot CB. Even if the collection
     exists, it will not overwrite it at all. We use this function to
     ensure that at least they have been instanciated and do not need
-    to worry about creating it while Doby is running in production.
+    to worry about creating it while cb_bot is running in production.
     '''
     
     # Printing information about collections.
     print("[*] ------------------------")
-    print("[*] Creating collections in 'doby' database...")
+    print("[*] Creating collections in 'cb_bot' database...")
 
     collection_list = ['activity_logs', 'alerts', 'cb_hosts', 'server_settings', 'sweep_commands', 'sweep_log', 'task_history', 'users']
 
@@ -344,7 +349,7 @@ def validate_user_input(text_value):
 
 def main():
     '''
-    Main function for the Doby initializator.
+    Main function for the cb_bot initializator.
     '''
 
     create_base_folders()
@@ -354,7 +359,7 @@ def main():
     add_sweep_commands()
     
     # Changes the run file so that you can execute it.
-    os.system('chmod 600 /opt/doby/run.py')
+    os.system('chmod 600 /opt/cb_bot/run.py')
 
     # Ensure that password authentication is enabled for SSH.
     os.system("cp /etc/ssh/sshd_config /etc/ssh/sshd_config_tmp")

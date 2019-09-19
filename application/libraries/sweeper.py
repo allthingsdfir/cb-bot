@@ -13,12 +13,12 @@ requests.packages.urllib3.disable_warnings()
 
 # Database configuration
 MONGO_CLIENT = pymongo.MongoClient('127.0.0.1', 5051)
-DOBY_DB = MONGO_CLIENT.doby
+CB_BOT_DB = MONGO_CLIENT.cb_bot
 
 # Get configuration from the MongoDB. There should only be
 # one item or none. Potential implementation of multiple
 # CB Server Configuration is possible, just not implemented yet.
-list_data = list(DOBY_DB.server_settings.find({"name": "Carbon Black"}))
+list_data = list(CB_BOT_DB.server_settings.find({"name": "Carbon Black"}))
 
 # Determines if there is data to be sent back. If there
 # are no configurations set, then it should return blank.
@@ -42,7 +42,7 @@ CB_MIN_CHECK_IN_TIME = int(config['min_check_in_time'])
 
 # This gets the task id and the command id.
 TUID = int(sys.argv[2])
-CUID = int(DOBY_DB.task_history.find_one({'tuid': int(TUID)})['cuid'])
+CUID = int(CB_BOT_DB.task_history.find_one({'tuid': int(TUID)})['cuid'])
 
 # Input value is optional. If set to false, then
 # there is no input file.
@@ -70,7 +70,7 @@ WAITING_PERIOD = 200
 SLEEP_INTERVAL = 5
 
 
-class CB_DOBY():
+class CB_BOT():
 
     def __init__(self, queue_list, total_hosts, command_specs, _id, sweep_name):
         self.queue_list = queue_list
@@ -148,7 +148,7 @@ class CB_DOBY():
                     alert['active'] = True
                     alert['owner'] = get_task_owner()
                     alert['auid'] = auid
-                    alert['message'] = "Failed Sweep with Task ID {}: {}. Doby workers errored out.".format(self.TUID, self.sweep_name)
+                    alert['message'] = "Failed Sweep with Task ID {}: {}. cb_bot workers errored out.".format(self.TUID, self.sweep_name)
 
                     # Tell Mongo to add alert.
                     create_alert(alert)
@@ -768,7 +768,7 @@ class CB_DOBY():
         sweep_log from the MongoDB database.
         '''
         # Queries Mongo for the host in the sweep_log.
-        return DOBY_DB.sweep_log.find_one({"device_id": int(device_id), "tuid": int(self.TUID)})['_id']
+        return CB_BOT_DB.sweep_log.find_one({"device_id": int(device_id), "tuid": int(self.TUID)})['_id']
 
     def update_one_host_sweep(self, data_type, data_value, _id):
         '''
@@ -780,7 +780,7 @@ class CB_DOBY():
         '''
 
         # Updates the record for a host in the sweep_log collection.
-        DOBY_DB.sweep_log.update_one({'_id': _id},
+        CB_BOT_DB.sweep_log.update_one({'_id': _id},
                                      {'$set': {data_type: data_value}},
                                      upsert=False)
 
@@ -821,7 +821,7 @@ class CB_DOBY():
         on a particular sweep.
         '''
         # Check on completed host count
-        completed_count = len(list(DOBY_DB.sweep_log.find({"tuid": int(self.TUID), "complete": True})))
+        completed_count = len(list(CB_BOT_DB.sweep_log.find({"tuid": int(self.TUID), "complete": True})))
 
         # Change the completed_hosts count on the specific task.
         update_task('completed_hosts', completed_count, self.task_object_id)
@@ -888,7 +888,7 @@ def add_hosts_to_sweep_log(host_list, device_type):
             entry['tuid'] = TUID
 
             # Adds the log entry to the sweep_log collection.
-            DOBY_DB.sweep_log.insert_one(entry)
+            CB_BOT_DB.sweep_log.insert_one(entry)
 
             # Adds host to the sweep_host_list variable.
             sweep_host_list.append({host['hostname']: host['device_id']})
@@ -903,7 +903,7 @@ def get_command_specs():
     :returns command_specs:
     '''
 
-    return DOBY_DB.sweep_commands.find_one({"cuid": {"$eq": CUID}})
+    return CB_BOT_DB.sweep_commands.find_one({"cuid": {"$eq": CUID}})
 
 def get_hosts_to_sweep(device_type):
     '''
@@ -917,13 +917,13 @@ def get_hosts_to_sweep(device_type):
     '''
     # Define variables used in the function
     sweep_host_list = list()
-    results = list(DOBY_DB.sweep_log.find({"tuid": {"$eq": int(TUID)}}).collation({ "locale": "en_US", "strength": 1 }).sort('hostname', pymongo.DESCENDING))
+    results = list(CB_BOT_DB.sweep_log.find({"tuid": {"$eq": int(TUID)}}).collation({ "locale": "en_US", "strength": 1 }).sort('hostname', pymongo.DESCENDING))
 
     # If this is a new sweep, let's add all the hosts that are in
     # CB into the sweep_log and let's get a list of the pair of
     # hostname and device_id.
     if len(results) == 0:
-        hosts = list(DOBY_DB.cb_hosts.find().collation({ "locale": "en_US", "strength": 1 }).sort('last_reported_time', pymongo.DESCENDING))
+        hosts = list(CB_BOT_DB.cb_hosts.find().collation({ "locale": "en_US", "strength": 1 }).sort('last_reported_time', pymongo.DESCENDING))
         sweep_host_list = add_hosts_to_sweep_log(hosts, device_type)
 
     # This will follow through if there is data for that specific
@@ -979,8 +979,8 @@ def start_queue(host_list, command_specs, _id, sweep_name):
         for i in range(CB_CONCURRENT_SESSIONS):
             # Start multi-threading and run "run_cb_gather" function
             # to start running the query that we want it to do.
-            doby_worker = CB_DOBY(queue_list, total_hosts, command_specs, _id, sweep_name)
-            worker = threading.Thread(target=doby_worker.run_sweep, daemon=True)
+            cb_bot_worker = CB_BOT(queue_list, total_hosts, command_specs, _id, sweep_name)
+            worker = threading.Thread(target=cb_bot_worker.run_sweep, daemon=True)
             worker.start()
             workers_list.append(worker)
         queue_list.join()
@@ -994,7 +994,7 @@ def get_sweep_log_host_count():
     specific TUID. 
     '''
 
-    return DOBY_DB.sweep_log.count({"tuid": TUID})
+    return CB_BOT_DB.sweep_log.count({"tuid": TUID})
 
 def update_task(data_type, data_value, _id):
     '''
@@ -1006,7 +1006,7 @@ def update_task(data_type, data_value, _id):
     '''
 
     # Updates the record for the task.
-    DOBY_DB.task_history.update_one({'_id': _id},
+    CB_BOT_DB.task_history.update_one({'_id': _id},
                                     {'$set': {data_type: data_value}},
                                     upsert=False)
 
@@ -1016,7 +1016,7 @@ def get_task_object_id():
     the MongoDB database.
     '''
     # Queries Mongo for the task.
-    return DOBY_DB.task_history.find_one({'tuid': int(TUID)})
+    return CB_BOT_DB.task_history.find_one({'tuid': int(TUID)})
 
 def get_task_owner():
     '''
@@ -1024,7 +1024,7 @@ def get_task_owner():
     the MongoDB database.
     '''
     # Queries Mongo for the task.
-    return (DOBY_DB.task_history.find_one({'tuid': int(TUID)})['owner'])
+    return (CB_BOT_DB.task_history.find_one({'tuid': int(TUID)})['owner'])
 
 def create_alert(alert):
     '''
@@ -1035,7 +1035,7 @@ def create_alert(alert):
     '''
 
     # Adds the log entry to the alerts collection.
-    DOBY_DB.alerts.insert_one(alert)
+    CB_BOT_DB.alerts.insert_one(alert)
 
 def get_largest_auid():
     '''
@@ -1045,7 +1045,7 @@ def get_largest_auid():
     '''
 
     # Queries the MongoDB database for the largest AUID
-    user_list = list(DOBY_DB.alerts.find({}).sort('auid', pymongo.DESCENDING))
+    user_list = list(CB_BOT_DB.alerts.find({}).sort('auid', pymongo.DESCENDING))
 
     # Checks if there are no AUIDs.
     if len(user_list) == 0:
@@ -1055,7 +1055,7 @@ def get_largest_auid():
 
 def main():
     '''
-    Main function for Doby.
+    Main function for cb_bot.
     '''
 
     # Gets information about the command.

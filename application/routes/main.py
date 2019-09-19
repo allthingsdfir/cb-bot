@@ -43,7 +43,7 @@ login_manager.needs_refresh_message_category = 'info'
 #           CLASS DEFINITIONS           #
 #########################################
 
-# User class definition for Doby Bot
+# User class definition for CB Bot
 class User(UserMixin):
 
     def __init__(self, dict_object):
@@ -285,7 +285,7 @@ def favicon():
 
     # Returns the favicon to every page loaded.
     return send_from_directory('static/images/',
-                               'doby_favicon.png',
+                               'cb_bot_favicon.png',
                                mimetype='image/vnd.microsoft.icon')
 
 
