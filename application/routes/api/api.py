@@ -228,7 +228,7 @@ def api_get_gif():
     
     # If there is no Giphy API key, then return messsage.
     else:
-        return 'No API key supplied! Get a Giphy API key to get a Random Gif of the Day.'
+        return '../../../images/no-giphy-api.jpeg'
 
 @api_bp.route('/api/v1/get/alerts/user', methods=['GET'])
 @fresh_login_required
