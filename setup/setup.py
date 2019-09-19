@@ -10,15 +10,18 @@ import time
 import bcrypt
 import pymongo
 
+os.chdir('..')
+cwd = os.getcwd()
+
 # Create data folder before starting MongoDB
-os.makedirs('{}/../data'.format(os.getcwd()), exist_ok=True)
-os.makedirs('{}/../logs'.format(os.getcwd()), exist_ok=True)
+os.makedirs('{}/data'.format(cwd), exist_ok=True)
+os.makedirs('{}/logs'.format(cwd), exist_ok=True)
 
 # Starts up a MongoDB child process.
 # Runs a subprocess. If you can tee it, great. but
 # having the open function will output the log nicely.
 # mongod --dbpath data/ --port 5051 | tee mongo.log
-with open('{}/../logs/mongo.log'.format(os.getcwd()),"wb") as out:
+with open('{}/logs/mongo.log'.format(cwd),"wb") as out:
     process = subprocess.Popen(['mongod',
                                 '--dbpath',
                                 'data/',
@@ -190,9 +193,9 @@ def create_base_folders():
     # Create folders
     # Some folders may have already been created, but don't worry
     # it will just skip it. Adding here just in case.
-    os.makedirs('{}/../data'.format(cwd), exist_ok=True)
-    os.makedirs('{}/../data/sweep_output'.format(cwd), exist_ok=True)
-    os.makedirs('{}/../logs'.format(cwd), exist_ok=True)
+    os.makedirs('{}/data'.format(cwd), exist_ok=True)
+    os.makedirs('{}/data/sweep_output'.format(cwd), exist_ok=True)
+    os.makedirs('{}/logs'.format(cwd), exist_ok=True)
 
 def create_sftp(email, password):
     '''
