@@ -64,8 +64,8 @@ def apply_generic_server_settings():
     print("[*] ------------------------")
     print("[*] Adding generic cb_bot server configs...")
 
-    print("[*]\n[*] Let's start by naming/numbering your case.")
-    case_name = str(validate_user_input('Case Number/Name (e.g. CASE19-001, PWN_CLIENT')).lower()
+    print("[*]\n[*] Let's start by naming/numbering your CB Bot instance.")
+    case_name = str(validate_user_input('CB Bot Instance Number/Name (e.g. CASE001, ORGANIZATION)')).lower()
     
     case_settings = {
         "name" : "cb_bot",
@@ -78,7 +78,7 @@ def apply_generic_server_settings():
     giphy_settings = {
         "name" : "Giphy",
         "root_url" : "https://api.giphy.com/v1/gifs/random",
-        "api_key" : "VJdvL7tDGhzqg4GnNYLBOLtoyHnxBtSA",
+        "api_key" : "",
         "rating" : "PG-13"
     }
 
@@ -179,7 +179,7 @@ def create_admin_account():
 
     # Print message or user added.
     print("[*]\n[*] ------------------------")
-    print("[*]\n[*] Adding generic cb_bot server configs...")
+    print("[*]\n[*] Successfully created user and granted SFTP access!")
 
 def create_base_folders():
     '''
@@ -227,7 +227,8 @@ def create_sftp(email, password):
 
     # Flush the screen
     change_password_proc.stdin.flush()
-    print('\n')
+    time.sleep(2)
+    print('\n\n')
 
 def create_collections():
     '''
