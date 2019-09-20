@@ -105,51 +105,6 @@ def create_sweep():
                                 sweeps=sweeps,
                                 user=session)
 
-@cb_bp.route('/cb/refresh_host_list', methods=['GET', 'POST'])
-@fresh_login_required
-def refresh_host_list():
-    '''
-    This function will update the host list with the most current
-    host list.
-    '''
-    # Collect all of the necessary information to add
-    # details to the database.
-    task = dict()
-
-    task['name'] = 'Refresh Host List'
-    task['task'] = 'job'
-    task['type'] = 'Refresh Host List'
-    task['owner'] = session['email']
-    task['uuid'] = session['id']
-    task['cuid'] = 0
-    task['tuid'] = mongo.get_largest_tuid() + 1
-    task['created'] = datetime.datetime.utcnow()
-    task['expiration'] = task['created'] + datetime.timedelta(days=7)
-    task['total_hosts'] = 0
-    task['completed_hosts'] = 0
-    task['active'] = True
-
-    # Get the path to the 'update_hosts.py' script
-    script_path = '{}/update_hosts.py'.format(app.config['LIBRARIES_DIRECTORY'])
-    # script_path = script_path.replace(' ','\ ')
-    
-    # Runs a subprocess
-    process = subprocess.Popen(['python3', script_path, str(task['tuid'])], shell=False)
-
-    # Assign the process id to the task object.
-    task['pid'] = process.pid
-
-    # Tell MongoDB to add task to the collection
-    mongo.add_task(task)
-
-    # Records log entry.
-    main.record_log(request.path,
-                    request.remote_addr,
-                    'Created job: "Refresh Host List"')
-
-    # Returns the CB Run template.
-    return redirect(url_for('endpoints'))
-
 @cb_bp.route('/cb/run', methods=['GET', 'POST'])
 @fresh_login_required
 def run_sweep():
