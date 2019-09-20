@@ -923,7 +923,7 @@ def get_hosts_to_sweep(device_type):
     # CB into the sweep_log and let's get a list of the pair of
     # hostname and device_id.
     if len(results) == 0:
-        hosts = list(CB_BOT_DB.cb_hosts.find().collation({ "locale": "en_US", "strength": 1 }).sort('last_reported_time', pymongo.DESCENDING))
+        hosts = list(CB_BOT_DB.endpoints.find().collation({ "locale": "en_US", "strength": 1 }).sort('last_reported_time', pymongo.DESCENDING))
         sweep_host_list = add_hosts_to_sweep_log(hosts, device_type)
 
     # This will follow through if there is data for that specific

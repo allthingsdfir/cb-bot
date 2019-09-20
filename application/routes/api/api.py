@@ -78,7 +78,7 @@ def api_hosts_all():
     '''
 
     # Query mongo for all of the hosts.
-    results = mongo.get_all_cb_hosts()
+    results = mongo.get_all_endpoints()
 
     # Return the number of hosts.
     return str(len(results))
@@ -91,7 +91,7 @@ def api_hosts_all_data():
     '''
 
     # Query mongo for all of the hosts.
-    results = mongo.get_all_cb_hosts()
+    results = mongo.get_all_endpoints()
 
     # Go through each item and delete stuff we do not
     # need to return

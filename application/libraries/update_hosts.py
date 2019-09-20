@@ -26,13 +26,13 @@ class CB_BOT():
 
     def add_one_host(self, sensor):
         '''
-        Adds a sensor/host to the 'cb_hosts' collection
+        Adds a sensor/host to the 'endpoints' collection
 
         :param sensor:
         '''
 
         # Adds the log entry to the activity_logs collection.
-        CB_BOT_DB.cb_hosts.insert_one(sensor)
+        CB_BOT_DB.endpoints.insert_one(sensor)
 
     def get_host_validity(self, sensor_data):
         '''
@@ -47,9 +47,9 @@ class CB_BOT():
         # or just the hostname being passed. We also validate
         # that here.
         if sensor_data is dict():
-            results = list(CB_BOT_DB.cb_hosts.find({"hostname": { "$eq": sensor_data.get('deviceName') } }))
+            results = list(CB_BOT_DB.endpoints.find({"hostname": { "$eq": sensor_data.get('deviceName') } }))
         else:
-            results = list(CB_BOT_DB.cb_hosts.find({"hostname": { "$eq": sensor_data } }))
+            results = list(CB_BOT_DB.endpoints.find({"hostname": { "$eq": sensor_data } }))
 
         # If the count of results is greater than 0 (usually 1), then
         # it should return that host exists. Otherwise, return false.
@@ -230,7 +230,7 @@ class CB_BOT():
         '''
 
         # Updates the record for the task.
-        CB_BOT_DB.cb_hosts.update_one({'_id': _id},
+        CB_BOT_DB.endpoints.update_one({'_id': _id},
                                     {'$set': {data_type: data_value}},
                                     upsert=False)
 

@@ -240,7 +240,7 @@ def create_collections():
     print("[*] ------------------------")
     print("[*] Creating collections in 'cb_bot' database...")
 
-    collection_list = ['activity_logs', 'alerts', 'cb_hosts', 'server_settings', 'sweep_commands', 'sweep_log', 'task_history', 'users']
+    collection_list = ['activity_logs', 'alerts', 'endpoints', 'server_settings', 'sweep_commands', 'sweep_log', 'task_history', 'users']
 
     # Creatie all of the collections.
     for collection in collection_list:

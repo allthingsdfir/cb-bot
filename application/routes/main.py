@@ -192,6 +192,32 @@ def activity_logs_download():
     # Returns the file for download.
     return send_file(log_file, as_attachment=True)
 
+@app.route('/endpoints', methods=['GET'])
+@fresh_login_required
+def hosts():
+    '''
+    This is the hosts page. This will include all of the hosts
+    that were obtained from the CB server.
+    '''
+    # Query mongo for all of the hosts.
+    results = mongo.get_all_endpoints()
+
+    # This will set results to False if there was no
+    # existing entry in the database.
+    if len(results) == 0:
+        results = False
+
+    # Records log entry.
+    record_log(request.path,
+                request.remote_addr,
+                'Viewed Endpoints page.')
+
+    # Returns the CB Run template.
+    return render_template('/endpoints.html',
+                            title="Endpoints",
+                            user=session,
+                            hosts=results)
+
 @app.route('/settings', methods=['GET', 'POST'])
 @fresh_login_required
 def settings():

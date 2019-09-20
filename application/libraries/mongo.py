@@ -80,12 +80,12 @@ def get_all_alerts_active_user(user):
 
     return list(app.config['CB_BOT_DB'].alerts.find({"owner": {"$eq": user}, "active": {"$eq": True}}).sort('created', pymongo.DESCENDING))
 
-def get_all_cb_hosts():
+def get_all_endpoints():
     '''
     Gets all of the hostnames that are reporting to CB.
     '''
     
-    return list(app.config['CB_BOT_DB'].cb_hosts.find().collation({ "locale": "en_US", "strength": 1 }).sort('hostname', pymongo.ASCENDING))
+    return list(app.config['CB_BOT_DB'].endpoints.find().collation({ "locale": "en_US", "strength": 1 }).sort('hostname', pymongo.ASCENDING))
 
 def get_all_log_entries():
     '''

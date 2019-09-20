@@ -105,32 +105,6 @@ def create_sweep():
                                 sweeps=sweeps,
                                 user=session)
 
-@cb_bp.route('/cb/endpoints', methods=['GET'])
-@fresh_login_required
-def hosts():
-    '''
-    This is the hosts page. This will include all of the hosts
-    that were obtained from the CB server.
-    '''
-    # Query mongo for all of the hosts.
-    results = mongo.get_all_cb_hosts()
-
-    # This will set results to False if there was no
-    # existing entry in the database.
-    if len(results) == 0:
-        results = False
-
-    # Records log entry.
-    main.record_log(request.path,
-                    request.remote_addr,
-                    'Viewed CB Hosts page.')
-
-    # Returns the CB Run template.
-    return render_template('/cb_hosts.html',
-                            title="CB Hosts",
-                            user=session,
-                            hosts=results)
-
 @cb_bp.route('/cb/refresh_host_list', methods=['GET', 'POST'])
 @fresh_login_required
 def refresh_host_list():
@@ -174,7 +148,7 @@ def refresh_host_list():
                     'Created job: "Refresh Host List"')
 
     # Returns the CB Run template.
-    return redirect(url_for('cb.hosts'))
+    return redirect(url_for('endpoints'))
 
 @cb_bp.route('/cb/run', methods=['GET', 'POST'])
 @fresh_login_required

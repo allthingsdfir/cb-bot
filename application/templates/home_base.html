@@ -55,6 +55,12 @@
                     <span>Home</span></a>
             </li>
 
+            <li class="nav-item {% if title == 'Home' %}active{% else %}{% endif %}">
+                <a class="nav-link" href="/cb/endpoints">
+                    <i class="fas fa-fw fa-laptop"></i>
+                    <span>Endpoints</span></a>
+            </li>
+
             <li class="nav-item {% if 'CB ' in title %}active{% else %}{% endif %}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -64,9 +70,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/cb/run">Run</a>
-                        <a class="collapse-item" href="/cb/endpoints">Endpoints</a>
                         <a class="collapse-item" href="/cb/sweep_history">History</a>
-                        <a class="collapse-item" href="/cb/sweep_create">Create Sweep Type</a>
+                        <a class="collapse-item" href="/cb/sweep_create">Create Type</a>
                         <a class="collapse-item" href="/cb/server_settings">Server Configuration</a>
                     </div>
                 </div>
