@@ -334,17 +334,17 @@
         <script src="../static/vendor/sb-admin/js/demo/chart-area-demo.js"></script>
 
         <script>
-            $.get("/api/v1/get/case/name", function (data) {
-                // Define JSON data into a variable.
-                var html_data = '';
-                html_data += '<h6>' + data + '</h6>';
-                document.getElementById("case_name").innerHTML = html_data;
-            });
-        </script>
-
-        <script>
-            function getAlert() {
+            function getCaseInformation() {
                 $.get("/api/v1/get/case/name", function (data) {
+                    // Define JSON data into a variable.
+                    var html_data = '';
+                    html_data += '<h6>' + data + '</h6>';
+                    document.getElementById("case_name").innerHTML = html_data;
+                });
+            }
+
+            function getAlert() {
+                $.get("/api/v1/get/alerts/user", function (data) {
                     // Define JSON data into a variable.
                     var json_data = JSON.parse(data)
 
