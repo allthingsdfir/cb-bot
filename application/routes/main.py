@@ -195,7 +195,7 @@ def activity_logs_download():
 
 @app.route('/endpoints', methods=['GET'])
 @fresh_login_required
-def hosts():
+def endpoints():
     '''
     This is the hosts page. This will include all of the hosts
     that were obtained from the CB server.
