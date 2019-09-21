@@ -21,16 +21,24 @@
 <!-- Area Chart -->
 <div class="col-xl-6 col-lg-7">
     <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Giphy API</h6>
-        </div>
+        
         <!-- Card Body -->
         <div class="card-body" style="text-align: center;">
-            <!-- DataTales Example -->
-            {% if giphy %}
+            {% if type %}
+            <div class="alert alert-{{type}}">
+                {{value}}
+            </div>
+            {%else%}
+            <br>
+            {%endif%}
+
             <div class="row">
-                    <div class="col-lg-12">
+                <!-- GIPHY DATA -->
+                <div class="col-lg-12">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Giphy API</h6>
+                    </div>
                     <div class="p-5">
                         <form class="user" method="POST">
                             <div class="form-group">
@@ -47,48 +55,68 @@
                                         placeholder="7FJ197CJ2A8172HDDK811DZZ" required>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="input_connector_id">Rating</label>
-                                    <input type="text" class="form-control form-control-user" name="input_connector_id"
-                                        id="input_connector_id" value="{{ giphy.rating }}" placeholder="PG" required>
+                                    <label for="input_api_id">Rating</label>
+                                    <input type="text" class="form-control form-control-user" name="input_api_id"
+                                        id="input_api_id" value="{{ giphy.rating }}" placeholder="PG" required>
                                 </div>
                             </div>
+                            <input type="hidden" name="action" value="giphy">
                             <button class="btn btn-primary btn-user btn-block" type="submit">Update Giphy
                                 Settings</button>
-
                         </form>
                     </div>
                 </div>
-            </div>
-            {% else %}
-            <div class="row">
+
+                <!-- CB DATA -->
                 <div class="col-lg-12">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Carbon Black API</h6>
+                    </div>
                     <div class="p-5">
                         <form class="user" method="POST">
                             <div class="form-group">
                                 <label for="input_root_url">Root URL</label>
                                 <input type="text" class="form-control form-control-user" name="input_root_url"
-                                    id="input_root_url" placeholder="https://api.giphy.com/v1/gifs/random" required
-                                    disabled>
+                                    id="input_root_url" value="{{ settings.root_url }}"
+                                    placeholder="https://api-test.conferdeploy.net" required>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6">
-                                    <label for="input_api_key">API Key</label>
-                                    <input type="text" class="form-control form-control-user" name="input_api_key"
-                                        id="input_api_key" placeholder="4aJc71j20cnau1HSam110Jjmajz0bZgS3" required>
+                                    <label for="input_api_id">API ID</label>
+                                    <input type="text" class="form-control form-control-user" name="input_api_id"
+                                        id="input_api_id" value="{{ settings.api_id }}" placeholder="AHDJ17QJKS"
+                                        required>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="input_connector_id">Rating</label>
-                                    <input type="text" class="form-control form-control-user" name="input_connector_id"
-                                        id="input_connector_id" placeholder="PG" required>
+                                    <label for="input_api_secret_key">API Secret Key</label>
+                                    <input type="text" class="form-control form-control-user"
+                                        name="input_api_secret_key" id="input_api_secret_key"
+                                        value="{{ settings.api_secret_key }}" placeholder="7FJ197CJ2A8172HDDK811DZZ"
+                                        required>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-user btn-block" type="submit">Update Giphy
-                                Settings</button>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="input_min_check_in_time">Min Check-In (Hours)</label>
+                                    <input type="text" class="form-control form-control-user"
+                                        name="input_min_check_in_time" id="input_min_check_in_time"
+                                        value="{{ settings.min_check_in_time }}" placeholder="2" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="input_max_sessions">Max Sessions</label>
+                                    <input type="text" class="form-control form-control-user" name="input_max_sessions"
+                                        id="input_max_sessions" value="{{ settings.max_sessions }}" placeholder="10"
+                                        required>
+                                </div>
+                            </div>
+                            <input type="hidden" name="action" value="cb_data">
+                            <button class="btn btn-primary btn-user btn-block" type="submit">Update
+                                Configuration</button>
                         </form>
                     </div>
                 </div>
             </div>
-            {% endif %}
         </div>
     </div>
 </div>

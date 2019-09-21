@@ -251,101 +251,101 @@ def run_sweep():
                                 sweeps=sweeps,
                                 user=session)
 
-@cb_bp.route('/cb/server_settings', methods=['GET', 'POST'])
-@fresh_login_required
-def server_settings():
-    '''
-    This is the Server Configuration page. This will contain all of
-    the Carbon Black's server configuration settings so that
-    you can perform sweeps against.
-    '''
-    # Gets the CB Server Configuration
-    mongo_settings = mongo.get_server_settings()
+# @cb_bp.route('/cb/server_settings', methods=['GET', 'POST'])
+# @fresh_login_required
+# def server_settings():
+#     '''
+#     This is the Server Configuration page. This will contain all of
+#     the Carbon Black's server configuration settings so that
+#     you can perform sweeps against.
+#     '''
+#     # Gets the CB Server Configuration
+#     mongo_settings = mongo.get_server_settings()
 
-    # Checks to see if it's a POST or GET request.
-    if request.method == 'POST':
-        # Get all variables input by the user.
-        new_settings = dict()
-        new_settings['root_url'] = request.form['input_root_url']
-        new_settings['api_key'] = request.form['input_api_key']
-        new_settings['connector_id'] = request.form['input_connector_id']
-        new_settings['min_check_in_time'] = request.form['input_min_check_in_time']
-        new_settings['max_sessions'] = request.form['input_max_sessions']
+#     # Checks to see if it's a POST or GET request.
+#     if request.method == 'POST':
+#         # Get all variables input by the user.
+#         new_settings = dict()
+#         new_settings['root_url'] = request.form['input_root_url']
+#         new_settings['api_id'] = request.form['input_api_id']
+#         new_settings['api_secret_key'] = request.form['input_api_secret_key']
+#         new_settings['min_check_in_time'] = request.form['input_min_check_in_time']
+#         new_settings['max_sessions'] = request.form['input_max_sessions']
 
-        # Gets the CB Server Configuration
-        existing_settings = mongo.get_server_settings()
+#         # Gets the CB Server Configuration
+#         existing_settings = mongo.get_server_settings()
 
-        # Checks if the value is the same or different. If same,
-        # then it will not do anything and will return true.
-        results = list()
-        results.append(check_if_same(existing_settings['_id'],
-                                     'root_url',
-                                     new_settings['root_url'],
-                                     existing_settings['root_url']))
-        results.append(check_if_same(existing_settings['_id'],
-                                     'api_key',
-                                     new_settings['api_key'],
-                                     existing_settings['api_key']))
-        results.append(check_if_same(existing_settings['_id'],
-                                     'min_check_in_time',
-                                     new_settings['min_check_in_time'],
-                                     existing_settings['min_check_in_time']))
-        results.append(check_if_same(existing_settings['_id'],
-                                     'connector_id',
-                                     new_settings['connector_id'],
-                                     existing_settings['connector_id']))
-        results.append(check_if_same(existing_settings['_id'],
-                                     'max_sessions',
-                                     new_settings['max_sessions'],
-                                     existing_settings['max_sessions']))
+#         # Checks if the value is the same or different. If same,
+#         # then it will not do anything and will return true.
+#         results = list()
+#         results.append(check_if_same(existing_settings['_id'],
+#                                      'root_url',
+#                                      new_settings['root_url'],
+#                                      existing_settings['root_url']))
+#         results.append(check_if_same(existing_settings['_id'],
+#                                      'api_secret_key',
+#                                      new_settings['api_secret_key'],
+#                                      existing_settings['api_secret_key']))
+#         results.append(check_if_same(existing_settings['_id'],
+#                                      'min_check_in_time',
+#                                      new_settings['min_check_in_time'],
+#                                      existing_settings['min_check_in_time']))
+#         results.append(check_if_same(existing_settings['_id'],
+#                                      'api_id',
+#                                      new_settings['api_id'],
+#                                      existing_settings['api_id']))
+#         results.append(check_if_same(existing_settings['_id'],
+#                                      'max_sessions',
+#                                      new_settings['max_sessions'],
+#                                      existing_settings['max_sessions']))
 
-        # If any of the configuration settings changed, it will record
-        # it in the logs.
-        if False in results:
-            # Get new CB settings
-            mongo_settings = mongo.get_server_settings()
+#         # If any of the configuration settings changed, it will record
+#         # it in the logs.
+#         if False in results:
+#             # Get new CB settings
+#             mongo_settings = mongo.get_server_settings()
 
-            # Records log entry.
-            message = 'Successfully updated the CB Server Configuration.'
-            main.record_log(request.path,
-                            request.remote_addr,
-                            message)
+#             # Records log entry.
+#             message = 'Successfully updated the CB Server Configuration.'
+#             main.record_log(request.path,
+#                             request.remote_addr,
+#                             message)
 
-            # Return CB Server Configuration template.
-            return render_template('/cb_server_config.html',
-                                    title="CB Server Configuration",
-                                    type="success",
-                                    value=message,
-                                    user=session,
-                                    settings=mongo_settings)
+#             # Return CB Server Configuration template.
+#             return render_template('/cb_server_config.html',
+#                                     title="CB Server Configuration",
+#                                     type="success",
+#                                     value=message,
+#                                     user=session,
+#                                     settings=mongo_settings)
         
-        else:
-            message = 'No changes made to the CB Server Configuration. Nothing was updated.'
-            # Return CB Server Configuration template.
-            return render_template('/cb_server_config.html',
-                                    title="CB Server Configuration",
-                                    type="info",
-                                    value=message,
-                                    user=session,
-                                    settings=mongo_settings)
+#         else:
+#             message = 'No changes made to the configurations. Nothing was updated.'
+#             # Return CB Server Configuration template.
+#             return render_template('/cb_server_config.html',
+#                                     title="CB Server Configuration",
+#                                     type="info",
+#                                     value=message,
+#                                     user=session,
+#                                     settings=mongo_settings)
 
-    # If it's not a POST request, it will most likely be
-    # a GET request. Just return the login template.
-    else:
+#     # If it's not a POST request, it will most likely be
+#     # a GET request. Just return the login template.
+#     else:
 
-        # Gets the CB Server Configuration
-        results = mongo.get_server_settings()
+#         # Gets the CB Server Configuration
+#         results = mongo.get_server_settings()
         
-        # Records log entry.
-        main.record_log(request.path,
-                        request.remote_addr,
-                        'Viewed the CB Server Configuration page.')
+#         # Records log entry.
+#         main.record_log(request.path,
+#                         request.remote_addr,
+#                         'Viewed the CB Server Configuration page.')
 
-         # Return CB Server Configuration template.
-        return render_template('/cb_server_config.html',
-                                title="CB Server Configuration",
-                                user=session,
-                                settings=mongo_settings)
+#          # Return CB Server Configuration template.
+#         return render_template('/cb_server_config.html',
+#                                 title="CB Server Configuration",
+#                                 user=session,
+#                                 settings=mongo_settings)
 
 @cb_bp.route('/cb/sweep_history', methods=['GET'])
 @fresh_login_required
@@ -432,22 +432,3 @@ def sweep_details(tuid):
 #########################################
 #            OTHER FUNCTIONS            #
 #########################################
-def check_if_same(_id, data_type, new, existing):
-    '''
-    This function checks if the new and the current values
-    are the same or not. If they are not the same, then it
-    will update the record in the MongoDB database collection.
-
-    :param _id:
-    :param data_type:
-    :param new:
-    :param existing:
-    :return True/False:
-    '''
-
-    if new != existing:
-        mongo.update_server_settings(_id, data_type, new)
-        return False
-    
-    else:
-        return True

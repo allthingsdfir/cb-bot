@@ -278,24 +278,128 @@ def settings():
     if session['account_type'] == 'admin':
         # Checks if it was a POST request or not.
         if request.method == 'POST':
-            pass
 
-        # Queries mongo for giphy settings
-        results = mongo.get_giphy_settings()
+            # Let's validate what form are we looking at.
+            update = request.form['input_root_url']
+            if update == "giphy":
+                new_settings = dict()
+                new_settings['api_key'] = request.form['input_api_key']
+                new_settings['rating'] = request.form['input_rating']
+
+                # Gets the Giphy Configuration
+                existing_settings = mongo.get_giphy_settings()
+
+                # Checks if the value is the same or different. If same,
+                # then it will not do anything and will return true.
+                results = list()
+                results.append(check_if_same(existing_settings['_id'],
+                                            'api_key',
+                                            new_settings['api_key'],
+                                            existing_settings['api_key']))
+                results.append(check_if_same(existing_settings['_id'],
+                                            'rating',
+                                            new_settings['rating'],
+                                            existing_settings['rating']))
+                
+                if False in results:
+                    message = 'Successfully updated the Giphy configuration.'
+                    alert_type = "success"
+
+                    # Record a log entry indicating what has been changed.
+                    record_log(request.path,
+                            request.remote_addr,
+                            message)
+
+                else:
+                    message = 'No changes made to the configurations. Nothing was updated.'
+                    alert_type = "info"
+
+            elif update == "cb_data":
+                new_settings = dict()
+                new_settings['root_url'] = request.form['input_root_url']
+                new_settings['api_id'] = request.form['input_api_id']
+                new_settings['api_secret_key'] = request.form['input_api_secret_key']
+                new_settings['min_check_in_time'] = request.form['input_min_check_in_time']
+                new_settings['max_sessions'] = request.form['input_max_sessions']
+
+                # Gets the CB Server Configuration
+                existing_settings = mongo.get_server_settings()
+
+                # Checks if the value is the same or different. If same,
+                # then it will not do anything and will return true.
+                results = list()
+                results.append(check_if_same(existing_settings['_id'],
+                                            'root_url',
+                                            new_settings['root_url'],
+                                            existing_settings['root_url']))
+                results.append(check_if_same(existing_settings['_id'],
+                                            'api_secret_key',
+                                            new_settings['api_secret_key'],
+                                            existing_settings['api_secret_key']))
+                results.append(check_if_same(existing_settings['_id'],
+                                            'min_check_in_time',
+                                            new_settings['min_check_in_time'],
+                                            existing_settings['min_check_in_time']))
+                results.append(check_if_same(existing_settings['_id'],
+                                            'api_id',
+                                            new_settings['api_id'],
+                                            existing_settings['api_id']))
+                results.append(check_if_same(existing_settings['_id'],
+                                            'max_sessions',
+                                            new_settings['max_sessions'],
+                                            existing_settings['max_sessions']))
+
+                if False in results:
+                    message = 'Successfully updated the CB configuration.'
+                    alert_type = "success"
+
+                    # Record a log entry indicating what has been changed.
+                    record_log(request.path,
+                            request.remote_addr,
+                            message)
+                
+                else:
+                    message = 'No changes made to the configurations. Nothing was updated.'
+                    alert_type = "info"
+
+            else:
+                pass
+
+        else:
+            # Since it's only a get request, just record
+            # this log entry
+            record_log(request.path,
+                    request.remote_addr,
+                    'Viewed the Settings page.')
+
+        # Whether there is an update or not, I need to 
+        # provide all of the settings back to the user.
+        # Gets CB Bot configuration
+        cb_data = mongo.get_server_settings()
+        giphy_data = mongo.get_giphy_settings()
 
         # Checks if it's empty or not.
-        if len(results) == 0:
-            results = False
+        if len(cb_data) == 0:
+            cb_data = dict()
+            cb_data['root_url'] = ""
+            cb_data['api_id'] = ""
+            cb_data['api_secret_key'] = ""
+            cb_data['min_check_in_time'] = 3
+            cb_data['max_sessions'] = 30
 
-        # Records log entry.
-        record_log(request.path,
-                request.remote_addr,
-                'Viewed the Settings page.')
+        # Checks if it's empty or not.
+        if len(giphy_data) == 0:
+            giphy_data = dict()
+            giphy_data['api_key'] = ""
+            giphy_data['rating'] = ""
 
         return render_template('/settings.html',
                             title='Settings',
+                            type=alert_type,
+                            value=message,
                             user=session,
-                            giphy=results)
+                            giphy=giphy_data,
+                            cb=cb_data)
 
     else:
         # Records log entry.
@@ -414,6 +518,26 @@ def page_not_found(e):
 #########################################
 #            OTHER FUNCTIONS            #
 #########################################
+def check_if_same(_id, data_type, new, existing):
+    '''
+    This function checks if the new and the current values
+    are the same or not. If they are not the same, then it
+    will update the record in the MongoDB database collection.
+
+    :param _id:
+    :param data_type:
+    :param new:
+    :param existing:
+    :return True/False:
+    '''
+
+    if new != existing:
+        mongo.update_server_settings(_id, data_type, new)
+        return False
+    
+    else:
+        return True
+
 def record_log(page, ip, message, user=None, account_type=None):
     '''
     This function will enter a record into the logs,
