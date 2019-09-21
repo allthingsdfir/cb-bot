@@ -34,9 +34,9 @@ OUTPUT_DIRECTORY = sys.argv[1]
 
 # Define Carbon Black instance settings.
 CB_ROOT_URL = config['root_url']
-CB_API_KEY = config['api_key']
-CB_CONNECTOR_ID = config['connector_id']
-CB_XAUTH_TOKEN = '{}/{}'.format(CB_API_KEY, CB_CONNECTOR_ID)
+CB_API_SECRET_KEY = config['api_secret_key']
+CB_API_ID = config['api_id']
+CB_XAUTH_TOKEN = '{}/{}'.format(CB_API_SECRET_KEY, CB_API_ID)
 CB_CONCURRENT_SESSIONS = int(config['max_sessions'])
 CB_MIN_CHECK_IN_TIME = int(config['min_check_in_time'])
 

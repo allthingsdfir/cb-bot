@@ -88,8 +88,8 @@ def apply_generic_server_settings():
     cb_server_settings = {
         "name" : "Carbon Black",
         "root_url" : "",
-        "api_key" : "",
-        "connector_id" : "",
+        "api_secret_key" : "",
+        "api_id" : "",
         "max_sessions" : "30",
         "min_check_in_time" : "3"
     }
