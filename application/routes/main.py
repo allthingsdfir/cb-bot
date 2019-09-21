@@ -393,6 +393,15 @@ def settings():
             giphy_data['api_key'] = ""
             giphy_data['rating'] = ""
 
+        # Returns template without certain variables if it
+        # is a GET request and not a POST request.
+        if request.method == 'GET':
+            return render_template('/settings.html',
+                                title='Settings',
+                                user=session,
+                                giphy=giphy_data,
+                                cb=cb_data)
+
         return render_template('/settings.html',
                             title='Settings',
                             type=alert_type,
