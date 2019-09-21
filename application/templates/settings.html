@@ -78,21 +78,21 @@
                             <div class="form-group">
                                 <label for="input_root_url">Root URL</label>
                                 <input type="text" class="form-control form-control-user" name="input_root_url"
-                                    id="input_root_url" value="{{ settings.root_url }}"
+                                    id="input_root_url" value="{{ cb_data.root_url }}"
                                     placeholder="https://api-test.conferdeploy.net" required>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6">
                                     <label for="input_api_id">API ID</label>
                                     <input type="text" class="form-control form-control-user" name="input_api_id"
-                                        id="input_api_id" value="{{ settings.api_id }}" placeholder="AHDJ17QJKS"
+                                        id="input_api_id" value="{{ cb_data.api_id }}" placeholder="AHDJ17QJKS"
                                         required>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="input_api_secret_key">API Secret Key</label>
                                     <input type="text" class="form-control form-control-user"
                                         name="input_api_secret_key" id="input_api_secret_key"
-                                        value="{{ settings.api_secret_key }}" placeholder="7FJ197CJ2A8172HDDK811DZZ"
+                                        value="{{ cb_data.api_secret_key }}" placeholder="7FJ197CJ2A8172HDDK811DZZ"
                                         required>
                                 </div>
                             </div>
@@ -101,12 +101,12 @@
                                     <label for="input_min_check_in_time">Min Check-In (Hours)</label>
                                     <input type="text" class="form-control form-control-user"
                                         name="input_min_check_in_time" id="input_min_check_in_time"
-                                        value="{{ settings.min_check_in_time }}" placeholder="2" required>
+                                        value="{{ cb_data.min_check_in_time }}" placeholder="2" required>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="input_max_sessions">Max Sessions</label>
                                     <input type="text" class="form-control form-control-user" name="input_max_sessions"
-                                        id="input_max_sessions" value="{{ settings.max_sessions }}" placeholder="10"
+                                        id="input_max_sessions" value="{{ cb_data.max_sessions }}" placeholder="10"
                                         required>
                                 </div>
                             </div>
