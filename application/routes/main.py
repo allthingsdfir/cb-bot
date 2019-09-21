@@ -280,7 +280,7 @@ def settings():
         if request.method == 'POST':
 
             # Let's validate what form are we looking at.
-            update = request.form['input_root_url']
+            update = request.form['config']
             if update == "giphy":
                 new_settings = dict()
                 new_settings['api_key'] = request.form['input_api_key']
@@ -363,7 +363,8 @@ def settings():
                     alert_type = "info"
 
             else:
-                pass
+                message = 'You did something bad. Not cool.'
+                alert_type = "danger"
 
         else:
             # Since it's only a get request, just record
