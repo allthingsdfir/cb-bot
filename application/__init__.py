@@ -3,8 +3,10 @@ import os
 
 import pymongo
 from flask import Flask
+from flask_talisman import Talisman
 
 app = Flask(__name__)
+Talisman(app)
 
 # Application configuration
 app.config['SECRET_KEY'] = '1w86x19c2tfaxmf3rdyiv65x5q1raa43p9psycqyaei56249m19fww614871'
