@@ -23,7 +23,7 @@ app.config['LIBRARIES_DIRECTORY'] =  "{}/libraries".format(app.config['APPLICATI
 app.config['TEMP_DIRECTORY'] =  "{}/temp".format(app.config['WEB_DIRECTORY'])
 app.config['UPLOAD_DIRECTORY'] =  "{}/upload".format(app.config['TEMP_DIRECTORY'])
 app.config['LOG_DIRECTORY'] =  "{}/logs".format(app.config['TEMP_DIRECTORY'])
-app.config['OUTPUT_DIRECTORY'] =  "{}/data/sweep_output".format(app.config['WEB_DIRECTORY'])
+app.config['OUTPUT_DIRECTORY'] =  "/data/sweep_output"
 
 # Accepted extensions for CB Bot to upload
 # This is not implemented yet, but can be implemented.

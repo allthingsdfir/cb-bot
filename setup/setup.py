@@ -193,7 +193,7 @@ def create_base_folders():
     # Some folders may have already been created, but don't worry
     # it will just skip it. Adding here just in case.
     os.makedirs('{}/data'.format(cwd), exist_ok=True)
-    os.makedirs('{}/data/sweep_output'.format(cwd), exist_ok=True)
+    os.makedirs('/data/sweep_output', exist_ok=True)
     os.makedirs('{}/logs'.format(cwd), exist_ok=True)
 
 def create_sftp(email, password):
