@@ -41,9 +41,9 @@ login_manager.needs_refresh_message_category = 'info'
 #########################################
 #       WEB APPLICATION FUNCTIONS       #
 #########################################
-@cb_bp.route('/cb/sweep_create', methods=['GET', 'POST'])
+@cb_bp.route('/cb/build_sweep', methods=['GET', 'POST'])
 @fresh_login_required
-def create_sweep():
+def build_sweep():
     '''
     This is the run sweep page. This will allow the user to set
     up a sweep to run against all the systems in the environment.
@@ -81,8 +81,8 @@ def create_sweep():
         sweeps = mongo.get_all_sweep_commands()
 
         # Return template with user created
-        return render_template('/cb_create.html',
-                        title="Create Sweep",
+        return render_template('/cb_build.html',
+                        title="Build Sweep",
                         type="success",
                         value=message,
                         sweeps=sweeps,
@@ -100,12 +100,12 @@ def create_sweep():
                         'Viewed Create Sweep page.')
 
         # Returns the CB Run template.
-        return render_template('/cb_create.html',
-                                title="Create Sweep",
+        return render_template('/cb_build.html',
+                                title="Build Sweep",
                                 sweeps=sweeps,
                                 user=session)
 
-@cb_bp.route('/cb/run', methods=['GET', 'POST'])
+@cb_bp.route('/cb/run_sweep', methods=['GET', 'POST'])
 @fresh_login_required
 def run_sweep():
     '''
