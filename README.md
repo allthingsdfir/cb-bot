@@ -1,4 +1,4 @@
-CB Bot is a threat hunting and incident response web application framework for using with Carbon Black (CB) Defense. By leveraging CB Defense's REST APIs, CB Bot manages to build and run sweeps (hunts) across a CB instance! I created CB Bot with the main goal to automate and speed up the threat hunting and incident response process across an organization. Not only will it make it easier to run hunts or sweeps across a network, but also make it faster. Less time building tech, more time finding bad guys.
+CB Bot is a threat hunting and incident response web application framework for using with Carbon Black (CB) Defense. By leveraging CB Defense's REST APIs, CB Bot manages to build and run sweeps (hunts) across a CB instance! I created CB Bot with the main goal to automate and speed up the threat hunting and incident response process across an organization. Not only will it make it easier to run hunts or sweeps across a network, but also make it faster. Less time building tech, more time finding bad guys. :smile:	
 
 
 # Disclaimer
@@ -8,7 +8,7 @@ This disclaimer informs those that are reading, downloading, and using CB Bot th
 # Installation
 _Note: Tested only on Ubuntu 18.04.3 (LTS) X64._
 
-#### Step 1: Setting Up Your Server
+### Step 1: Setting Up Your Server
 Let's make sure that you have all the system updates, Python 3, and Mongo.
 
     apt-get update
@@ -18,7 +18,7 @@ Go to the directory that you would like to clone CB Bot, and then use Git to clo
 
     git clone <repository>
 
-#### Step 2: Installing CB-Bot Requirements
+### Step 2: Installing CB-Bot Requirements
 Once you've installed and downloaded all of the necessary files, let's jump into the CB Bot directory and install all the python libraries that CB Bot uses.
 
     cd cb-bot/setup
@@ -29,12 +29,12 @@ I highly recommend you use a certificate of your own. However, if you do not hav
     openssl genrsa 4096 > /etc/ssl/private/cb_bot.key;
     openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=TX/L=Austin/O=All Things DFIR" -key /etc/ssl/private/cb_bot.key -out /etc/ssl/certs/cb_bot.crt;
 
-#### Step 3: Run "setup.py"
+### Step 3: Run "setup.py"
 Finally, before you can get to use CB Bot, it's important to run "setup.py" to get the MongoDB configured with all the collections, the folders needed on the system, and the admin account used to log into the portal. Run it and follow all of the instructions.
 
     python3 setup.py
-   
-#### Step 4: Start CB Bot
+
+### Step 4: Start CB Bot
 After you have completed all of the steps above, just make sure to run CB Bot from the root directory of the application. If you've been following these instructions, then just do the following:
 
     cd ../
