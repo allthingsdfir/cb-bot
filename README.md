@@ -48,6 +48,8 @@ I highly recommend you use a certificate of your own. However, if you do not hav
     
 If you happen to use your own certs make sure you copy them to `/etc/ssl/private/cb_bot.key` and `/etc/ssl/certs/cb_bot.crt`. You can also save it in a different path, just make sure to edit the "run.py" file to reflect where the paths to the cert and key are.
 
+**Important**: Go to the `application/__init__.py` file to change the `app.config['SECRET_KEY']` value. At the moment I have placed a generic value for testing, but this value should be changed and unique.
+
 ### Step 3: Run "setup.py" :runner:
 Finally, before you can get to use CB Bot, it's important to run "setup.py" to get the MongoDB configured with all the collections, generate the folders needed on the system, and create the admin account used to log into the portal. Run it and follow all of the instructions.
 
