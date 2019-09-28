@@ -20,7 +20,7 @@ Make sure that you apply the following inbound and outbound rules in order for C
 
 Protocol | Inbound | Outbound
 ------------ | ------------ | -------------
-TCP | 443, 22 | 443
+TCP | 22, 443 | 443, 9418
 
 # Installation
 _Note: Tested on Ubuntu 18.04.3 (LTS) x64._
