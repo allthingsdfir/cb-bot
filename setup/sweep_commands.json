@@ -56,7 +56,7 @@
         "modified": {
             "$date": "2019-06-06T05:09:00.000Z"
         },
-        "name": "Appcompatcache Hunt",
+        "name": "AppCompatCache Hunt",
         "output_file": "C:\\Windows\\Temp\\appcompat.hve",
         "owner": "allthingsdfir.com",
         "require_file": false,
