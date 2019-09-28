@@ -7,7 +7,7 @@ This disclaimer informs those that are reading, downloading, and using CB Bot th
 
 
 # Installation
-_Note: Tested on Ubuntu 18.04.3 (LTS) X64._
+_Note: Tested on Ubuntu 18.04.3 (LTS) x64._
 
 ### Step 1: Setting Up Your Server :electric_plug:
 Let's make sure that you have all the system updates, Python 3, and Mongo.
