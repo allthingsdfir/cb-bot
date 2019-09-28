@@ -157,10 +157,10 @@ def get_all_tasks_active():
 def get_all_host_list_refresh_job():
     '''
     Gets a list of the jobs that were run that refreshed the
-    host list.
+    endpoint list.
     '''
 
-    return list(app.config['CB_BOT_DB'].task_history.find({"task": {"$eq": "job"}, "type": {"$eq": "Refresh Host List"}}).collation({ "locale": "en_US", "strength": 1 }).sort('created', pymongo.DESCENDING))
+    return list(app.config['CB_BOT_DB'].task_history.find({"task": {"$eq": "job"}, "type": {"$eq": "Refresh Endpoint List"}}).collation({ "locale": "en_US", "strength": 1 }).sort('created', pymongo.DESCENDING))
 
 def get_all_users():
     '''

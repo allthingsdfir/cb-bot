@@ -62,7 +62,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Total Hosts</div>
+                            Total Endpoints</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <div id="all_host_count"></div>
                         </div>
@@ -101,7 +101,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Last Updated Host List</div>
+                                Last Updated Endpoint List</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
                                     <div id="last_updated"></div>
@@ -430,7 +430,7 @@
             });
         });
 
-        // Get last updated host list timestamp
+        // Get last updated endpoint list timestamp
         $.get("/api/v1/get/tasks/jobs/host_list/last_updated", function (last_updated) {
             document.getElementById("last_updated").innerHTML = last_updated;
         });

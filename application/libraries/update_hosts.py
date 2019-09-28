@@ -419,7 +419,7 @@ def main():
     alert['active'] = False
     alert['owner'] = get_task_owner(tuid)
     alert['auid'] = auid
-    alert['message'] = "Completed Task ID {}: Refresh Host List".format(tuid)
+    alert['message'] = "Completed Task ID {}: Refresh Endpoint List".format(tuid)
 
     # Tell Mongo to add alert.
     create_alert(alert)

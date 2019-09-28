@@ -223,16 +223,16 @@ def endpoints():
 @fresh_login_required
 def refresh_host_list():
     '''
-    This function will update the host list with the most current
-    host list.
+    This function will update the endpoint list with the most current
+    endpoint list.
     '''
     # Collect all of the necessary information to add
     # details to the database.
     task = dict()
 
-    task['name'] = 'Refresh Host List'
+    task['name'] = 'Refresh Endpoint List'
     task['task'] = 'job'
-    task['type'] = 'Refresh Host List'
+    task['type'] = 'Refresh Endpoint List'
     task['owner'] = session['email']
     task['uuid'] = session['id']
     task['cuid'] = 0
@@ -259,7 +259,7 @@ def refresh_host_list():
     # Records log entry.
     record_log(request.path,
                request.remote_addr,
-               'Created job: "Refresh Host List"')
+               'Created job: "Refresh Endpoint List"')
 
     # Returns the CB Run template.
     return redirect(url_for('endpoints'))
@@ -426,7 +426,7 @@ def tasks():
     '''
     Task page. This will include all of the running jobs and
     sweeps in one page. Jobs for now are simple the "refresh
-    host list" action item in the table.
+    Endpoint list" action item in the table.
     '''
     # results = list()
 

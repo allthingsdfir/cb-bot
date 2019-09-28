@@ -930,7 +930,7 @@ def get_hosts_to_sweep(device_type):
     # sweep.
     else:
         # ========= DEV =========
-        print("Sweep exists. Extracting host list.")
+        print("Sweep exists. Extracting endpoint list.")
         # ========= DEV =========
 
         # Iterate through all the hosts and extract their device_id.
@@ -1085,7 +1085,7 @@ def main():
         alert['active'] = True
         alert['owner'] = get_task_owner()
         alert['auid'] = auid
-        alert['message'] = "Failed Sweep with Task ID {}: {}. There are no hosts! Refresh host list before continuing.".format(TUID, sweep_name)
+        alert['message'] = "Failed Sweep with Task ID {}: {}. There are no hosts! Refresh endpoint list before continuing.".format(TUID, sweep_name)
 
         # Tell Mongo to add alert.
         create_alert(alert)
