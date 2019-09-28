@@ -5,6 +5,22 @@ CB Bot is a threat hunting and incident response web application framework for u
 # Disclaimer
 This disclaimer informs those that are reading, downloading, and using CB Bot that this code was written by me and does not represent my employer's views. My employer did not have any part or say in this project and everything that was done was as as side project of mine.
 
+# Requirements
+### Hardware
+Make sure you have at least the following:
+
+CPU | RAM | Disk
+------------ | ------------ | -------------
+1 | 1 GB | 25 GB
+
+Of course, the more you have, the better, but I've created a small instance in Digital Ocean and these are the specifications. I suggest you have more disk space, as sweeps can get pretty beefy if you have a large environment. 
+
+### Network
+Make sure that you apply the following inbound and outbound rules in order for CB Bot to work:
+
+Protocol | Inbound | Outbound
+------------ | ------------ | -------------
+TCP | 443, 22 | 443
 
 # Installation
 _Note: Tested on Ubuntu 18.04.3 (LTS) x64._
