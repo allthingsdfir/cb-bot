@@ -276,7 +276,7 @@ def sweep_details(tuid):
 
         # Returns the CB Run template.
         return render_template('/cb_sweep_details.html',
-                                title="Task History - Sweep Details",
+                                title="Task History - Details",
                                 user=session,
                                 sweep_name=sweep_name,
                                 hosts=results)
