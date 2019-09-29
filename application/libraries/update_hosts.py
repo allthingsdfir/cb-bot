@@ -203,7 +203,7 @@ class CB_BOT():
         # Update task to inactive.
         self.update_task_class('active', False, self._id)
         
-    def update_one_alert(slef, _id, message_date, created):
+    def update_one_alert(self, _id, message_date, created):
         '''
         Updates an alert to False sent usually by the click of
         a link in the alerts section.
