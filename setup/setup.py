@@ -369,10 +369,16 @@ def main():
     # Changes the run file so that you can execute it.
     os.system('chmod 600 {}/run.py'.format(cwd))
 
-    # Ensure that password authentication is enabled for SSH.
+    # Ensure that SFTP is enabled and password authentication
+    # is enabled for SFTP.
     os.system("cp /etc/ssh/sshd_config /etc/ssh/sshd_config_tmp")
     os.system("sed '$d' /etc/ssh/sshd_config_tmp > /etc/ssh/sshd_config")
     os.system("rm -f /etc/ssh/sshd_config_tmp")
+    os.system("echo 'Match group sftp' >> /etc/ssh/sshd_config")
+    os.system("echo 'ChrootDirectory /data' >> /etc/ssh/sshd_config")
+    os.system("echo 'X11Forwarding no' >> /etc/ssh/sshd_config")
+    os.system("echo 'AllowTcpForwarding no' >> /etc/ssh/sshd_config")
+    os.system("echo 'ForceCommand internal-sftp' >> /etc/ssh/sshd_config")
     os.system("echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config")
 
     # Restart SSHD services. Primarily for SFTP.
