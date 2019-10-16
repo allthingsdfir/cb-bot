@@ -236,7 +236,6 @@ class CB_BOT():
                                     else:
                                         # We were not able to get a file, there was an error.
                                         self.update_one_host_sweep('status', 'Command ran, but was unable to collect results.', host_object_id)
-                                        self.queue_list.task_done()
                                         self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                                     # Delete file on disk.
@@ -248,14 +247,12 @@ class CB_BOT():
                                 else:
                                     # We were not able to run a command.
                                     self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
-                                    self.queue_list.task_done()
                                     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
 
                             # ==== Type 2: Upload file and run. ====
                             elif self.command_type == 2:
                                 
-
                                 # Send request to upload file.
                                 upload_status = self.upload_file_to_cb(session_id, sensor_name)
 
@@ -279,14 +276,12 @@ class CB_BOT():
                                     else:
                                         # We were not able to run a command.
                                         self.update_one_host_sweep('status', 'Could not run command on the host.', host_object_id)
-                                        self.queue_list.task_done()
                                         self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                                 # Re-add to queue and update host status.
                                 else:
                                     # We were not able to upload file.
                                     self.update_one_host_sweep('status', 'Error uploading file to the system.', host_object_id)
-                                    self.queue_list.task_done()
                                     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                             # ==== Type 3: Get file from system. ====
@@ -305,7 +300,6 @@ class CB_BOT():
                                 else:
                                     # We were not able to get a file, there was an error.
                                     self.update_one_host_sweep('status', 'Unable to collect file!', host_object_id)
-                                    self.queue_list.task_done()
                                     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                                 # Delete file on disk.
@@ -324,22 +318,23 @@ class CB_BOT():
                             # Close session without caring what command type it is
                             # or if the commands successfully ran or not.
                             self.session_close(session_id, sensor_name)
-                            self.queue_list.task_done()
 
                         else:
                             self.update_one_host_sweep('status', 'Could not establish a CB session.', host_object_id)
-                            self.queue_list.task_done()
                             self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                     else:
                         self.update_one_host_sweep('status', 'Host falls outside of minimum check in time.', host_object_id)
-                        self.queue_list.task_done()
                         self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
 
                 else:
                     self.update_one_host_sweep('status', 'No last reported timestamp recorded.', host_object_id)
-                    self.queue_list.task_done()
                     self.queue_list.put('{}||{}'.format(sensor_name, sensor_id))
+
+                # Regardless of the job, this task should be done.
+                # Ideally this should prevent any errors regarding
+                # 'task_done' called too many times.
+                self.queue_list.task_done()
 
             except Exception as e:
                 self.ERROR_COUNT += 1
